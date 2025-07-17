@@ -6,11 +6,13 @@ class TransactionTypeCard extends StatelessWidget {
   final String imagePath;
   final String type;
   bool isSelected;
+  bool isGif;
   TransactionTypeCard(
       {super.key,
       required this.isSelected,
       required this.imagePath,
-      required this.type});
+      required this.type,
+      this.isGif = false});
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +40,18 @@ class TransactionTypeCard extends StatelessWidget {
           //     height: 40,
           //   ),
           // ),
-          Image.asset(
-            imagePath,
-            width: size.width * 0.5,
-            height: size.height * 0.2,
-          ),
+          isGif
+              ? Image.network(
+                  imagePath,
+                  width: size.width * 0.5,
+                  height: size.height * 0.2,
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(
+                  imagePath,
+                  width: size.width * 0.5,
+                  height: size.height * 0.2,
+                ),
           Text(
             type,
             style: TextStyle(

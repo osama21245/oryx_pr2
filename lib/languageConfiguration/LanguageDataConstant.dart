@@ -115,23 +115,21 @@ String getContentValueFromKey(int keywordId) {
   return defaultKeyValue.toString().trim();
 }
 
-
-
 initJsonFile() async {
   final String jsonString =
       await rootBundle.loadString('assets/staticjson/keyword_list.json');
   final list = json.decode(jsonString) as List;
-  List<LocalLanguageResponse> finalList =
-      list.map((jsonElement) => LocalLanguageResponse.fromJson(jsonElement)).toList();
+  List<LocalLanguageResponse> finalList = list
+      .map((jsonElement) => LocalLanguageResponse.fromJson(jsonElement))
+      .toList();
   defaultLanguageDataKeys.clear();
   for (int index = 0; index < finalList.length; index++) {
     for (int i = 0; i < finalList[index].keywordData!.length; i++) {
       defaultLanguageDataKeys.add(ContentData(
           keywordId: finalList[index].keywordData![i].keywordId,
-          keywordName:  finalList[index].keywordData![i].keywordName,
-          keywordValue:  finalList[index].keywordData![i].keywordValue));
+          keywordName: finalList[index].keywordData![i].keywordName,
+          keywordValue: finalList[index].keywordData![i].keywordValue));
     }
-
   }
 }
 
@@ -140,13 +138,13 @@ initJsonFile() async {
 String getCountryCode() {
   String defaultCode = countryCode!;
   String selectedLang =
-  getStringAsync(SELECTED_LANGUAGE_CODE, defaultValue: defaultLanguageCode);
+      getStringAsync(SELECTED_LANGUAGE_CODE, defaultValue: defaultLanguageCode);
   if (defaultServerLanguageData != null &&
       defaultServerLanguageData!.length > 0) {
     for (int index = 0; index < defaultServerLanguageData!.length; index++) {
       if (selectedLang == defaultServerLanguageData![index].languageCode) {
         List<String> selectedCoutry =
-        defaultServerLanguageData![index].countryCode!.split("-");
+            defaultServerLanguageData![index].countryCode!.split("-");
         if (selectedCoutry.length > 0) {
           defaultCode = selectedCoutry[1];
         }
