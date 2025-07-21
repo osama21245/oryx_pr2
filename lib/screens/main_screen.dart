@@ -154,15 +154,19 @@ class _MainScreenState extends State<MainScreen> {
             .paddingOnly(left: 8, right: 8, top: 10, bottom: 10)
             .center()
             .onTap(() async {
-          selectedCity = data!.propertyCity![index].id.toString();
-          selectCityName = data!.propertyCity![index].name.toString();
-          userStore.setUserCity(selectCityName!).then((value) {
-            setState(() {
-              selectedCity = data!.propertyCity![index].id.toString();
-              selectCityName = data!.propertyCity![index].name.toString();
-              showSacandDropdown = true;
-            });
-          });
+          selectedCity = data!.propertyCity![index].name.toString();
+          selectCityName = selectedCity;
+          userStore.setUserCity(selectCityName!).then((value) =>
+              ChooseTransactionTypeScreen().launch(context, isNewTask: false));
+          // selectedCity = data!.propertyCity![index].id.toString();
+          // selectCityName = data!.propertyCity![index].name.toString();
+          // userStore.setUserCity(selectCityName!).then((value) {
+          //   setState(() {
+          //     selectedCity = data!.propertyCity![index].id.toString();
+          //     selectCityName = data!.propertyCity![index].name.toString();
+          //     showSacandDropdown = true;
+          //   });
+          // });
           // ChooseTransactionTypeScreen()
           //     .launch(context, isNewTask: false);
           // userStore.setUserCity(selectCityName!).then((value) =>

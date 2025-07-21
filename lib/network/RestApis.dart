@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:orex/models/filter_category_model.dart';
 import 'package:orex/models/get_property_developer.dart';
+import 'package:orex/models/gif_model.dart';
 import 'package:orex/screens/join_us_screen.dart';
 
 import '../extensions/extension_util/int_extensions.dart';
@@ -159,6 +160,17 @@ Future<FilterResponse> filterApi(Map request, {int? page = 1}) async {
           request: request,
           method: HttpMethod.POST))
       .then((value) => value));
+}
+
+Future<GifResponse> getGIFApi() async {
+  final response = await handleResponse(
+    await buildHttpResponse('gif', method: HttpMethod.GET),
+  );
+  if (response is Map<String, dynamic>) {
+    return GifResponse.fromJson(response);
+  } else {
+    throw Exception("Unexpected response format");
+  }
 }
 
 Future<List<FilterCategoryModel>> getFilterCategoryApi(int categoryId) async {
