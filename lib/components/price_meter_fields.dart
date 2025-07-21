@@ -33,8 +33,15 @@ Widget priceMeterFields(priceMeterList, context, {required Function setState}) {
             ),
           ),
           10.width,
-
-          // زر الإضافة (إذا كان آخر عنصر فقط)
+          Expanded(
+            child: AppTextField(
+              controller: item["type"],
+              textFieldType: TextFieldType.NAME,
+              keyboardType: TextInputType.text,
+              decoration: defaultInputDecoration(context, label: 'النوع'),
+            ),
+          ),
+          10.width,
           if (index == priceMeterList.length - 1)
             IconButton(
               icon: Icon(Icons.add_circle, color: Colors.green),
@@ -43,12 +50,12 @@ Widget priceMeterFields(priceMeterList, context, {required Function setState}) {
                   priceMeterList.add({
                     "price": TextEditingController(),
                     "area": TextEditingController(),
+                    "type": TextEditingController(),
                   });
                 });
               },
             ),
 
-          // زر الحذف (يظهر فقط إذا فيه أكثر من عنصر)
           if (priceMeterList.length > 1 && index < priceMeterList.length - 1)
             IconButton(
               icon: Icon(Icons.remove_circle, color: Colors.red),

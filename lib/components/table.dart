@@ -40,6 +40,11 @@ class CustomAreaPricesTable extends StatelessWidget {
                 child: Text('Price',
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),
+              Expanded(
+                flex: 1,
+                child:
+                    Text('type', style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
             ],
           ),
         ),
@@ -72,6 +77,11 @@ class CustomAreaPricesTable extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text('${item.price ?? 0}',
+                        style: const TextStyle(fontSize: 14)),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text('${item.type ?? ''}',
                         style: const TextStyle(fontSize: 14)),
                   ),
                 ],

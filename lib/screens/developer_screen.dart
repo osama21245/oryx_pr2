@@ -65,6 +65,7 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
     {
       "price": TextEditingController(),
       "area": TextEditingController(),
+      "type": TextEditingController(),
     },
   ];
 
@@ -162,23 +163,21 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
     multiPartRequest.fields['status'] = '1';
     multiPartRequest.fields['description'] = descriptionController.text;
 
-    // ✅ إضافة area_prices بصيغة JSON
     multiPartRequest.fields['area_prices'] = jsonEncode(
       priceMeterList
           .map((item) => {
                 'area': item['area']?.text ?? '',
                 'price': int.tryParse(item['price']?.text ?? '') ?? 0,
+                'type': item['type']?.text ?? '',
               })
           .toList(),
     );
 
-    // ✅ تحميل الصورة الرئيسية إن وجدت
     if (mainImagePath != null && !mainImagePath!.contains('https')) {
       multiPartRequest.files
           .add(await http.MultipartFile.fromPath('image', mainImagePath!));
     }
 
-    // ✅ إرسال الطلب
     multiPartRequest.headers.addAll(buildHeaderTokens());
 
     sendMultiPartRequest(

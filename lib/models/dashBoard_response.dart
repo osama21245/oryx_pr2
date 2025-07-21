@@ -506,8 +506,8 @@ class MSlider {
 class AreaPrice {
   String? area;
   int? price;
-
-  AreaPrice({this.area, this.price});
+  String? type;
+  AreaPrice({this.area, this.price, this.type});
 
   factory AreaPrice.fromJson(Map<String, dynamic> json) {
     return AreaPrice(
@@ -515,12 +515,14 @@ class AreaPrice {
       price: json['price'] is String
           ? int.tryParse(json['price']) ?? 0
           : json['price'],
+      type: json['type']?.toString(),
     );
   }
   Map<String, dynamic> toJson() {
     return {
       'area': area,
       'price': price,
+      'type': type,
     };
   }
 }
