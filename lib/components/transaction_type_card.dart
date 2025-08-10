@@ -4,22 +4,27 @@ import 'package:orex/main.dart';
 
 class TransactionTypeCard extends StatelessWidget {
   final String imagePath;
-  final String type;
+  final String? type;
   bool isSelected;
   bool isGif;
+  double? width, height, padding;
   TransactionTypeCard(
       {super.key,
       required this.isSelected,
       required this.imagePath,
-      required this.type,
+      this.type,
+      this.height,
+      this.width,
+      this.padding = 0,
       this.isGif = false});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      width: size.width * 0.9,
-      padding: EdgeInsets.symmetric(vertical: 16),
+      width: width ?? size.width * 0.9,
+      height: height,
+      padding: EdgeInsets.symmetric(vertical: padding!),
       decoration: BoxDecoration(
           border: Border.all(
             color: isSelected
@@ -41,28 +46,34 @@ class TransactionTypeCard extends StatelessWidget {
           //   ),
           // ),
           isGif
-              ? Image.network(
-                  imagePath,
-                  width: size.width * 0.5,
-                  height: size.height * 0.2,
-                  fit: BoxFit.cover,
+              ? ClipRRect(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  borderRadius: BorderRadius.circular(23),
+                  child: Image.network(
+                    imagePath,
+                    width: size.width * 0.9,
+                    height: size.height * 0.3,
+                    fit: BoxFit.cover,
+                  ),
                 )
               : Image.asset(
                   imagePath,
-                  width: size.width * 0.5,
-                  height: size.height * 0.2,
+                  width: size.width * 0.3,
+                  height: size.height * 0.09,
                 ),
-          Text(
-            type,
-            style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
-                color: isSelected
-                    ? Theme.of(context).primaryColor
-                    : appStore.isDarkModeOn
-                        ? textOnDarkMode
-                        : textOnLightMode),
-          ),
+          type != null
+              ? Text(
+                  type!,
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: isSelected
+                          ? Theme.of(context).primaryColor
+                          : appStore.isDarkModeOn
+                              ? textOnDarkMode
+                              : textOnLightMode),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );

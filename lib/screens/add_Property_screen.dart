@@ -301,7 +301,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('هل تريد الدفع والحفظ؟', style: primaryTextStyle()),
+              Text('اول ثلاث اضافات مجانا بعد ذلك', style: primaryTextStyle()),
               10.height,
               Text('سعر النشر: 200 جنية', style: secondaryTextStyle()),
             ],
@@ -421,64 +421,80 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       multiPartRequest,
       onSuccess: (dynamic data) async {
         try {
-          // Check if data is a String and needs parsing
           var jsonData = data is String ? jsonDecode(data) : data;
 
-          if (jsonData != null && jsonData['data'] != null) {
-            String paymentUrl = jsonData['data'].toString();
+          if (jsonData != null && jsonData['status'] == true) {
+            final dynamic responseData = jsonData['data'];
 
-            // Navigate to WebView for payment
-            final paymentResult = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => WebViewScreenPay(uri: paymentUrl),
-              ),
-            );
+            // الحالة 1: رابط دفع
+            if (responseData is String && responseData.startsWith('http')) {
+              final paymentResult = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WebViewScreenPay(uri: responseData),
+                ),
+              );
 
-            // Handle payment result
-            if (paymentResult != null) {
-              try {
-                final Map<String, dynamic> result =
-                    Map<String, dynamic>.from(paymentResult);
+              if (paymentResult != null) {
+                try {
+                  final Map<String, dynamic> result =
+                      Map<String, dynamic>.from(paymentResult);
+                  print('✅ status: ${result['status']}');
 
-                print(
-                    '✅ status: ${result['status']} type: ${result['status'].runtimeType}');
-
-                if (result['status'] == true ||
-                    result['status'].toString().toLowerCase() == 'true') {
-                  // Success
-                  final res = EPropertyBaseResponse.fromJson(result);
-                  toast(res.message.toString());
-                  SuccessPropertyScreen(propertyId: res.propertyId)
-                      .launch(context);
+                  if (result['status'] == true ||
+                      result['status'].toString().toLowerCase() == 'true') {
+                    final res = EPropertyBaseResponse.fromJson(result);
+                    toast(res.message.toString());
+                    SuccessPropertyScreen(propertyId: res.propertyId)
+                        .launch(context);
+                  } else {
+                    toast('❌ الدفع فشل: ${result['message']}');
+                    finish(context, true);
+                  }
                   appStore.addPropertyIndex = 0;
-                } else {
-                  toast('❌ الدفع فشل: ${result['message']}');
-                  appStore.addPropertyIndex = 0;
-                  finish(context, true);
+                } catch (e) {
+                  toast('⚠️ خطأ أثناء معالجة الدفع: $e');
                 }
-              } catch (e) {
-                toast('⚠️ خطأ أثناء معالجة الدفع: $e');
               }
             }
+
+            // الحالة 2: تم الدفع بالفعل وجاء الرد النهائي
+            else {
+              final result = Map<String, dynamic>.from(jsonData);
+              if (result['status'] == true ||
+                  result['status'].toString().toLowerCase() == 'true') {
+                final res = EPropertyBaseResponse.fromJson(result);
+                toast(res.message.toString());
+                SuccessPropertyScreen(propertyId: res.propertyId)
+                    .launch(context);
+              } else {
+                toast('❌ الدفع فشل: ${result['message']}');
+                finish(context, true);
+              }
+              appStore.addPropertyIndex = 0;
+            }
+            // else {
+            //   toast('⚠️ استجابة غير متوقعة من السيرفر');
+            // }
           } else {
-            toast('Invalid payment URL received');
+            toast('❌ فشل العملية: ${jsonData['message'] ?? "لا يوجد رسالة"}');
           }
         } catch (e) {
           print('Error processing payment: $e');
-          toast('Error processing payment');
+          toast('⚠️ خطأ أثناء معالجة الرد من السيرفر');
         }
+
         isAmenityIsEmpty = false;
       },
       onError: (error) {
         print("Error is $error");
-        log(multiPartRequest.toString());
         toast(error.toString());
       },
     ).catchError((e) {
       print("Error issssss " + e.toString());
       toast(e.toString());
     }).whenComplete(() => appStore.setLoading(false));
+
     // } else {
     // isAmenityIsEmpty = false;
     // toast(language.addRequiredAmenityMessage);

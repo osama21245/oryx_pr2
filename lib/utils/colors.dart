@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const primaryColor = Color(0xFFd10e0e);
 
 //Other Color
+const textColorDark = Colors.white;
 const primaryLight = Color(0xFFCAD8EC);
 const primaryExtraLight = Color(0xFFF8FAFD);
 const primaryVariant = Color(0xFFDFE7F4);

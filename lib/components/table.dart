@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:orex/extensions/colors.dart';
+import 'package:orex/main.dart';
 import 'package:orex/models/dashBoard_response.dart';
+import 'package:orex/utils/colors.dart';
 
 class CustomAreaPricesTable extends StatelessWidget {
   final List<AreaPrice> areaPrices;
@@ -23,13 +26,17 @@ class CustomAreaPricesTable extends StatelessWidget {
         // Table headers
         Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          color: Colors.grey.shade300,
+          color: appStore.isDarkModeOn ? darkGrayColor : Colors.grey.shade300,
           child: Row(
             children: [
               Expanded(
                 flex: 1,
-                child:
-                    Text('Area', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Area',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: appStore.isDarkModeOn
+                            ? textOnDarkMode
+                            : textOnLightMode)),
               ),
               // VerticalDivider(
               //   width: 1,
@@ -38,12 +45,20 @@ class CustomAreaPricesTable extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Text('Price',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: appStore.isDarkModeOn
+                            ? textOnDarkMode
+                            : textOnLightMode)),
               ),
               Expanded(
                 flex: 1,
-                child:
-                    Text('type', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('type',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: appStore.isDarkModeOn
+                            ? textOnDarkMode
+                            : textOnLightMode)),
               ),
             ],
           ),
@@ -66,7 +81,11 @@ class CustomAreaPricesTable extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text('${item.area} M',
-                        style: const TextStyle(fontSize: 14)),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: appStore.isDarkModeOn
+                                ? textOnDarkMode
+                                : textOnLightMode)),
                   ),
                   // Container(
                   //   width: 1,
@@ -77,12 +96,20 @@ class CustomAreaPricesTable extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text('${item.price ?? 0}',
-                        style: const TextStyle(fontSize: 14)),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: appStore.isDarkModeOn
+                                ? textOnDarkMode
+                                : textOnLightMode)),
                   ),
                   Expanded(
                     flex: 1,
                     child: Text('${item.type ?? ''}',
-                        style: const TextStyle(fontSize: 14)),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: appStore.isDarkModeOn
+                                ? textOnDarkMode
+                                : textOnLightMode)),
                   ),
                 ],
               ),

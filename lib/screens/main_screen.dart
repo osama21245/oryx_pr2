@@ -39,6 +39,7 @@ class _MainScreenState extends State<MainScreen> {
   bool showCategoryDropdown = false;
 
   String? selectedCity;
+  String? selectedCityId;
   String? selectCityName;
   String? selectedCategoryId;
   String? selectedCategoryName;
@@ -146,7 +147,11 @@ class _MainScreenState extends State<MainScreen> {
                 fit: BoxFit.cover,
               ).cornerRadiusWithClipRRect(24)),
               Text(data!.propertyCity![index].name.toString(),
-                      style: primaryTextStyle(color: primaryColor, size: 16))
+                      style: primaryTextStyle(
+                          color: appStore.isDarkModeOn
+                              ? textColorDark
+                              : primaryColor,
+                          size: 16))
                   .paddingBottom(8)
             ],
           ),
@@ -193,12 +198,80 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  // Widget _buildFirstDropdown() {
+  //   if (data?.propertyCity?.isNotEmpty ?? false) {
+  //     return Padding(
+  //       padding: const EdgeInsets.all(16.0),
+  //       child: DropdownButtonFormField<String>(
+  //         value: selectedCity,
+  //         decoration: InputDecoration(
+  //           labelText: language.selectCity,
+  //           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+  //         ),
+  //         items: data!.propertyCity!
+  //             .map((city) => DropdownMenuItem<String>(
+  //                   value: city.id.toString(),
+  //                   child: Row(
+  //                     children: [
+  //                       ClipRRect(
+  //                         borderRadius: BorderRadius.circular(12),
+  //                         child: cachedImage(
+  //                           (city.images != null && city.images!.isNotEmpty)
+  //                               ? city.images!
+  //                               : 'https://via.placeholder.com/32',
+  //                           width: 32,
+  //                           height: 32,
+  //                           fit: BoxFit.cover,
+  //                         ),
+  //                       ),
+  //                       SizedBox(width: 12),
+  //                       Text(
+  //                         city.name ?? '',
+  //                         style: TextStyle(
+  //                             color: appStore.isDarkModeOn
+  //                                 ? textOnDarkMode
+  //                                 : textOnLightMode),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ))
+  //             .toList(),
+  //         onChanged: (value) {
+  //           setState(() {
+  //             selectedCity = value;
+  //             // Find the city name by id
+  //             selectCityName = data!.propertyCity!
+  //                 .firstWhere((city) => city.id.toString() == value)
+  //                 .name;
+  //           });
+  //           userStore.setUserCity(selectCityName!).then((_) {
+  //             setState(() {
+  //               showSacandDropdown = true;
+  //               // showCategoryDropdown = true;
+  //             });
+  //             // ChooseTransactionTypeScreen().launch(context, isNewTask: false);
+  //           });
+  //         },
+  //       ),
+  //     );
+  //   } else {
+  //     return SizedBox.shrink();
+  //   }
+  // }
+
   Widget _buildFirstDropdown() {
     if (data?.propertyCity?.isNotEmpty ?? false) {
+      // لو القيمة الحالية مش موجودة في القائمة، خليها null
+      if (selectedCityId != null &&
+          !data!.propertyCity!
+              .any((city) => city.id.toString() == selectedCityId)) {
+        selectedCityId = null;
+      }
+
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: DropdownButtonFormField<String>(
-          value: selectedCity,
+          value: selectedCityId,
           decoration: InputDecoration(
             labelText: language.selectCity,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -220,15 +293,21 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                         SizedBox(width: 12),
-                        Text(city.name ?? ''),
+                        Text(
+                          city.name ?? '',
+                          style: TextStyle(
+                            color: appStore.isDarkModeOn
+                                ? textOnDarkMode
+                                : textOnLightMode,
+                          ),
+                        ),
                       ],
                     ),
                   ))
               .toList(),
           onChanged: (value) {
             setState(() {
-              selectedCity = value;
-              // Find the city name by id
+              selectedCityId = value;
               selectCityName = data!.propertyCity!
                   .firstWhere((city) => city.id.toString() == value)
                   .name;
@@ -236,9 +315,7 @@ class _MainScreenState extends State<MainScreen> {
             userStore.setUserCity(selectCityName!).then((_) {
               setState(() {
                 showSacandDropdown = true;
-                // showCategoryDropdown = true;
               });
-              // ChooseTransactionTypeScreen().launch(context, isNewTask: false);
             });
           },
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orex/components/table.dart';
+import 'package:orex/extensions/colors.dart';
 import '../components/HtmlWidget.dart';
 import '../extensions/decorations.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -52,7 +53,9 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
             Container(
                 padding: EdgeInsets.all(16),
                 decoration: boxDecorationWithRoundedCorners(
-                    borderRadius: radius(12), backgroundColor: primaryVariant),
+                    borderRadius: radius(12),
+                    backgroundColor:
+                        appStore.isDarkModeOn ? darkGrayColor : primaryVariant),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -60,7 +63,10 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(language.tapToView,
-                            style: primaryTextStyle(color: Colors.black)),
+                            style: primaryTextStyle(
+                                color: appStore.isDarkModeOn
+                                    ? textOnDarkMode
+                                    : textOnLightMode)),
                         10.height,
                         CustomAreaPricesTable(
                           areaPrices: widget.slider.areaPrices!,
@@ -75,11 +81,17 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                         ),
                         10.height,
                         Text(language.description,
-                            style: primaryTextStyle(color: Colors.black)),
+                            style: primaryTextStyle(
+                                color: appStore.isDarkModeOn
+                                    ? textOnDarkMode
+                                    : textOnLightMode)),
                         4.height,
                         Text(widget.slider.description.validate(),
-                            style:
-                                boldTextStyle(size: 18, color: Colors.black)),
+                            style: boldTextStyle(
+                                size: 18,
+                                color: appStore.isDarkModeOn
+                                    ? textOnDarkMode
+                                    : textOnLightMode)),
                       ],
                     ).expand(),
                     // Image.asset(ic_forward_arrow,

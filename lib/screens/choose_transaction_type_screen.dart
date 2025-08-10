@@ -81,9 +81,11 @@ class _ChooseTransactionTypeDropdownState
                   child: Text(
                     type.label,
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: appStore.isDarkModeOn
+                            ? textOnDarkMode
+                            : textOnLightMode),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -215,7 +217,8 @@ class _ChooseTransactionTypeScreenState
                         TransactionTypeCard(
                           isSelected: false,
                           imagePath: gifUrl,
-                          type: '',
+                          padding: 0,
+                          // type: '',
                           isGif: true,
                         ),
                         const SizedBox(
@@ -232,6 +235,7 @@ class _ChooseTransactionTypeScreenState
                             ).launch(context, isNewTask: false);
                           },
                           child: TransactionTypeCard(
+                              // height: size.height * .2,
                               isSelected: isSale,
                               imagePath: ic_sale,
                               type: 'بيع'),
@@ -264,7 +268,7 @@ class _ChooseTransactionTypeScreenState
                               color: Theme.of(context)
                                   .disabledColor
                                   .withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(23)),
                           child: Text(
                             "مساحة اعلانية",
                             textAlign: TextAlign.center,
