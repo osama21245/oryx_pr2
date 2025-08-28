@@ -1,4 +1,4 @@
-package com.example.orex
+package com.oryxinvestmentsegypt.orex
 
 import io.flutter.embedding.android.FlutterActivity
 

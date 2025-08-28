@@ -16,6 +16,7 @@ class JoinUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: appStore.isDarkModeOn ? Colors.black : Colors.white,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,7 +29,7 @@ class JoinUsScreen extends StatelessWidget {
             Text(
               'سجل الان',
               style: TextStyle(
-                  color: Colors.black,
+                  color: appStore.isDarkModeOn ? Colors.white : Colors.black,
                   fontSize: 32,
                   fontWeight: FontWeight.w700),
             ),

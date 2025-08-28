@@ -84,59 +84,138 @@ class _OTPScreenState extends State<OTPScreen> {
     });
   }
 
+  // Future<void> submit() async {
+  //   hideKeyboard(context);
+  //   await appStore.setLoading(true);
+  //   AuthCredential credential = PhoneAuthProvider.credential(
+  //       verificationId: widget.verificationId!, smsCode: otpCode);
+  //   await FirebaseAuth.instance
+  //       .signInWithCredential(credential)
+  //       .then((result) async {
+  //     Map req = {
+  //       "username": widget.phoneNumber!.replaceAll('+', ''),
+  //       "login_type": LoginTypeOTP,
+  //       // "user_type": LoginUser,
+  //       "accessToken": widget.phoneNumber!.replaceAll('+', ''),
+  //       "contact_number": widget.phoneNumber,
+  //       'player_id': getStringAsync(PLAYER_ID).validate(),
+  //     };
+  //     await otpLogInApi(req).then((value) async {
+  //       await setValue(IS_OTP, true);
+  //       userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
+  //       appStore.setLoading(false);
+
+  //       if (value.isUserExist == false) {
+  //         finish(context);
+  //         SignUpScreen(phoneNumber: widget.phoneNumber!.replaceAll('+', ''))
+  //             .launch(context);
+  //       } else {
+  //         await appStore.setLogin(true);
+  //         setValue(TOKEN, value.data!.apiToken.validate());
+  //         userStore.setToken(value.data!.apiToken.validate());
+  //         await getUSerDetail(context, value.data!.id.validate())
+  //             .whenComplete(() {
+  //           // MainScreen().launch(context, isNewTask: true);
+  //           DashboardScreen().launch(context, isNewTask: true);
+  //         });
+  //       }
+  //     }).catchError((e) async {
+  //       print("Into otp Screen Error?");
+  //       await appStore.setLoading(false);
+  //       if (e.toString().contains('invalid_username')) {
+  //         finish(context);
+  //         SignUpScreen(phoneNumber: widget.phoneNumber!.replaceAll('+', ''))
+  //             .launch(context);
+  //       } else {
+  //         if (e.toString().contains('OTP is invalid'))
+  //           toast(language.invalidOtp);
+  //       }
+  //     });
+  //   }).catchError((e) async {
+  //     log("error->" + e.toString());
+  //     toast(e.toString());
+  //     await appStore.setLoading(false);
+  //     setState(() {});
+  //   });
+  // }
+
   Future<void> submit() async {
     hideKeyboard(context);
     await appStore.setLoading(true);
+
     AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId!, smsCode: otpCode);
-    await FirebaseAuth.instance
-        .signInWithCredential(credential)
-        .then((result) async {
+      verificationId: widget.verificationId!,
+      smsCode: otpCode,
+    );
+
+    try {
+      // أول خطوة: التحقق من الكود مع Firebase
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // ثاني خطوة: التحقق من المستخدم مع الـ API
       Map req = {
         "username": widget.phoneNumber!.replaceAll('+', ''),
         "login_type": LoginTypeOTP,
-        // "user_type": LoginUser,
         "accessToken": widget.phoneNumber!.replaceAll('+', ''),
         "contact_number": widget.phoneNumber,
         'player_id': getStringAsync(PLAYER_ID).validate(),
       };
-      await otpLogInApi(req).then((value) async {
+
+      try {
+        var value = await otpLogInApi(req);
+
         await setValue(IS_OTP, true);
         userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
         appStore.setLoading(false);
 
         if (value.isUserExist == false) {
+          // المستخدم مش موجود → افتح SignUp
           finish(context);
-          SignUpScreen(phoneNumber: widget.phoneNumber!.replaceAll('+', ''))
-              .launch(context);
+          SignUpScreen(
+            phoneNumber: widget.phoneNumber!.replaceAll('+', ''),
+          ).launch(context);
         } else {
+          // المستخدم موجود → سجل دخوله
           await appStore.setLogin(true);
           setValue(TOKEN, value.data!.apiToken.validate());
           userStore.setToken(value.data!.apiToken.validate());
+
           await getUSerDetail(context, value.data!.id.validate())
               .whenComplete(() {
-            // MainScreen().launch(context, isNewTask: true);
             DashboardScreen().launch(context, isNewTask: true);
           });
         }
-      }).catchError((e) async {
-        print("Into otp Screen Error?");
+      } catch (e) {
         await appStore.setLoading(false);
-        if (e.toString().contains('invalid_username')) {
+        final errorMessage = e.toString().toLowerCase();
+
+        if (errorMessage.contains('invalid_username')) {
           finish(context);
-          SignUpScreen(phoneNumber: widget.phoneNumber!.replaceAll('+', ''))
-              .launch(context);
+          SignUpScreen(
+            phoneNumber: widget.phoneNumber!.replaceAll('+', ''),
+          ).launch(context);
+        } else if (errorMessage.contains('otp is invalid')) {
+          toast(language.invalidOtp);
         } else {
-          if (e.toString().contains('OTP is invalid'))
-            toast(language.invalidOtp);
+          toast('حدث خطأ: $e');
         }
-      });
-    }).catchError((e) async {
+      }
+    } catch (e) {
+      // هنا أخطاء FirebaseAuth (الكود غلط، انتهت الصلاحية، إلخ)
       log("error->" + e.toString());
-      toast(e.toString());
       await appStore.setLoading(false);
+
+      final err = e.toString().toLowerCase();
+      if (err.contains('invalid-verification-code')) {
+        toast('الكود غير صحيح');
+      } else if (err.contains('session-expired')) {
+        toast('انتهت صلاحية الكود، حاول مرة أخرى');
+      } else {
+        toast('حدث خطأ أثناء التحقق من الكود');
+      }
+
       setState(() {});
-    });
+    }
   }
 
   void init() async {

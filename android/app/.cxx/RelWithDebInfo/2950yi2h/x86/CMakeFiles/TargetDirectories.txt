@@ -1,0 +1,2 @@
+E:/Fassla/oryx/android/app/.cxx/RelWithDebInfo/2950yi2h/x86/CMakeFiles/edit_cache.dir
+E:/Fassla/oryx/android/app/.cxx/RelWithDebInfo/2950yi2h/x86/CMakeFiles/rebuild_cache.dir

@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.orex"
+    namespace = "com.oryxinvestmentsegypt.orex"
     compileSdk 35
     ndkVersion = flutter.ndkVersion
 
@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.orex"
+        applicationId = "com.oryxinvestmentsegypt.orex"
          minSdkVersion 24
         targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
@@ -63,10 +63,10 @@ android {
         }
         if (keystorePropertiesFile.exists()) {
             release {
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['MY_KEY_ALIAS']
+                keyPassword keystoreProperties['MY_KEY_PASSWORD']
+                storeFile keystoreProperties['MY_STORE_FILE'] ? file(keystoreProperties['MY_STORE_FILE']) : null
+                storePassword keystoreProperties['MY_STORE_PASSWORD']
             }
         }
     }

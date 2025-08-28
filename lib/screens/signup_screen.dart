@@ -41,7 +41,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   FocusNode lastNameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
 
-
   @override
   void initState() {
     phoneController.text = widget.phoneNumber!;
@@ -57,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         "first_name": firstNameController.text,
         "last_name": lastNameController.text,
         "username": phoneController.text,
-        // "email": emailController.text,
+        "email": 'user@gmail.com',
         "password": getStringAsync(FIREBASE_USER_ID),
         "user_type": LoginUser,
         "login_type": LoginTypeOTP,
@@ -73,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         userStore.setToken(res.data!.apiToken.validate());
         setValue(EMAIL, res.data!.email.validate());
         setValue(USER_CONTACT_NUMBER, phoneController.text);
-        DashboardScreen().launch(context,isNewTask: true);
+        DashboardScreen().launch(context, isNewTask: true);
       }).catchError((e) {
         appStore.setLoading(false);
         toast(e.toString());
@@ -83,14 +82,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: appStore.isDarkModeOn ? Brightness.light : Brightness.light,
-        systemNavigationBarIconBrightness: appStore.isDarkModeOn ? Brightness.light : Brightness.light,
+        statusBarIconBrightness:
+            appStore.isDarkModeOn ? Brightness.light : Brightness.light,
+        systemNavigationBarIconBrightness:
+            appStore.isDarkModeOn ? Brightness.light : Brightness.light,
       ),
       child: Scaffold(
         body: Stack(
@@ -103,9 +103,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text(language.signUp, style: boldTextStyle(size: 20)).center(),
+                    Text(language.signUp, style: boldTextStyle(size: 20))
+                        .center(),
                     20.height,
-                    Image.asset(ic_sign_up, height: context.height() * 0.3, width: context.width(), fit: BoxFit.cover).paddingSymmetric(horizontal: 20),
+                    Image.asset(ic_sign_up,
+                            height: context.height() * 0.3,
+                            width: context.width(),
+                            fit: BoxFit.cover)
+                        .paddingSymmetric(horizontal: 20),
                     40.height,
                     Text(language.firstName + ":", style: primaryTextStyle()),
                     10.height,
@@ -115,7 +120,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       isValidationRequired: true,
                       focus: firstNameFocus,
                       nextFocus: lastNameFocus,
-                      decoration: defaultInputDecoration(context, label: language.enterFirstName),
+                      decoration: defaultInputDecoration(context,
+                          label: language.enterFirstName),
                     ),
                     20.height,
                     Text(language.lastName + ":", style: primaryTextStyle()),
@@ -126,11 +132,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       isValidationRequired: true,
                       focus: lastNameFocus,
                       nextFocus: emailFocus,
-                      decoration: defaultInputDecoration(context, label: language.enterLastName),
+                      decoration: defaultInputDecoration(context,
+                          label: language.enterLastName),
                     ),
                     20.height,
-                    Text(language.email + ":", style: primaryTextStyle()),
-                    10.height,
+                    // Text(language.email + ":", style: primaryTextStyle()),
+                    // 10.height,
                     // AppTextField(
                     //   controller: emailController,
                     //   textFieldType: TextFieldType.EMAIL,
@@ -160,23 +167,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(language.alreadyHaveAccount, style: primaryTextStyle(color: darkGrayTextColor)),
+                        Text(language.alreadyHaveAccount,
+                            style: primaryTextStyle(color: darkGrayTextColor)),
                         5.width,
-                        Text(language.signIn, style: boldTextStyle(color: primaryColor, size: 16)).onTap(() {
+                        Text(language.signIn,
+                                style: boldTextStyle(
+                                    color: primaryColor, size: 16))
+                            .onTap(() {
                           LoginScreen().launch(context);
                         })
                       ],
                     ),
                     20.height,
                   ],
-                ).paddingSymmetric(horizontal: 16).paddingOnly(top: context.statusBarHeight + 16),
+                )
+                    .paddingSymmetric(horizontal: 16)
+                    .paddingOnly(top: context.statusBarHeight + 16),
               ),
             ),
-            Observer(
-              builder: (context) {
-                return Loader().center().visible(appStore.isLoading);
-              }
-            )
+            Observer(builder: (context) {
+              return Loader().center().visible(appStore.isLoading);
+            })
           ],
         ),
       ),

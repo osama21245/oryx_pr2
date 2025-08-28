@@ -192,119 +192,193 @@ class _ChooseTransactionTypeScreenState
     print('dataaaaaaaaa:${data!.slider!.length}');
     return Observer(builder: (context) {
       return Scaffold(
-          appBar: AppBar(
-            leading: Image.asset(
-              ic_logo,
-              height: 40,
-              width:
-                  40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */
-            ).paddingOnly(left: 16, top: 8, bottom: 8),
-            title: Text("اختار نوع المعاملة"),
-            centerTitle: true,
-          ),
-          body: appStore.isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: context.primaryColor,
-                  ),
-                )
-              : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TransactionTypeCard(
-                          isSelected: false,
-                          imagePath: gifUrl,
-                          padding: 0,
-                          // type: '',
-                          isGif: true,
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            iWantToSale();
-                            selectedTransactionTypeId =
-                                1; // Assuming 1 is the ID for Sale
-                            DashboardScreen(
-                              transactionType: selectedTransactionTypeId,
-                              isSplash: false,
-                            ).launch(context, isNewTask: false);
-                          },
-                          child: TransactionTypeCard(
-                              // height: size.height * .2,
-                              isSelected: isSale,
-                              imagePath: ic_sale,
-                              type: 'بيع'),
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            iWantToRent();
-                            selectedTransactionTypeId =
-                                0; // Assuming 0 is the ID for Rent
-                            DashboardScreen(
-                              transactionType: selectedTransactionTypeId,
-                              isSplash: false,
-                            ).launch(context, isNewTask: true);
-                          },
-                          child: TransactionTypeCard(
-                              isSelected: isRent,
-                              imagePath: ic_rent,
-                              type: 'ايجار'),
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Container(
-                          width: size.width * 0.9,
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .disabledColor
-                                  .withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(23)),
-                          child: Text(
-                            "مساحة اعلانية",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 24,
-                              fontFamily: 'Cairo',
-                              color: appStore.isDarkModeOn
-                                  ? textOnDarkMode
-                                  : textOnLightMode,
-                            ),
-                          ).paddingOnly(top: 16, bottom: 16),
-                        ),
-                      ],
+        appBar: AppBar(
+          leading: Image.asset(
+            ic_logo,
+            height: 40,
+            width:
+                40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */
+          ).paddingOnly(left: 16, top: 8, bottom: 8),
+          title: Text("اختار نوع المعاملة"),
+          centerTitle: true,
+        ),
+        // body: appStore.isLoading
+        //     ? Center(
+        //         child: CircularProgressIndicator(
+        //           color: context.primaryColor,
+        //         ),
+        //       )
+        //     : SingleChildScrollView(
+        //         child: Padding(
+        //           padding: const EdgeInsets.all(24.0),
+        //           child: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.center,
+        //             children: [
+        //               TransactionTypeCard(
+        //                 isSelected: false,
+        //                 imagePath: gifUrl,
+        //                 padding: 0,
+        //                 // type: '',
+        //                 isGif: true,
+        //               ),
+        //               const SizedBox(
+        //                 height: 24,
+        //               ),
+        //               GestureDetector(
+        //                 onTap: () {
+        //                   iWantToSale();
+        //                   selectedTransactionTypeId =
+        //                       1; // Assuming 1 is the ID for Sale
+        //                   DashboardScreen(
+        //                     transactionType: selectedTransactionTypeId,
+        //                     isSplash: false,
+        //                   ).launch(context, isNewTask: false);
+        //                 },
+        //                 child: TransactionTypeCard(
+        //                     // height: size.height * .2,
+        //                     isSelected: isSale,
+        //                     imagePath: ic_sale,
+        //                     type: 'بيع'),
+        //               ),
+        //               const SizedBox(
+        //                 height: 24,
+        //               ),
+        //               GestureDetector(
+        //                 onTap: () {
+        //                   iWantToRent();
+        //                   selectedTransactionTypeId =
+        //                       0; // Assuming 0 is the ID for Rent
+        //                   DashboardScreen(
+        //                     transactionType: selectedTransactionTypeId,
+        //                     isSplash: false,
+        //                   ).launch(context, isNewTask: true);
+        //                 },
+        //                 child: TransactionTypeCard(
+        //                     isSelected: isRent,
+        //                     imagePath: ic_rent,
+        //                     type: 'ايجار'),
+        //               ),
+        //               const SizedBox(
+        //                 height: 24,
+        //               ),
+        //               Container(
+        //                 width: size.width * 0.9,
+        //                 padding: EdgeInsets.symmetric(vertical: 16),
+        //                 decoration: BoxDecoration(
+        //                     color: Theme.of(context)
+        //                         .disabledColor
+        //                         .withOpacity(0.1),
+        //                     borderRadius: BorderRadius.circular(23)),
+        //                 child: Text(
+        //                   "مساحة اعلانية",
+        //                   textAlign: TextAlign.center,
+        //                   style: TextStyle(
+        //                     fontWeight: FontWeight.w700,
+        //                     fontSize: 24,
+        //                     fontFamily: 'Cairo',
+        //                     color: appStore.isDarkModeOn
+        //                         ? textOnDarkMode
+        //                         : textOnLightMode,
+        //                   ),
+        //                 ).paddingOnly(top: 16, bottom: 16),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       )
+        // bottomNavigationBar: Padding(
+        //   padding: const EdgeInsets.all(16),
+        //   child: ElevatedButton(
+        //     onPressed: selectedTransactionTypeId != null
+        //         ? () {
+        //             // Navigate to the next screen with the selected transaction type
+        //             log("Selected Transaction Type ID: $selectedTransactionTypeId");
+        //           }
+        //         : null,
+        //     child: Text("Continue"),
+        //     style: ElevatedButton.styleFrom(
+        //       // primary: Theme.of(context).primaryColor,
+        //       // onPrimary: Theme.of(context).cardColor,
+        //       padding: EdgeInsets.symmetric(vertical: 16),
+        //       textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        //     ),
+        //   ),
+        // ),
+        body: appStore.isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: context.primaryColor,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center, // وسط الشاشة
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TransactionTypeCard(
+                      isSelected: false,
+                      imagePath: gifUrl,
+                      padding: 0,
+                      isGif: true,
                     ),
-                  ),
-                )
-          // bottomNavigationBar: Padding(
-          //   padding: const EdgeInsets.all(16),
-          //   child: ElevatedButton(
-          //     onPressed: selectedTransactionTypeId != null
-          //         ? () {
-          //             // Navigate to the next screen with the selected transaction type
-          //             log("Selected Transaction Type ID: $selectedTransactionTypeId");
-          //           }
-          //         : null,
-          //     child: Text("Continue"),
-          //     style: ElevatedButton.styleFrom(
-          //       // primary: Theme.of(context).primaryColor,
-          //       // onPrimary: Theme.of(context).cardColor,
-          //       padding: EdgeInsets.symmetric(vertical: 16),
-          //       textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          //     ),
-          //   ),
-          // ),
-          );
+                    const SizedBox(height: 24),
+                    GestureDetector(
+                      onTap: () {
+                        iWantToSale();
+                        selectedTransactionTypeId = 1;
+                        DashboardScreen(
+                          transactionType: selectedTransactionTypeId,
+                          isSplash: false,
+                        ).launch(context, isNewTask: false);
+                      },
+                      child: TransactionTypeCard(
+                        isSelected: isSale,
+                        imagePath: ic_sale,
+                        type: 'بيع',
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    GestureDetector(
+                      onTap: () {
+                        iWantToRent();
+                        selectedTransactionTypeId = 0;
+                        DashboardScreen(
+                          transactionType: selectedTransactionTypeId,
+                          isSplash: false,
+                        ).launch(context, isNewTask: true);
+                      },
+                      child: TransactionTypeCard(
+                        isSelected: isRent,
+                        imagePath: ic_rent,
+                        type: 'ايجار',
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).disabledColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(23),
+                      ),
+                      child: Text(
+                        "مساحة اعلانية",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24,
+                          fontFamily: 'Cairo',
+                          color: appStore.isDarkModeOn
+                              ? textOnDarkMode
+                              : textOnLightMode,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+      );
     });
   }
 }
