@@ -7,47 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:521631638082:android:91ab4da19835e4944103db",
-        "android_client_info": {
-          "package_name": "com.example.orex"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBhKr_QRdhUA-FznJfOgtUvJQDKwHJnPQk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:521631638082:android:f6e5b7380ad98c044103db",
+        "mobilesdk_app_id": "1:521631638082:android:101d1b5159284fd64103db",
         "android_client_info": {
           "package_name": "com.oryxinvestmentsegypt.orex"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBhKr_QRdhUA-FznJfOgtUvJQDKwHJnPQk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:521631638082:android:5009e846e4ba4c174103db",
-        "android_client_info": {
-          "package_name": "oryxinvestmentsegypt.orex"
         }
       },
       "oauth_client": [],
