@@ -38,15 +38,25 @@ class LanguageJsonData {
   String? createdAt;
   String? updatedAt;
 
-  LanguageJsonData({this.id, this.languageName, this.isRtl, this.contentData, this.isDefaultLanguage, this.createdAt, this.updatedAt, this.languageCode, this.countryCode});
+  LanguageJsonData(
+      {this.id,
+      this.languageName,
+      this.isRtl,
+      this.contentData,
+      this.isDefaultLanguage,
+      this.createdAt,
+      this.updatedAt,
+      this.languageCode,
+      this.countryCode});
 
   LanguageJsonData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = _toInt(json['id']);
     languageName = json['language_name'];
-    isDefaultLanguage = json['id_default_language'];
+    isDefaultLanguage = _toInt(json['id_default_language']);
     languageCode = json['language_code'];
     countryCode = json['country_code'];
-    isRtl = json['is_rtl'];
+    isRtl = _toInt(json['is_rtl']);
+
     if (json['contentdata'] != null) {
       contentData = <ContentData>[];
       json['contentdata'].forEach((v) {
@@ -71,6 +81,12 @@ class LanguageJsonData {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
+  }
+
+  int? _toInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    return int.tryParse(value.toString()) ?? 0;
   }
 }
 

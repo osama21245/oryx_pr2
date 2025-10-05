@@ -54,6 +54,7 @@ class _MainScreenState extends State<MainScreen> {
       "player_id": getStringAsync(PLAYER_ID)
     }).then((value) {
       data = value;
+
       userStore.setMinPrice(data!.filterConfiguration!.minPrice.toString());
       userStore.setMaxPrice(data!.filterConfiguration!.maxPrice.toString());
 

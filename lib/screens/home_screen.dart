@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   List<String> myList = [];
   List<String> bhkList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-  
+
 
   String? selectedCity;
   String? selectCityName;
@@ -160,7 +160,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   Future<void> getData() async {
     appStore.setLoading(true);
-    await getDashBoardData({"latitude": userStore.latitude, "longitude": userStore.longitude, "city": userStore.cityName, "player_id": getStringAsync(PLAYER_ID)}).then((value) {
+    await getDashBoardData({"latitude": userStore.latitude,
+    "longitude": userStore.longitude, "city": userStore.cityName,
+     "player_id": getStringAsync(PLAYER_ID)}).then((value) {
       data = value;
       userStore.setMinPrice(data!.filterConfiguration!.minPrice.toString());
       userStore.setMaxPrice(data!.filterConfiguration!.maxPrice.toString());
@@ -254,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ).paddingOnly(bottom: 30),
                 )
               : NoDataScreen(mTitle: language.resultNotFound).visible(data != null && !appStore.isLoading),
-        
+
           Loader().center().visible(appStore.isLoading && (userStore.latitude.isNotEmpty && userStore.longitude.isNotEmpty && userStore.cityName.isNotEmpty))
         ],
       ),

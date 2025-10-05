@@ -73,6 +73,7 @@ Future<Response> buildHttpResponse(String endPoint,
 
       return response;
     } catch (e) {
+      print("HTTP Error: $e");
       throw 'somethingWentWrong ${e.toString()}';
     }
   } else {

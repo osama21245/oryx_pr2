@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:orex/extensions/shared_pref.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -64,12 +65,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future getImage() async {
-    image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 100);
+    image = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 100);
     setState(() {});
   }
 
   Future getImageFromCamera() async {
-    image = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 100);
+    image = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 100);
     if (image != null) {
       setState(() {});
     }
@@ -79,17 +82,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     hideKeyboard(context);
     appStore.setLoading(true);
 
-    MultipartRequest multiPartRequest = await getMultiPartRequest('update-profile');
+    MultipartRequest multiPartRequest =
+        await getMultiPartRequest('update-profile');
     multiPartRequest.fields['id'] = userStore.userId.toString();
     multiPartRequest.fields['first_name'] = fNameController.text;
     multiPartRequest.fields['last_name'] = lNameController.text;
-    multiPartRequest.fields['display_name'] = fNameController.text + " " + lNameController.text;
+    multiPartRequest.fields['display_name'] =
+        fNameController.text + " " + lNameController.text;
     multiPartRequest.fields['email'] = emailController.text;
-    multiPartRequest.fields['username'] = userStore.phoneNo.replaceAll('+', '');
+    // multiPartRequest.fields['username'] = userStore.phoneNo.replaceAll('+', '');
     multiPartRequest.fields['contact_number'] = userStore.phoneNo;
+    print("==============${userStore.userId.toString()}===========");
 
     if (image != null) {
-      multiPartRequest.files.add(await MultipartFile.fromPath('profile_image', image!.path.toString()));
+      multiPartRequest.files.add(await MultipartFile.fromPath(
+          'profile_image', image!.path.toString()));
     }
 
     multiPartRequest.headers.addAll(buildHeaderTokens());
@@ -125,20 +132,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (image != null) {
       return Container(
         padding: EdgeInsets.all(1),
-        decoration: boxDecorationWithRoundedCorners(boxShape: BoxShape.circle, border: Border.all(width: 2, color: primaryColor.withOpacity(0.5))),
-        child: Image.file(File(image!.path), height: 100, width: 100, fit: BoxFit.cover).cornerRadiusWithClipRRect(65),
+        decoration: boxDecorationWithRoundedCorners(
+            boxShape: BoxShape.circle,
+            border: Border.all(width: 2, color: primaryColor.withOpacity(0.5))),
+        child: Image.file(File(image!.path),
+                height: 100, width: 100, fit: BoxFit.cover)
+            .cornerRadiusWithClipRRect(65),
       );
     } else if (!profileImg.isEmptyOrNull) {
       return Container(
         padding: EdgeInsets.all(1),
-        decoration: boxDecorationWithRoundedCorners(boxShape: BoxShape.circle, border: Border.all(width: 2, color: primaryColor.withOpacity(0.5))),
-        child: cachedImage(profileImg, width: 100, height: 100, fit: BoxFit.cover).cornerRadiusWithClipRRect(65),
+        decoration: boxDecorationWithRoundedCorners(
+            boxShape: BoxShape.circle,
+            border: Border.all(width: 2, color: primaryColor.withOpacity(0.5))),
+        child:
+            cachedImage(profileImg, width: 100, height: 100, fit: BoxFit.cover)
+                .cornerRadiusWithClipRRect(65),
       );
     } else {
       return Container(
         padding: EdgeInsets.all(1),
-        decoration: boxDecorationWithRoundedCorners(boxShape: BoxShape.circle, border: Border.all(width: 2, color: primaryColor.withOpacity(0.5))),
-        child: CircleAvatar(maxRadius: 50, backgroundColor: Colors.white, backgroundImage: AssetImage(ic_logo)),
+        decoration: boxDecorationWithRoundedCorners(
+            boxShape: BoxShape.circle,
+            border: Border.all(width: 2, color: primaryColor.withOpacity(0.5))),
+        child: CircleAvatar(
+            maxRadius: 50,
+            backgroundColor: Colors.white,
+            backgroundImage: AssetImage(ic_logo)),
       );
     }
   }
@@ -156,7 +176,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarWidget(language.editProfile, context1: context, titleSpace: 0),
+        appBar: appBarWidget(
+          language.editProfile,
+          context1: context,
+          titleSpace: 0,
+        ),
         bottomNavigationBar: Stack(children: [
           AppButton(
             text: language.save,
@@ -181,11 +205,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     Stack(
                       alignment: Alignment.bottomRight,
                       children: [
-                        Container(decoration: boxDecorationWithRoundedCorners(boxShape: BoxShape.circle, border: Border.all(color: primaryLight, width: 3)), child: profileImage()),
+                        Container(
+                            decoration: boxDecorationWithRoundedCorners(
+                                boxShape: BoxShape.circle,
+                                border:
+                                    Border.all(color: primaryLight, width: 3)),
+                            child: profileImage()),
                         Container(
                                 padding: EdgeInsets.all(7),
-                                decoration: boxDecorationWithRoundedCorners(borderRadius: radius(50), border: Border.all(color: Colors.white), backgroundColor: primaryLight),
-                                child: Image.asset(ic_edit_profile, height: 16, width: 16, color: primaryColor))
+                                decoration: boxDecorationWithRoundedCorners(
+                                    borderRadius: radius(50),
+                                    border: Border.all(color: Colors.white),
+                                    backgroundColor: primaryLight),
+                                child: Image.asset(ic_edit_profile,
+                                    height: 16, width: 16, color: primaryColor))
                             .onTap(() {
                           openBottomSheet();
                         })
@@ -194,7 +227,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       openBottomSheet();
                     }).center(),
                     20.height,
-                    Text(language.firstName, style: primaryTextStyle(color: grayColor)),
+                    Text(language.firstName,
+                        style: primaryTextStyle(color: grayColor)),
                     10.height,
                     AppTextField(
                         textInputAction: TextInputAction.next,
@@ -202,10 +236,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         focus: fNameFocus,
                         textFieldType: TextFieldType.NAME,
                         keyboardType: TextInputType.name,
-                        decoration: defaultInputDecoration(context, label: language.enterFirstName),
-                        suffix: Image.asset(ic_profile, height: 16, width: 16, color: grayColor).paddingSymmetric(vertical: 12)),
+                        decoration: defaultInputDecoration(context,
+                            label: language.enterFirstName),
+                        suffix: Image.asset(ic_profile,
+                                height: 16, width: 16, color: grayColor)
+                            .paddingSymmetric(vertical: 12)),
                     10.height,
-                    Text(language.lastName, style: primaryTextStyle(color: grayColor)),
+                    Text(language.lastName,
+                        style: primaryTextStyle(color: grayColor)),
                     10.height,
                     AppTextField(
                         textInputAction: TextInputAction.next,
@@ -213,10 +251,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         focus: lNameFocus,
                         textFieldType: TextFieldType.NAME,
                         keyboardType: TextInputType.name,
-                        decoration: defaultInputDecoration(context, label: language.enterLastName),
-                        suffix: Image.asset(ic_profile, height: 16, width: 16, color: grayColor).paddingSymmetric(vertical: 12)),
+                        decoration: defaultInputDecoration(context,
+                            label: language.enterLastName),
+                        suffix: Image.asset(ic_profile,
+                                height: 16, width: 16, color: grayColor)
+                            .paddingSymmetric(vertical: 12)),
                     10.height,
-                    Text(language.email, style: primaryTextStyle(color: grayColor)),
+                    Text(language.email,
+                        style: primaryTextStyle(color: grayColor)),
                     10.height,
                     AppTextField(
                         onFieldSubmitted: (p0) {
@@ -229,10 +271,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         focus: emailFocus,
                         textFieldType: TextFieldType.EMAIL,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: defaultInputDecoration(context, label: language.enterEmail),
-                        suffix: Image.asset(ic_mail, height: 16, width: 16, color: grayColor).paddingSymmetric(vertical: 12)),
+                        decoration: defaultInputDecoration(context,
+                            label: language.enterEmail),
+                        suffix: Image.asset(ic_mail,
+                                height: 16, width: 16, color: grayColor)
+                            .paddingSymmetric(vertical: 12)),
                     10.height,
-                    Text(language.phoneNumber, style: primaryTextStyle(color: grayColor)),
+                    Text(language.phoneNumber,
+                        style: primaryTextStyle(color: grayColor)),
                     10.height,
                     AppTextField(
                       controller: phoneController,
@@ -251,16 +297,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   initialSelection: countryCode,
                                   showCountryOnly: false,
                                   showFlag: false,
-                                  boxDecoration: BoxDecoration(borderRadius: radius(defaultRadius), color: context.scaffoldBackgroundColor),
+                                  boxDecoration: BoxDecoration(
+                                      borderRadius: radius(defaultRadius),
+                                      color: context.scaffoldBackgroundColor),
                                   showFlagDialog: true,
                                   showOnlyCountryWhenClosed: false,
                                   alignLeft: false,
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 4),
                                   textStyle: primaryTextStyle(),
                                   onInit: (c) {},
                                   onChanged: (c) {},
                                 ),
-                                VerticalDivider(color: Colors.grey.withOpacity(0.5)),
+                                VerticalDivider(
+                                    color: Colors.grey.withOpacity(0.5)),
                                 16.width,
                               ],
                             ),
@@ -285,7 +335,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       context: context,
       backgroundColor: appStore.isDarkModeOn ? black : white,
       elevation: 10,
-      shape: RoundedRectangleBorder(borderRadius: radiusOnly(topLeft: 12, topRight: 12)),
+      shape: RoundedRectangleBorder(
+          borderRadius: radiusOnly(topLeft: 12, topRight: 12)),
       builder: (BuildContext context) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,9 +355,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Ionicons.camera_outline, color: appStore.isDarkModeOn ? white : primaryColor),
+                  Icon(Ionicons.camera_outline,
+                      color: appStore.isDarkModeOn ? white : primaryColor),
                   16.width,
-                  Text(language.camera, style: primaryTextStyle(size: 18, color: appStore.isDarkModeOn ? white : black)),
+                  Text(language.camera,
+                      style: primaryTextStyle(
+                          size: 18,
+                          color: appStore.isDarkModeOn ? white : black)),
                 ],
               ),
             ).onTap(() {
@@ -322,7 +377,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(AntDesign.picture, color: appStore.isDarkModeOn ? white : primaryColor),
+                  Icon(AntDesign.picture,
+                      color: appStore.isDarkModeOn ? white : primaryColor),
                   16.width,
                   Text(language.chooseImage, style: primaryTextStyle(size: 18)),
                 ],

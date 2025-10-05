@@ -49,8 +49,52 @@ import '../screens/login_screen.dart';
 import '../utils/constants.dart';
 import 'network_utills.dart';
 
-Future<SignUpResponse> signUpApi(Map request, BuildContext context) async {
-  Response response = await buildHttpResponse('register',
+Future<SignUpResponse> signUpApi(
+  Map request,
+  BuildContext context,
+) async {
+  Response response = await buildHttpResponse('social-otp-login',
+      request: request, method: HttpMethod.POST);
+  if (!response.statusCode.isSuccessful()) {
+    await appStore.setLogin(true);
+    await setValue(IS_USER_SIGNUP, true);
+    if (response.body.isJson()) {
+      if (kDebugMode) {
+        print('aaaaaaaaaaaaaaaaaaaa${response.body}');
+      }
+      var json = jsonDecode(response.body);
+      if (json.containsKey('code') &&
+          json['code'].toString().contains('invalid_username')) {
+        await appStore.setLogin(false);
+
+        throw 'invalid_username';
+      }
+    }
+  }
+
+  return await handleResponse(response).then((json) async {
+    var signupResponse = SignUpResponse.fromJson(json);
+    // if (signupResponse.data!.apiToken.validate().isNotEmpty) await userStore.setToken(signupResponse.data!.apiToken.validate());
+    await setValue(USER_ID, signupResponse.data!.id);
+    await setValue(FIRSTNAME, signupResponse.data!.firstName.validate());
+    await setValue(LASTNAME, signupResponse.data!.lastName.validate());
+    await setValue(EMAIL, signupResponse.data!.email.validate());
+    await setValue(TOKEN, signupResponse.data!.apiToken.validate());
+    await setValue(USER_TYPE, signupResponse.data!.userType.validate());
+    await appStore.setLogin(true);
+
+    return signupResponse;
+  }).catchError((e) {
+    log(e.toString());
+    throw e.toString();
+  });
+}
+
+Future<SignUpResponse> verifyOtpApi(
+  Map request,
+  BuildContext context,
+) async {
+  Response response = await buildHttpResponse('social-otp-login',
       request: request, method: HttpMethod.POST);
   if (!response.statusCode.isSuccessful()) {
     await appStore.setLogin(true);

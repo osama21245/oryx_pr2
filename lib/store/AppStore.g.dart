@@ -174,10 +174,10 @@ mixin _$AppStore on _AppStore, Store {
   late final _$setLanguageAsyncAction =
       AsyncAction('_AppStore.setLanguage', context: context);
 
-  @override
-  Future<void> setLanguage(String aCode, {BuildContext? context}) {
-    return _$setLanguageAsyncAction
-        .run(() => super.setLanguage(aCode, context: context));
+    @override
+    Future<void> setLanguage(String aCode, {BuildContext? context}) {
+      return _$setLanguageAsyncAction
+          .run(() => super.setLanguage(aCode, context: context));
   }
 
   late final _$setDarkModeAsyncAction =

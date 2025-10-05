@@ -1,10 +1,17 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:orex/extensions/system_utils.dart';
+import 'package:orex/network/RestApis.dart';
+import 'package:orex/screens/home_screen.dart';
+import 'package:orex/screens/main_screen.dart';
+import 'package:orex/screens/otp_screen.dart';
+import 'package:orex/screens/signup_screen.dart';
 import 'package:orex/utils/otp_utils.dart';
 import '../../../extensions/app_text_field.dart';
 import '../extensions/app_button.dart';
@@ -59,27 +66,29 @@ class _LoginScreenState extends State<LoginScreen> {
         //
       });
     }
-    getUserUID();
+    await getUserToken();
     appStore.setLoading(false);
   }
 
+//await otpLogInApi({"mobile": number});
   @override
   void setState(fn) {
     if (mounted) super.setState(fn);
   }
 
-  void getUserUID() async {
+  Future<String?> getUserToken() async {
     try {
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-        String uid = user.uid;
-        setValue(FIREBASE_USER_ID, uid);
+      //String userId = await getStringAsync(USER_ID);
+      String token = getStringAsync(TOKEN);
+      if (token != null && token.isNotEmpty) {
+        return token;
       } else {
         print("No user is currently signed in.");
+        return null;
       }
     } catch (e) {
       print("Error getting user UID: $e");
+      return null;
     }
   }
 
@@ -97,27 +106,70 @@ class _LoginScreenState extends State<LoginScreen> {
       String number = '$countryCode${mMobileNumberCont.text.trim()}';
       if (!number.startsWith('+')) {
         number = '+$countryCode${mMobileNumberCont.text.trim()}';
-      }
+      } //await OTPUtils.sendOTP(context,number);
 
-      await loginWithOTP(
-              context, number, mMobileNumberCont.text.trim(), true, () {})
-          .catchError((e) async {
+      try {
+        final res = await otpLogInApi({
+          "username": number,
+          "login_type": LoginTypeOTP,
+        });
+        // debugPrint(res.data.toString())
+
         await appStore.setLoading(false);
-        setState(() {});
-      });
+
+        if (res.isUserExist == false) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => SignUpScreen(
+                phoneNumber: number,
+                // isCodeSent: true,
+              ),
+            ),
+          );
+        } else if (res.isUserExist == true) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => OTPScreen(
+                        phoneNumber: number,
+                        isComeFromLogin: true,
+                      )));
+          // finish(context);
+          // HomeScreen().launch(context);
+        }
+      } catch (e) {
+        await appStore.setLoading(false);
+
+        print(
+            "erorr is ==========${e.toString().contains('invalid_username')}");
+        print("Full error is: ${e.toString()}");
+      }
     }
   }
+
+  //  "username": widget.phoneNumber!.replaceAll('+20', ''),
+  //   "login_type": LoginTypeOTP,
+  //   "accessToken": widget.phoneNumber!.replaceAll('+', ''),
+  //   "contact_number": widget.phoneNumber,
+  //   'player_id': getStringAsync(PLAYER_ID).validate(),
+  // await loginWithOTP(
+  //         context, number, mMobileNumberCont.text.trim(), true, () {})
+  //     .catchError((e) async {
+  //   await appStore.setLoading(false);
+  //   setState(() {});
+  // });
   // Future<void> sendOTP() async {
   //   if (loginFormKey.currentState!.validate()) {
   //     loginFormKey.currentState!.save();
   //     hideKeyboard(context);
   //     await appStore.setLoading(true);
-
   //     String number = '$countryCode${mMobileNumberCont.text.trim()}';
   //     if (!number.startsWith('+')) {
   //       number = '$mMobileNumberCont${mMobileNumberCont.text.trim()}';
   //     }
-  //     await loginWithOTP(context, number, mMobileNumberCont.text.trim(), true, () {}).then((value) {}).catchError((e) async {
+  //     await loginWithOTP(context, number, mMobileNumberCont.text.trim(), true, () {}).then((value)
+  // {}).catchError((e) async {
   //       toast(e.toString());
   //       await appStore.setLoading(false);
   //       setState(() {});

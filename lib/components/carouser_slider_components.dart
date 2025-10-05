@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:orex/extensions/extension_util/context_extensions.dart';
 import 'package:orex/extensions/extension_util/widget_extensions.dart';
 import 'package:orex/models/dashBoard_response.dart';
 
-import '../extensions/price_widget.dart';
 import '../extensions/text_styles.dart';
 import '../utils/app_common.dart';
 

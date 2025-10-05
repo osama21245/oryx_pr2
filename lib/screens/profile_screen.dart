@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:orex/store/AppStore.dart';
@@ -49,6 +50,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void init() async {
+    userStore.fName;
+    userStore.lName;
+    userStore.email;
     setState(() {});
   }
 
@@ -56,6 +60,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void setState(fn) {
     if (mounted) super.setState(fn);
   }
+
+  // Future<void> fetchUserData() async {
+  //   try {
+  //     var res = await getUserDataApi(id: getIntAsync(USER_ID));
+  //     print("=================${res.data?.displayName}");
+  //     //userStore.userResponse = res;
+  //   } catch (e) {
+  //     debugPrint("Error fetching user data: $e");
+  //   }
+  // }
 
   Future deleteAccount(BuildContext context) async {
     appStore.setLoading(true);
@@ -113,12 +127,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return;
                   }
 
-                  EditProfileScreen().launch(context);
+                  final update = await EditProfileScreen().launch(context);
+                  if (update == true) {
+                    init();
+                  }
                 }
               }).center();
             }),
             10.height,
             Text(
+                    // appStore.isLoggedIn?userStore.fName:"Guset",
                     appStore.isLoggedIn
                         ? "${getStringAsync(FIRSTNAME).toString()} ${getStringAsync(LASTNAME).toString()}"
                         : 'Guset',
@@ -399,11 +417,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }).center();
           }),
           10.height,
-          Text("${getStringAsync(FIRSTNAME).toString()} ${getStringAsync(LASTNAME).toString()}",
+          Text("${userStore.fName} ${userStore.lName}",
+                  //"${getStringAsync(FIRSTNAME).toString()} ${getStringAsync(LASTNAME).toString()}",
                   style: boldTextStyle(size: 18))
               .center(),
           4.height,
-          Text(getStringAsync(EMAIL).toString(),
+          Text(userStore.email,
+
+                  //getStringAsync(EMAIL).toString(),
                   style: secondaryTextStyle(size: 16))
               .center(),
           20.height,
@@ -737,6 +758,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
+      // if (userStore.subscriptionDetail == null ||
+      //     userStore.userResponse == null ||
+      //     userStore.userResponse!.planLimitCount == null) {
+      //   return Scaffold(
+      //     body: Center(child: CircularProgressIndicator()),
+      //   );
+      // } else {
       return Scaffold(
         appBar: appBarWidget(language.myProfile,
             context1: context,

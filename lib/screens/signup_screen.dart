@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:orex/screens/otp_screen.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/app_button.dart';
 import '../extensions/app_text_field.dart';
@@ -52,33 +53,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       signUpFormKey.currentState!.save();
       hideKeyboard(context);
       appStore.setLoading(true);
-      var request = {
-        "first_name": firstNameController.text,
-        "last_name": lastNameController.text,
-        "username": phoneController.text,
-        "email": 'user@gmail.com',
-        "password": getStringAsync(FIREBASE_USER_ID),
-        "user_type": LoginUser,
-        "login_type": LoginTypeOTP,
-        "status": ACTIVE,
-        "contact_number": "${"+"}${phoneController.text}",
-      };
-      await signUpApi(request, context).then((res) async {
-        appStore.setLogin(true);
-        print(res.data);
-        setValue(TOKEN, res.data!.apiToken);
-        setValue(USER_ID, res.data!.id);
-        userStore.setLogin(true);
-        userStore.setToken(res.data!.apiToken.validate());
-        setValue(EMAIL, res.data!.email.validate());
-        setValue(USER_CONTACT_NUMBER, phoneController.text);
-        DashboardScreen().launch(context, isNewTask: true);
-      }).catchError((e) {
-        appStore.setLoading(false);
-        toast(e.toString());
-        log(e.toString());
-        return;
-      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => OTPScreen(
+                    firstName: firstNameController.text,
+                    lastName: lastNameController.text,
+                    phoneNumber: phoneController.text,
+                  )));
     }
   }
 
@@ -105,6 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     Text(language.signUp, style: boldTextStyle(size: 20))
                         .center(),
+
                     20.height,
                     Image.asset(ic_sign_up,
                             height: context.height() * 0.3,

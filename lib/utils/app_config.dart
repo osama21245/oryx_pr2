@@ -35,7 +35,7 @@ const mOneSignalID = 'ADD_ONESIGNAL_ID';
 //endregion
 
 //region country
-String? countryCode = "IN";
+String? countryCode = "eg";
 //endregion
 
 //region Manage Ads

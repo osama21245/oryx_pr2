@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:orex/screens/dashboard_screen.dart';
+import 'package:orex/screens/home_screen.dart';
+import 'package:orex/screens/login_screen.dart';
 import 'package:orex/screens/main_screen.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../extensions/app_button.dart';
 import '../extensions/colors.dart';
 import '../extensions/common.dart';
@@ -32,19 +34,26 @@ import '../utils/images.dart';
 
 class OTPScreen extends StatefulWidget {
   final String? verificationId;
-  final String? phoneNumber;
+  final String phoneNumber;
+  final String? firstName;
+  final String? lastName;
+  final bool? isComeFromLogin;
   final String? mobileNo;
   final bool? isCodeSent;
   final PhoneAuthCredential? credential;
   final Function? onCall;
 
-  OTPScreen(
-      {this.verificationId,
-      this.isCodeSent,
-      this.phoneNumber,
-      this.mobileNo,
-      this.credential,
-      this.onCall});
+  OTPScreen({
+    this.verificationId,
+    this.isCodeSent,
+    required this.phoneNumber,
+    this.firstName,
+    this.lastName,
+    this.mobileNo,
+    this.credential,
+    this.onCall,
+    this.isComeFromLogin = false,
+  });
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -104,7 +113,6 @@ class _OTPScreenState extends State<OTPScreen> {
   //       await setValue(IS_OTP, true);
   //       userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
   //       appStore.setLoading(false);
-
   //       if (value.isUserExist == false) {
   //         finish(context);
   //         SignUpScreen(phoneNumber: widget.phoneNumber!.replaceAll('+', ''))
@@ -142,81 +150,199 @@ class _OTPScreenState extends State<OTPScreen> {
   Future<void> submit() async {
     hideKeyboard(context);
     await appStore.setLoading(true);
+    var request = {
+      "first_name": widget.firstName,
+      "last_name": widget.lastName,
+      "username": widget.phoneNumber,
+      "email": '${widget.firstName}@gmail.com',
+      "password": getStringAsync(FIREBASE_USER_ID),
+      "user_type": LoginUser,
+      "login_type": LoginTypeOTP,
+      "otp": otpCode,
+      "status": ACTIVE,
+      "contact_number": "${"+"}${widget.phoneNumber}",
+    };
 
-    AuthCredential credential = PhoneAuthProvider.credential(
-      verificationId: widget.verificationId!,
-      smsCode: otpCode,
-    );
+    var verifyOtp = {
+      "username": widget.phoneNumber,
+      "otp": otpCode,
+      "login_type": LoginTypeOTP,
+    };
 
-    try {
-      // أول خطوة: التحقق من الكود مع Firebase
-      await FirebaseAuth.instance.signInWithCredential(credential);
-
-      // ثاني خطوة: التحقق من المستخدم مع الـ API
-      Map req = {
-        "username": widget.phoneNumber!.replaceAll('+', ''),
-        "login_type": LoginTypeOTP,
-        "accessToken": widget.phoneNumber!.replaceAll('+', ''),
-        "contact_number": widget.phoneNumber,
-        'player_id': getStringAsync(PLAYER_ID).validate(),
-      };
-
+    if (widget.isComeFromLogin == true) {
       try {
-        var value = await otpLogInApi(req);
+        await verifyOtpApi(verifyOtp, context).then((res) async {
+          if (
+              //res.status == true &&
+              res.data != null &&
+                  res.data!.apiToken != null &&
+                  res.data!.id != null) {
+            await userStore.setToken(res.data!.apiToken.validate());
+            await userStore.setUserID(res.data!.id!);
+            await getUSerDetail(context, res.data!.id.validate())
+                .whenComplete(() {
+              DashboardScreen().launch(context, isNewTask: true);
+            });
+            await appStore.setLogin(true);
+            await userStore.setLogin(true);
+            appStore.setLoading(false);
+            await setValue(IS_OTP, true);
+            userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
+            await appStore.setLogin(true);
+            //DashboardScreen().launch(context, isNewTask: true);
+            debugPrint("data is ${res.data.toString()}");
 
-        await setValue(IS_OTP, true);
-        userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
+            finish(context);
+            DashboardScreen().launch(context);
+          } else {
+            appStore.setLoading(false);
+            toast(res.message ?? 'فشل التسجيل');
+            debugPrint(" فشل التسجيل: ${res.message}");
+          }
+        });
+      } catch (e) { 
         appStore.setLoading(false);
-
-        if (value.isUserExist == false) {
-          // المستخدم مش موجود → افتح SignUp
-          finish(context);
-          SignUpScreen(
-            phoneNumber: widget.phoneNumber!.replaceAll('+', ''),
-          ).launch(context);
+        final errorMessage = e.toString().toLowerCase();
+        if (errorMessage.contains('otp is invalid')) {
+          toast(language.invalidOtp);
+        } else if (errorMessage.contains('invalid-verification-code')) {
+          toast('الكود غير صحيح');
+        } else if (errorMessage.contains('session-expired')) {
+          toast('انتهت صلاحية الكود، حاول مرة أخرى');
         } else {
-          // المستخدم موجود → سجل دخوله
-          await appStore.setLogin(true);
-          setValue(TOKEN, value.data!.apiToken.validate());
-          userStore.setToken(value.data!.apiToken.validate());
-
-          await getUSerDetail(context, value.data!.id.validate())
-              .whenComplete(() {
-            DashboardScreen().launch(context, isNewTask: true);
-          });
+          toast(errorMessage ?? 'فشل التسجيل');
         }
+        toast(errorMessage ?? 'فشل التسجيل');
+        debugPrint(" فشل التسجيل: ${errorMessage}");
+        setState(
+          () {},
+        );
+      }
+    } else {
+      try {
+        await signUpApi(
+          request,
+          context,
+        ).then((res) async {
+          if (
+              //res.status == true &&
+              res.data != null &&
+                  res.data!.apiToken != null &&
+                  res.data!.id != null) {
+            await userStore.setToken(res.data!.apiToken.validate());
+            await userStore.setUserID(res.data!.id!);
+
+            await setValue(TOKEN, res.data!.apiToken);
+            await setValue(USER_ID, res.data!.id);
+            // await setValue(PLAYER_ID, res.data!.id);
+            await setValue(EMAIL, res.data!.email.validate());
+            await setValue(USER_CONTACT_NUMBER, widget.phoneNumber);
+            await appStore.setLogin(true);
+            await userStore.setLogin(true);
+            appStore.setLoading(false);
+            await setValue(IS_OTP, true);
+            userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
+            await appStore.setLogin(true);
+            //DashboardScreen().launch(context, isNewTask: true);
+            debugPrint("data is ${res.data.toString()}");
+            finish(context);
+            DashboardScreen().launch(context);
+          } else {
+            appStore.setLoading(false);
+            toast(res.message ?? 'فشل التسجيل');
+            debugPrint(" فشل التسجيل: ${res.message}");
+          }
+        });
       } catch (e) {
         await appStore.setLoading(false);
         final errorMessage = e.toString().toLowerCase();
-
         if (errorMessage.contains('invalid_username')) {
           finish(context);
-          SignUpScreen(
-            phoneNumber: widget.phoneNumber!.replaceAll('+', ''),
-          ).launch(context);
+          LoginScreen(
+                  //phoneNumber: widget.phoneNumber!.replaceAll('+', ''),
+                  )
+              .launch(context);
         } else if (errorMessage.contains('otp is invalid')) {
           toast(language.invalidOtp);
+        } else if (errorMessage.contains('invalid-verification-code')) {
+          toast('الكود غير صحيح');
+        } else if (errorMessage.contains('session-expired')) {
+          toast('انتهت صلاحية الكود، حاول مرة أخرى');
         } else {
           toast('حدث خطأ: $e');
         }
-      }
-    } catch (e) {
-      // هنا أخطاء FirebaseAuth (الكود غلط، انتهت الصلاحية، إلخ)
-      log("error->" + e.toString());
-      await appStore.setLoading(false);
+        log("error->" + e.toString());
 
-      final err = e.toString().toLowerCase();
-      if (err.contains('invalid-verification-code')) {
-        toast('الكود غير صحيح');
-      } else if (err.contains('session-expired')) {
-        toast('انتهت صلاحية الكود، حاول مرة أخرى');
-      } else {
-        toast('حدث خطأ أثناء التحقق من الكود');
+        setState(() {});
       }
-
-      setState(() {});
     }
   }
+  // AuthCredential credential = PhoneAuthProvider.credential(
+  //   verificationId: widget.verificationId!,
+  //   smsCode: otpCode,
+  // );
+  // try {
+  //   // أول خطوة: التحقق من الكود مع Firebase
+  //   //  await FirebaseAuth.instance.signInWithCredential(credential);
+  //   // ثاني خطوة: التحقق من المستخدم مع الـ API
+  //   // Map req = {
+  //   //   "username": widget.phoneNumber!.replaceAll('+20', ''),
+  //   //   "login_type": LoginTypeOTP,
+  //   //   "accessToken": widget.phoneNumber!.replaceAll('+', ''),
+  //   //   "contact_number": widget.phoneNumber,
+  //   //   'player_id': getStringAsync(PLAYER_ID).validate(),
+  //   // };
+  //   try {
+  //     // var value = await otpLogInApi(req);
+  //     //await setValue(IS_OTP, true);
+  //userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
+  // setValue(TOKEN, value.data!.apiToken.validate());
+  // userStore.setToken(value.data!.apiToken.validate());
+  // await appStore.setLogin(true);
+  // appStore.setLoading(false);
+  // if (value.isUserExist == false) {
+  //   // المستخدم مش موجود → افتح SignUp
+  //   finish(context);
+  //   SignUpScreen(
+  //     phoneNumber: widget.phoneNumber!.replaceAll('+', ''),
+  //   ).launch(context);
+  //   } else {
+  //     // المستخدم موجود → سجل دخوله
+  //     await appStore.setLogin(true);
+  //     setValue(TOKEN, value.data!.apiToken.validate());
+  //     userStore.setToken(value.data!.apiToken.validate());
+  //     await getUSerDetail(context, value.data!.id.validate())
+  //         .whenComplete(() {
+  //       DashboardScreen().launch(context, isNewTask: true);
+  //     });
+  //   }
+  // } catch (e) {
+  // await appStore.setLoading(false);
+  // final errorMessage = e.toString().toLowerCase();
+  // if (errorMessage.contains('invalid_username')) {
+  //   finish(context);
+  //   SignUpScreen(
+  //     phoneNumber: widget.phoneNumber!.replaceAll('+', ''),
+  //   ).launch(context);
+  // } else if (errorMessage.contains('otp is invalid')) {
+  //   toast(language.invalidOtp);
+  // } else {
+  //   toast('حدث خطأ: $e');
+  // }
+  //   }
+  // } catch (e) {
+  // هنا أخطاء FirebaseAuth (الكود غلط، انتهت الصلاحية، إلخ)
+  // log("error->" + e.toString());
+  // await appStore.setLoading(false);
+  // final err = e.toString().toLowerCase();
+  // if (err.contains('invalid-verification-code')) {
+  //   toast('الكود غير صحيح');
+  // } else if (err.contains('session-expired')) {
+  //   toast('انتهت صلاحية الكود، حاول مرة أخرى');
+  // } else {
+  //   toast('حدث خطأ أثناء التحقق من الكود');
+  // }
+  // setState(() {});
 
   void init() async {
     await appStore.setLoading(false);
@@ -341,28 +467,32 @@ class _OTPScreenState extends State<OTPScreen> {
                         //   size: 20,
                         // ),
                         Expanded(
-                          child: OTPTextField(
-                              otpFieldStyle: OtpFieldStyle(
-                                  backgroundColor: appStore.isDarkModeOn
-                                      ? cardDarkColor
-                                      : cardLightColor),
-                              controller: otpController,
-                              length: 6,
-                              keyboardType: TextInputType.number,
-                              width: MediaQuery.of(context).size.width,
-                              fieldWidth: 45,
-                              style: primaryTextStyle(),
-                              textFieldAlignment: MainAxisAlignment.spaceAround,
-                              fieldStyle: FieldStyle.box,
-                              onChanged: (s) {
-                                otpCode = s;
-                              },
-                              onCompleted: (pin) async {
-                                otpCode = pin;
-                                submit();
+                          child: Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: OTPTextField(
+                                otpFieldStyle: OtpFieldStyle(
+                                    backgroundColor: appStore.isDarkModeOn
+                                        ? cardDarkColor
+                                        : cardLightColor),
+                                controller: otpController,
+                                length: 6,
+                                keyboardType: TextInputType.number,
+                                width: MediaQuery.of(context).size.width,
+                                fieldWidth: 45,
+                                style: primaryTextStyle(),
+                                textFieldAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                fieldStyle: FieldStyle.box,
+                                onChanged: (s) {
+                                  otpCode = s;
+                                },
+                                onCompleted: (pin) async {
+                                  otpCode = pin;
+                                  submit();
 
-                                setState(() {});
-                              }),
+                                  setState(() {});
+                                }),
+                          ),
                         )
                       ],
                     ),

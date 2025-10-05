@@ -19,7 +19,6 @@ Future<void> loginWithOTP(BuildContext context, String phoneNumber,
       await appStore.setLoading(false);
       if (e.code == 'invalid-phone-number') {
         toast("رقم الهاتف غير صالح");
-        
       } else if (e.code == 'too-many-requests') {
         toast("تم حظر الطلبات مؤقتًا بسبب نشاط غير معتاد. حاول لاحقًا");
       } else {

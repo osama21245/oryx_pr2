@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 // import 'package:flutter_html/flutter_html.dart';
 import '../extensions/extension_util/context_extensions.dart';
-import '../extensions/extension_util/string_extensions.dart';
-import '../extensions/extension_util/widget_extensions.dart';
+
 
 import '../extensions/colors.dart';
 import '../extensions/shared_pref.dart';
-import '../extensions/system_utils.dart';
-import '../extensions/widgets.dart';
+
 import '../utils/app_common.dart';
 import '../utils/constants.dart';
-import 'PdfViewWidget.dart';
-import 'VimeoEmbedWidget.dart';
-import 'YouTubeEmbedWidget.dart';
+
 
 class HtmlWidget extends StatelessWidget {
   final String? postContent;

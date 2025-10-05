@@ -4,7 +4,6 @@ import 'package:orex/extensions/app_text_field.dart';
 import 'package:orex/extensions/decorations.dart';
 import 'package:orex/extensions/extension_util/int_extensions.dart';
 import 'package:orex/extensions/extension_util/widget_extensions.dart';
-import 'package:orex/utils/colors.dart';
 
 Widget priceMeterFields(priceMeterList, context, {required Function setState}) {
   return Column(

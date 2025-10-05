@@ -52,7 +52,8 @@ class SplashScreenState extends State<SplashScreen>
               getBoolAsync(IS_SELECTED_LANGUAGE_CHANGE, defaultValue: false);
           if (!isSetLanguage) {
             for (int i = 0; i < value.data!.length; i++) {
-              if (value.data![i].isDefaultLanguage == 1) {
+              int isDefaultLang = value.data![i].isDefaultLanguage ?? 0;
+              if (isDefaultLang == 1) {
                 setValue(SELECTED_LANGUAGE_CODE, value.data![i].languageCode);
                 setValue(
                     SELECTED_LANGUAGE_COUNTRY_CODE, value.data![i].countryCode);
@@ -81,7 +82,7 @@ class SplashScreenState extends State<SplashScreen>
       }
     }).catchError((error) {
       appStore.setLoading(false);
-      log(error);
+      print(error);
     });
 
     //await 3.seconds.delay;
