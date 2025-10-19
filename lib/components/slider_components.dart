@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:orex/extensions/text_styles.dart';
 import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
@@ -84,6 +85,16 @@ class _SlidesComponentsState extends State<SlidesComponents> {
                 currentIndex = i;
               });
             },
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(end: 18),
+            child: Text(
+              widget.data![currentIndex].name.validate(),
+              style: boldTextStyle(),
+            ),
           ),
         ),
         dotIndicator(widget.data!, currentIndex).paddingTop(4),
