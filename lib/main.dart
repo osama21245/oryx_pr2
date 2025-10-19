@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -74,9 +75,52 @@ void main() async {
     appStore.setDarkMode(true);
   }
 
-// Added By SK
-  appStore.setLanguage(getStringAsync(SELECTED_LANGUAGE_CODE,
-      defaultValue: defaultLanguageCode));
+// ✅ Step: get saved language and check if user has made a language selection
+  String? savedLangCode = getStringAsync(SELECTED_LANGUAGE_CODE);
+  bool hasUserSelectedLanguage = getBoolAsync(IS_SELECTED_LANGUAGE_CHANGE, defaultValue: false);
+
+  // ✅ Load cached language data first
+  setDefaultLocate();
+
+  // ✅ Determine which language to use
+  String languageToUse;
+  
+  if (!hasUserSelectedLanguage || savedLangCode.isEmpty) {
+    // ✅ No user selection or system default → use system language
+    final Locale systemLocale = PlatformDispatcher.instance.locale;
+    String systemLangCode = systemLocale.languageCode;
+    
+    // ✅ Check if system language is supported in server data
+    bool isSystemLangSupported = false;
+    if (defaultServerLanguageData != null && defaultServerLanguageData!.isNotEmpty) {
+      isSystemLangSupported = defaultServerLanguageData!.any((lang) => lang.languageCode == systemLangCode);
+    } else {
+      // Fallback check for basic supported languages
+      isSystemLangSupported = ['en', 'ar'].contains(systemLangCode);
+    }
+    
+    if (isSystemLangSupported) {
+      languageToUse = systemLangCode;
+      print('🌍 Using system language: $systemLangCode');
+    } else {
+      languageToUse = defaultLanguageCode;
+      print('🌍 System language not supported, using fallback: $defaultLanguageCode');
+    }
+  } else {
+    // ✅ User has selected a specific language → use it
+    languageToUse = savedLangCode;
+    print('🌍 Using user-selected language: $savedLangCode');
+  }
+
+  // ✅ Set the determined language
+  if (defaultServerLanguageData != null && defaultServerLanguageData!.isNotEmpty) {
+    appStore.setLanguage(languageToUse);
+  } else {
+    // ✅ No server data yet - set basic language for now
+    appStore.selectedLanguage = languageToUse;
+    print('🌍 No server data yet, using: $languageToUse');
+  }
+
 
   // Remove By SK
   /*await initialize(aLocaleLanguageList: languageList());
@@ -169,7 +213,10 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         scrollBehavior: SBehavior(),
         // Changes By SK
-        supportedLocales: getSupportedLocales(),
+        supportedLocales: const [
+          Locale('en'),
+          Locale('ar'),
+        ],
         // Change By SK
         locale: Locale(
             appStore.selectedLanguage.validate(value: defaultLanguageCode)),

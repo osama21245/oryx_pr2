@@ -22,6 +22,7 @@ class SuccessPropertyScreen extends StatefulWidget {
 class _SuccessPropertyScreenState extends State<SuccessPropertyScreen> {
   @override
   Widget build(BuildContext context) {
+    print("@@@@@@  ${widget.propertyId}");
     return Scaffold(
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Image.asset(

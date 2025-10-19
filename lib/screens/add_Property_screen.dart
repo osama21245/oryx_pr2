@@ -292,41 +292,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
   // region Add Properties Api
   Future saveProperty() async {
-    bool? paymentConfirmed = await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('تأكيد الدفع', style: boldTextStyle()),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('اول ثلاث اضافات مجانا بعد ذلك', style: primaryTextStyle()),
-              10.height,
-              Text('سعر النشر: 200 جنية', style: secondaryTextStyle()),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: Text('إلغاء', style: primaryTextStyle(color: Colors.grey)),
-              onPressed: () => Navigator.pop(context, false),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-              ),
-              child: Text('دفع وحفظ',
-                  style: primaryTextStyle(color: Colors.white)),
-              onPressed: () => Navigator.pop(context, true),
-            ),
-          ],
-        );
-      },
-    );
-    if (paymentConfirmed != true) return;
-    hideKeyboard(context);
-    appStore.setLoading(true);
-    setState(() {});
+    try {
+      hideKeyboard(context);
+      appStore.setLoading(true);
+      setState(() {});
     MultipartRequest multiPartRequest = !widget.updateProperty.validate()
         ? await getMultiPartRequest('property-save')
         : await getMultiPartRequest('property-update/${widget.pId}');
@@ -347,10 +316,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     multiPartRequest.fields['furnished_type'] = furnishedType.toString();
     multiPartRequest.fields['saller_type'] = sellerType.toString();
     multiPartRequest.fields['property_for'] = widget.propertyFor.toString();
-    multiPartRequest.fields['age_of_property'] = ageOfPropertyController.text;
-    multiPartRequest.fields['maintenance'] = mChargesController.text;
-    multiPartRequest.fields['security_deposit'] = depositController.text;
-    multiPartRequest.fields['brokerage'] = brokerageController.text;
+    multiPartRequest.fields['age_of_property'] = ageOfPropertyController.text.isEmptyOrNull ? "0" : ageOfPropertyController.text;
+    multiPartRequest.fields['maintenance'] = mChargesController.text.isEmptyOrNull ? "0" : mChargesController.text;
+    multiPartRequest.fields['security_deposit'] = depositController.text.isEmptyOrNull ? "0" : depositController.text;
+    multiPartRequest.fields['brokerage'] = brokerageController.text.isEmptyOrNull ? "0" : brokerageController.text;
     multiPartRequest.fields['bhk'] = selectedBhkIndex.toString();
     multiPartRequest.fields['sqft'] = areaController.text;
     multiPartRequest.fields['description'] = descriptionController.text;
@@ -365,7 +334,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     multiPartRequest.fields['premium_property'] = isPremium == true ? '1' : '0';
     multiPartRequest.fields['filter_options'] = jsonEncode(filterOptionsMap);
     print(
-        'Filter Options Map: ${jsonEncode(filterOptionsMap)}'); // Debugging line
+        'Filter Options Map: ${multiPartRequest.fields}'); // Debugging line
     isAmenityIsEmpty = false;
     dynamicAmenityList.forEach((element) {
       if (!element.dynamicAmenityValue.toString().isEmptyOrNull) {
@@ -435,27 +404,27 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 ),
               );
 
-              if (paymentResult != null) {
-                try {
-                  final Map<String, dynamic> result =
-                      Map<String, dynamic>.from(paymentResult);
-                  print('✅ status: ${result['status']}');
+              // if (paymentResult != null) {
+              //   try {
+              //     final Map<String, dynamic> result =
+              //         Map<String, dynamic>.from(paymentResult);
+              //     print('✅ status: ${result['status']}');
 
-                  if (result['status'] == true ||
-                      result['status'].toString().toLowerCase() == 'true') {
-                    final res = EPropertyBaseResponse.fromJson(result);
-                    toast(res.message.toString());
-                    SuccessPropertyScreen(propertyId: res.propertyId)
-                        .launch(context);
-                  } else {
-                    toast('❌ الدفع فشل: ${result['message']}');
-                    finish(context, true);
-                  }
-                  appStore.addPropertyIndex = 0;
-                } catch (e) {
-                  toast('⚠️ خطأ أثناء معالجة الدفع: $e');
-                }
-              }
+              //     if (result['status'] == true ||
+              //         result['status'].toString().toLowerCase() == 'true') {
+              //       final res = EPropertyBaseResponse.fromJson(result);
+              //       toast(res.message.toString());
+              //       SuccessPropertyScreen(propertyId: res.propertyId)
+              //           .launch(context);
+              //     } else {
+              //       toast('❌ الدفع فشل: ${result['message']}');
+              //       finish(context, true);
+              //     }
+              //     appStore.addPropertyIndex = 0;
+              //   } catch (e) {
+              //     toast('⚠️ خطأ أثناء معالجة الدفع: $e');
+              //   }
+              // }
             }
 
             // الحالة 2: تم الدفع بالفعل وجاء الرد النهائي
@@ -495,11 +464,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       toast(e.toString());
     }).whenComplete(() => appStore.setLoading(false));
 
-    // } else {
-    // isAmenityIsEmpty = false;
-    // toast(language.addRequiredAmenityMessage);
-    // setState(() {});
-    // }
+    } catch (e) {
+      print("Error in saveProperty: $e");
+      toast("حدث خطأ أثناء حفظ العقار");
+    } finally {
+      appStore.setLoading(false);
+      setState(() {});
+    }
   }
 
   //end region
@@ -595,7 +566,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             titleSpace: 0,
             showBack: true,
             actions: [
-              Text("${appStore.addPropertyIndex + 1}" + "/" + "3",
+              Text("${appStore.addPropertyIndex + 1}" + "/" + "2",
                       style: secondaryTextStyle())
                   .paddingOnly(right: 30, top: 15),
             ],
@@ -620,11 +591,11 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: List.generate(3, (i) {
+                    children: List.generate(2, (i) {
                       return Container(
                         alignment: Alignment.center,
                         height: 3,
-                        width: context.width() / 3.5,
+                        width: context.width() / 2.5,
                         decoration: boxDecorationWithRoundedCorners(
                             backgroundColor: appStore.addPropertyIndex >= i
                                 ? primaryColor
@@ -638,8 +609,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                         addPropertyComponent1(),
                       if (appStore.addPropertyIndex == 1)
                         addPropertyComponent2(),
-                      if (appStore.addPropertyIndex == 2)
-                        addPropertyComponent3(),
                     ],
                   ).expand()
                 ],
@@ -647,20 +616,44 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
               Loader().center().visible(appStore.isLoading),
             ],
           ),
-          bottomNavigationBar: appStore.isLoading
-              ? CircularProgressIndicator().center()
-              : SafeArea(
-                  child: AppButton(
-                    text: appStore.addPropertyIndex == 0 ||
-                            appStore.addPropertyIndex == 1
-                        ? language.Continue
-                        : language.submit,
-                    width: context.width(),
-                    color: primaryColor,
-                    textColor: Colors.white,
-                    onTap: appStore.isLoading
-                        ? null
-                        : () {
+          bottomNavigationBar: SafeArea(
+            child: Container(
+              padding: EdgeInsets.only(right: 16, bottom: 20, left: 16, top: 0),
+              child: appStore.isLoading
+                  ? Container(
+                      height: 50,
+                      decoration: boxDecorationWithRoundedCorners(
+                        backgroundColor: primaryColor.withOpacity(0.7),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          ),
+                          16.width,
+                          Text(
+                            language.pleaseWait,
+                            style: primaryTextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    )
+                  : AppButton(
+                      text: appStore.addPropertyIndex == 0
+                          ? language.Continue
+                          : language.submit,
+                      width: context.width(),
+                      color: primaryColor,
+                      textColor: Colors.white,
+                      onTap: appStore.isLoading
+                          ? null
+                          : () {
                             try {
                               if (appStore.addPropertyIndex == 0) {
                                 if (selectedCategoryId != null) {
@@ -681,7 +674,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                         // longitude != null &&
                                         // mapLocation.text.isNotEmpty
                                         ) {
-                                      appStore.addPropertyIndex = 2;
+                                      // Submit directly instead of going to third screen
+                                      saveProperty();
+                                      selectedOptions.clear();
                                     } else {
                                       if (priceDurationValue.isEmptyOrNull)
                                         toast(
@@ -697,18 +692,18 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     }
                                   } else {
                                     print('dddddddddddddddddddddddddd');
-                                    if (selectedImages.isNotEmpty &&
+                                    if (
                                         mainImagePath != null &&
                                         selectedBhkIndex != null) {
-                                      appStore.addPropertyIndex = 2;
-
-                                      setState(() {});
+                                      // Submit directly instead of going to third screen
+                                      saveProperty();
+                                      selectedOptions.clear();
                                     } else {
                                       if (mainImagePath == null)
                                         toast(language.pleaseSelectMainPicture);
-                                      if (selectedImages.isEmpty)
-                                        toast(
-                                            language.pleaseSelectOtherPicture);
+                                      // if (selectedImages.isEmpty)
+                                      //   toast(
+                                      //       language.pleaseSelectOtherPicture);
                                       if (selectedBhkIndex == null)
                                         toast(language.pleaseSelectBHK);
                                     }
@@ -716,20 +711,15 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 }
                                 log('Selected index $selectedCategoryId');
                                 addSelectedCategoryData();
-                              } else {
-                                if (mThirdComponentFormKey.currentState!
-                                    .validate()) {
-                                  saveProperty();
-                                  selectedOptions.clear();
-                                }
                               }
                               setState(() {});
                             } catch (error) {
                               print('errooooooooo$error');
                             }
                           },
-                  ).paddingOnly(right: 16, bottom: 20, left: 16, top: 0),
-                ),
+                    ),
+            ),
+          ),
         ),
       );
     });
@@ -1363,6 +1353,23 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             //   ],
             // ),
             // 22.height,
+            
+            // Add filter categories section from third screen
+            // 20.height,
+            // Text(language.extraFacilities, style: primaryTextStyle()),
+            // 20.height,
+            // ListView.separated(
+            //   shrinkWrap: true,
+            //   physics: NeverScrollableScrollPhysics(),
+            //   itemBuilder: (context, index) {
+            //     return filterItem(filterCategoryList[index]);
+            //   },
+            //   separatorBuilder: (context, index) => const SizedBox(
+            //     height: 16,
+            //   ),
+            //   itemCount: filterCategoryList.length,
+            // ),
+            // 20.height,
           ],
         ).visible(!appStore.isLoading).paddingSymmetric(horizontal: 16),
       ),

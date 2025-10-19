@@ -37,49 +37,34 @@ class _FilterCategoryState extends State<FilterCategory> {
   Future<void> init() async {
     await getFilterCategory();
   }
+getFilterCategory() async {
+  appStore.setLoading(true);
 
-  getFilterCategory() async {
-    appStore.setLoading(true);
-    await getFilterCategoryApi(widget.categoryId!).then((value) {
-      filterCategoryList.clear();
-      if (value.isNotEmpty) {
-        value.forEach((element) {
-          if (kDebugMode) {
-            print('element.toJson(): ${element.toJson()}');
-          }
-          filterCategoryList.add(element);
-        });
-      } else {
-        filterCategoryList.add(
-            FilterCategoryModel(name: 'No Filters Available', options: []));
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CategorySelectedScreen(
-                      categoryId: widget.categoryId ?? 0,
-                      categoryName: widget.categoryName ?? '',
-                      transactionType: widget.transactionType ?? 0,
-                      selectedOptions: selectedOptions,
-                    )));
-        // CategorySelectedScreen(
-        //   categoryId: widget.categoryId ?? 0,
-        //   categoryName: widget.categoryName ?? '',
-        //   transactionType: widget.transactionType ?? 0,
-        //   selectedOptions: selectedOptions,
-        // ).launch(context);
-      }
-      setState(() {});
-      appStore.setLoading(false);
-    }).catchError((e) {
-      appStore.setLoading(false);
-      print(e.toString());
-    });
-  }
+  await getFilterCategoryApi(widget.categoryId!).then((value) {
+    appStore.setLoading(false);
+
+    // Always navigate to CategorySelectedScreen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CategorySelectedScreen(
+          categoryId: widget.categoryId ?? 0,
+          categoryName: widget.categoryName ?? '',
+          transactionType: widget.transactionType ?? 0,
+          selectedOptions: selectedOptions,
+        ),
+      ),
+    );
+  }).catchError((e) {
+    appStore.setLoading(false);
+    print(e.toString());
+  });
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( 
         title: Text(widget.categoryName ?? 'Filter Category'),
         centerTitle: true,
       ),

@@ -165,7 +165,7 @@ Future<PropertyTypeResponse> getPropertyTypeList() async {
 /// Language Data
 Future<ServerLanguageResponse> getLanguageList(versionNo) async {
   return ServerLanguageResponse.fromJson(await handleResponse(
-          await buildHttpResponse('language-table-list?version_no=$versionNo',
+          await buildHttpResponse('language-table-list?version_no=',
               method: HttpMethod.GET))
       .then((value) => value));
 }

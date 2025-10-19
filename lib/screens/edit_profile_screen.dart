@@ -175,159 +175,161 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: appBarWidget(
-          language.editProfile,
-          context1: context,
-          titleSpace: 0,
-        ),
-        bottomNavigationBar: Stack(children: [
-          AppButton(
-            text: language.save,
-            width: context.width(),
-            color: primaryColor,
-            elevation: 0,
-            onTap: () {
-              if (_formKey.currentState!.validate()) {
-                save();
-              }
-            },
-          ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
-        ]),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Container(
-                            decoration: boxDecorationWithRoundedCorners(
-                                boxShape: BoxShape.circle,
-                                border:
-                                    Border.all(color: primaryLight, width: 3)),
-                            child: profileImage()),
-                        Container(
-                                padding: EdgeInsets.all(7),
-                                decoration: boxDecorationWithRoundedCorners(
-                                    borderRadius: radius(50),
-                                    border: Border.all(color: Colors.white),
-                                    backgroundColor: primaryLight),
-                                child: Image.asset(ic_edit_profile,
-                                    height: 16, width: 16, color: primaryColor))
-                            .onTap(() {
-                          openBottomSheet();
-                        })
-                      ],
-                    ).onTap(() {
-                      openBottomSheet();
-                    }).center(),
-                    20.height,
-                    Text(language.firstName,
-                        style: primaryTextStyle(color: grayColor)),
-                    10.height,
-                    AppTextField(
-                        textInputAction: TextInputAction.next,
-                        controller: fNameController,
-                        focus: fNameFocus,
-                        textFieldType: TextFieldType.NAME,
-                        keyboardType: TextInputType.name,
-                        decoration: defaultInputDecoration(context,
-                            label: language.enterFirstName),
-                        suffix: Image.asset(ic_profile,
-                                height: 16, width: 16, color: grayColor)
-                            .paddingSymmetric(vertical: 12)),
-                    10.height,
-                    Text(language.lastName,
-                        style: primaryTextStyle(color: grayColor)),
-                    10.height,
-                    AppTextField(
-                        textInputAction: TextInputAction.next,
-                        controller: lNameController,
-                        focus: lNameFocus,
-                        textFieldType: TextFieldType.NAME,
-                        keyboardType: TextInputType.name,
-                        decoration: defaultInputDecoration(context,
-                            label: language.enterLastName),
-                        suffix: Image.asset(ic_profile,
-                                height: 16, width: 16, color: grayColor)
-                            .paddingSymmetric(vertical: 12)),
-                    10.height,
-                    Text(language.email,
-                        style: primaryTextStyle(color: grayColor)),
-                    10.height,
-                    AppTextField(
-                        onFieldSubmitted: (p0) {
-                          if (_formKey.currentState!.validate()) {
-                            save();
-                          }
-                        },
-                        textInputAction: TextInputAction.done,
-                        controller: emailController,
-                        focus: emailFocus,
-                        textFieldType: TextFieldType.EMAIL,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: defaultInputDecoration(context,
-                            label: language.enterEmail),
-                        suffix: Image.asset(ic_mail,
-                                height: 16, width: 16, color: grayColor)
-                            .paddingSymmetric(vertical: 12)),
-                    10.height,
-                    Text(language.phoneNumber,
-                        style: primaryTextStyle(color: grayColor)),
-                    10.height,
-                    AppTextField(
-                      controller: phoneController,
-                      textFieldType: TextFieldType.PHONE,
-                      focus: phoneFocus,
-                      readOnly: true,
-                      suffix: mSuffixTextFieldIconWidget(ic_call_outlined),
-                      decoration: defaultInputDecoration(context,
-                          label: language.enterPhone,
-                          mPrefix: IntrinsicHeight(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CountryCodePicker(
-                                  enabled: false,
-                                  initialSelection: countryCode,
-                                  showCountryOnly: false,
-                                  showFlag: false,
-                                  boxDecoration: BoxDecoration(
-                                      borderRadius: radius(defaultRadius),
-                                      color: context.scaffoldBackgroundColor),
-                                  showFlagDialog: true,
-                                  showOnlyCountryWhenClosed: false,
-                                  alignLeft: false,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 4),
-                                  textStyle: primaryTextStyle(),
-                                  onInit: (c) {},
-                                  onChanged: (c) {},
-                                ),
-                                VerticalDivider(
-                                    color: Colors.grey.withOpacity(0.5)),
-                                16.width,
-                              ],
-                            ),
-                          )),
-                    ),
-                    10.height,
-                  ],
-                ).paddingSymmetric(horizontal: 16),
-              ),
-            ),
-            Observer(
-              builder: (context) {
-                return Loader().center().visible(appStore.isLoading);
+    return SafeArea(
+      child: Scaffold(
+          appBar: appBarWidget(
+            language.editProfile,
+            context1: context,
+            titleSpace: 0,
+          ),
+          bottomNavigationBar: Stack(children: [
+            AppButton(
+              text: language.save,
+              width: context.width(),
+              color: primaryColor,
+              elevation: 0,
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  save();
+                }
               },
-            )
-          ],
-        ));
+            ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
+          ]),
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          Container(
+                              decoration: boxDecorationWithRoundedCorners(
+                                  boxShape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: primaryLight, width: 3)),
+                              child: profileImage()),
+                          Container(
+                                  padding: EdgeInsets.all(7),
+                                  decoration: boxDecorationWithRoundedCorners(
+                                      borderRadius: radius(50),
+                                      border: Border.all(color: Colors.white),
+                                      backgroundColor: primaryLight),
+                                  child: Image.asset(ic_edit_profile,
+                                      height: 16, width: 16, color: primaryColor))
+                              .onTap(() {
+                            openBottomSheet();
+                          })
+                        ],
+                      ).onTap(() {
+                        openBottomSheet();
+                      }).center(),
+                      20.height,
+                      Text(language.firstName,
+                          style: primaryTextStyle(color: grayColor)),
+                      10.height,
+                      AppTextField(
+                          textInputAction: TextInputAction.next,
+                          controller: fNameController,
+                          focus: fNameFocus,
+                          textFieldType: TextFieldType.NAME,
+                          keyboardType: TextInputType.name,
+                          decoration: defaultInputDecoration(context,
+                              label: language.enterFirstName),
+                          suffix: Image.asset(ic_profile,
+                                  height: 16, width: 16, color: grayColor)
+                              .paddingSymmetric(vertical: 12)),
+                      10.height,
+                      Text(language.lastName,
+                          style: primaryTextStyle(color: grayColor)),
+                      10.height,
+                      AppTextField(
+                          textInputAction: TextInputAction.next,
+                          controller: lNameController,
+                          focus: lNameFocus,
+                          textFieldType: TextFieldType.NAME,
+                          keyboardType: TextInputType.name,
+                          decoration: defaultInputDecoration(context,
+                              label: language.enterLastName),
+                          suffix: Image.asset(ic_profile,
+                                  height: 16, width: 16, color: grayColor)
+                              .paddingSymmetric(vertical: 12)),
+                      10.height,
+                      Text(language.email,
+                          style: primaryTextStyle(color: grayColor)),
+                      10.height,
+                      AppTextField(
+                          onFieldSubmitted: (p0) {
+                            if (_formKey.currentState!.validate()) {
+                              save();
+                            }
+                          },
+                          textInputAction: TextInputAction.done,
+                          controller: emailController,
+                          focus: emailFocus,
+                          textFieldType: TextFieldType.EMAIL,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: defaultInputDecoration(context,
+                              label: language.enterEmail),
+                          suffix: Image.asset(ic_mail,
+                                  height: 16, width: 16, color: grayColor)
+                              .paddingSymmetric(vertical: 12)),
+                      10.height,
+                      Text(language.phoneNumber,
+                          style: primaryTextStyle(color: grayColor)),
+                      10.height,
+                      AppTextField(
+                        controller: phoneController,
+                        textFieldType: TextFieldType.PHONE,
+                        focus: phoneFocus,
+                        readOnly: true,
+                        suffix: mSuffixTextFieldIconWidget(ic_call_outlined),
+                        decoration: defaultInputDecoration(context,
+                            label: language.enterPhone,
+                            mPrefix: IntrinsicHeight(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CountryCodePicker(
+                                    enabled: false,
+                                    initialSelection: countryCode,
+                                    showCountryOnly: false,
+                                    showFlag: false,
+                                    boxDecoration: BoxDecoration(
+                                        borderRadius: radius(defaultRadius),
+                                        color: context.scaffoldBackgroundColor),
+                                    showFlagDialog: true,
+                                    showOnlyCountryWhenClosed: false,
+                                    alignLeft: false,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 4),
+                                    textStyle: primaryTextStyle(),
+                                    onInit: (c) {},
+                                    onChanged: (c) {},
+                                  ),
+                                  VerticalDivider(
+                                      color: Colors.grey.withOpacity(0.5)),
+                                  16.width,
+                                ],
+                              ),
+                            )),
+                      ),
+                      10.height,
+                    ],
+                  ).paddingSymmetric(horizontal: 16),
+                ),
+              ),
+              Observer(
+                builder: (context) {
+                  return Loader().center().visible(appStore.isLoading);
+                },
+              )
+            ],
+          )),
+    );
   }
 
   openBottomSheet() {
@@ -338,58 +340,60 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       shape: RoundedRectangleBorder(
           borderRadius: radiusOnly(topLeft: 12, topRight: 12)),
       builder: (BuildContext context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topRight,
-              child: Icon(Icons.close, size: 24).onTap(() {
+        return SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topRight,
+                child: Icon(Icons.close, size: 24).onTap(() {
+                  finish(context);
+                }),
+              ),
+              10.height,
+              Container(
+                width: context.width(),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Ionicons.camera_outline,
+                        color: appStore.isDarkModeOn ? white : primaryColor),
+                    16.width,
+                    Text(language.camera,
+                        style: primaryTextStyle(
+                            size: 18,
+                            color: appStore.isDarkModeOn ? white : black)),
+                  ],
+                ),
+              ).onTap(() {
+                getImageFromCamera();
                 finish(context);
               }),
-            ),
-            10.height,
-            Container(
-              width: context.width(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(Ionicons.camera_outline,
-                      color: appStore.isDarkModeOn ? white : primaryColor),
-                  16.width,
-                  Text(language.camera,
-                      style: primaryTextStyle(
-                          size: 18,
-                          color: appStore.isDarkModeOn ? white : black)),
-                ],
-              ),
-            ).onTap(() {
-              getImageFromCamera();
-              finish(context);
-            }),
-            10.height,
-            Divider(),
-            10.height,
-            Container(
-              width: context.width(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(AntDesign.picture,
-                      color: appStore.isDarkModeOn ? white : primaryColor),
-                  16.width,
-                  Text(language.chooseImage, style: primaryTextStyle(size: 18)),
-                ],
-              ),
-            ).onTap(() {
-              getImage();
-              finish(context);
-            }),
-            10.height,
-          ],
-        ).paddingSymmetric(horizontal: 16, vertical: 16);
+              10.height,
+              Divider(),
+              10.height,
+              Container(
+                width: context.width(),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(AntDesign.picture,
+                        color: appStore.isDarkModeOn ? white : primaryColor),
+                    16.width,
+                    Text(language.chooseImage, style: primaryTextStyle(size: 18)),
+                  ],
+                ),
+              ).onTap(() {
+                getImage();
+                finish(context);
+              }),
+              10.height,
+            ],
+          ).paddingSymmetric(horizontal: 16, vertical: 16),
+        );
       },
     );
   }

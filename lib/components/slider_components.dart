@@ -57,7 +57,7 @@ class _SlidesComponentsState extends State<SlidesComponents> {
 
   @override
   Widget build(BuildContext context) {
-    double mHeight = context.height() * 0.2;
+    double mHeight = context.height() * 0.3;
     return Column(
       children: [
         16.height,

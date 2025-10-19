@@ -200,7 +200,10 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+        print("%R%%%%%%%% ${widget.propertyId}");
+
     var size = MediaQuery.of(context).size;
+    print(mDetail?.data?.propertyImage?.isEmpty);
     return Scaffold(
       appBar: AppBar(
         title: Text('تفاصيل الوحدة',
@@ -222,6 +225,29 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       clipBehavior: Clip.none,
                       alignment: Alignment.topRight,
                       children: [
+                        if ((mDetail?.data?.propertyImage?.isEmpty ?? true) &&
+                            (mDetail?.data?.propertyGallary?.isEmpty ?? true))
+                          Image.asset(
+                            ic_placeholder,
+                            height: context.height() * 0.34,
+                            width: context.width(),
+                            fit: BoxFit.cover,
+                          )
+                        else if ((mDetail?.data?.propertyGallary?.isEmpty ?? true)&& (mDetail?.data?.propertyGallary?.contains('default') ?? false))
+                          Image.asset(
+                            ic_placeholder,
+                            height: context.height() * 0.34,
+                            width: context.width(),
+                            fit: BoxFit.cover,
+                          )
+                        else if (mDetail?.data?.propertyGallary?.isEmpty ?? true )
+                          Image.network(
+                            mDetail?.data?.propertyImage ?? "",
+                            height: context.height() * 0.34,
+                            width: context.width(),
+                            fit: BoxFit.cover,
+                          )
+else
                         CarouselSlider(
                           carouselController: _carouselController,
                           items:
@@ -921,8 +947,11 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                               Image.asset(ic_whatsapp, height: 30, width: 30),
                         ),
                         onTap: () {
+                          print("phone : ${mDetail!.customer!.contactNumber}");
+                         final  phone = mDetail!.customer!.contactNumber?.replaceAll('+', '').replaceAll(':', '').trim();
+
                           commonLaunchUrl(
-                              'whatsapp://send?phone=:${mDetail!.customer!.contactNumber}');
+                              'https://wa.me/${phone}');
                         },
                       ),
                       8.width,

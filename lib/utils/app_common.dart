@@ -105,7 +105,8 @@ Widget cachedImage(String? url,
     AlignmentGeometry? alignment,
     bool usePlaceholderIfUrlEmpty = true,
     double? radius}) {
-  if (url.validate().isEmpty) {
+  print("url $url");
+  if ((url?.isEmpty ?? true) || (url?.contains("default") ?? false)) {
     return placeHolderWidget(
         height: height,
         width: width,

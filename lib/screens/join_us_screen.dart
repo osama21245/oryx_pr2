@@ -35,7 +35,7 @@ class JoinUsScreen extends StatelessWidget {
             ),
             20.height,
             AppButton(
-              text: 'تسجيل',
+              text:  'تسجيل الدخول',
               width: context.width(),
               color: primaryColor,
               textColor: Colors.white,
@@ -44,7 +44,7 @@ class JoinUsScreen extends StatelessWidget {
               },
             ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
             AppButton(
-              text: 'تسجيل كضيف',
+              text: 'الاستمرار كضيف',
               width: context.width(),
               color: Color(0xffE9E9E9),
               textColor: primaryColor,

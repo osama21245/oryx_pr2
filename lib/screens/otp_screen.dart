@@ -469,29 +469,40 @@ class _OTPScreenState extends State<OTPScreen> {
                         Expanded(
                           child: Directionality(
                             textDirection: TextDirection.ltr,
-                            child: OTPTextField(
-                                otpFieldStyle: OtpFieldStyle(
-                                    backgroundColor: appStore.isDarkModeOn
-                                        ? cardDarkColor
-                                        : cardLightColor),
-                                controller: otpController,
-                                length: 6,
-                                keyboardType: TextInputType.number,
-                                width: MediaQuery.of(context).size.width,
-                                fieldWidth: 45,
-                                style: primaryTextStyle(),
-                                textFieldAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                fieldStyle: FieldStyle.box,
-                                onChanged: (s) {
-                                  otpCode = s;
-                                },
-                                onCompleted: (pin) async {
-                                  otpCode = pin;
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              maxLength: 6,
+                              textAlign: TextAlign.center,
+                              style: primaryTextStyle(),
+                              decoration: InputDecoration(
+                                counterText: '',
+                                filled: true,
+                                fillColor: appStore.isDarkModeOn
+                                    ? cardDarkColor
+                                    : cardLightColor,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                      color: primaryColor.withOpacity(0.4)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                      color: primaryColor.withOpacity(0.4)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(color: primaryColor),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                otpCode = value;
+                                if (value.length == 6) {
                                   submit();
-
-                                  setState(() {});
-                                }),
+                                }
+                                setState(() {});
+                              },
+                            ),
                           ),
                         )
                       ],

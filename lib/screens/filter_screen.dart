@@ -225,7 +225,7 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
               child: RangeSlider(
                 values: RangeValues(_values.start, _values.end),
                 min: getStringAsync(MIN_PRICE).toDouble(),
-                max: getStringAsync(MAX_PRICE).toDouble(),
+                max: getStringAsync(MAX_PRICE).toDouble()==0?10000: getStringAsync(MAX_PRICE).toDouble(),
                 onChanged: (RangeValues newValues) {
                   setState(() {
                     _values = RangeValues(newValues.start, newValues.end);

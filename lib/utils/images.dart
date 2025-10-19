@@ -1,5 +1,5 @@
 const ic_logo = 'assets/ic_logo.png';
-const ic_placeholder = "assets/ic_placeholder.jpg";
+const ic_placeholder = "assets/splash.png";
 const ic_filter = 'assets/ic_Filter.png';
 const ic_home = "assets/ic_home.png";
 const ic_home_fill = "assets/ic_home_fill.png";

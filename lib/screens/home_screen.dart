@@ -160,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   Future<void> getData() async {
     appStore.setLoading(true);
+    print("city   ${userStore.cityName}");
     await getDashBoardData({"latitude": userStore.latitude,
     "longitude": userStore.longitude, "city": userStore.cityName,
      "player_id": getStringAsync(PLAYER_ID)}).then((value) {

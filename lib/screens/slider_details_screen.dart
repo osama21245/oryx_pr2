@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:orex/components/table.dart';
 import 'package:orex/extensions/colors.dart';
-import '../components/HtmlWidget.dart';
 import '../extensions/decorations.dart';
 import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/extension_util/widget_extensions.dart';
 import '../utils/colors.dart';
-import '../utils/images.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/text_styles.dart';
 import '../main.dart';
@@ -69,7 +68,7 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                                     : textOnLightMode)),
                         10.height,
                         CustomAreaPricesTable(
-                          areaPrices: widget.slider.areaPrices!,
+                          areaPrices: widget.slider.areaPrices,
                           onRowTap: (p0) {
                             print('price ${p0.price}');
                             PropertyDetailScreen(
@@ -86,12 +85,17 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                                     ? textOnDarkMode
                                     : textOnLightMode)),
                         4.height,
-                        Text(widget.slider.description.validate(),
-                            style: boldTextStyle(
-                                size: 18,
-                                color: appStore.isDarkModeOn
-                                    ? textOnDarkMode
-                                    : textOnLightMode)),
+                        Html(
+                          data: widget.slider
+                              .description, // e.g. "<p>موجود مساحات متنوعة للايجار تبدأ من 7متر حتى 200متر</p>"
+                          style: {
+                            "*": Style(
+                              direction: TextDirection.rtl, // since it's Arabic
+                              fontSize: FontSize(16),
+                              color: Colors.black,
+                            ),
+                          },
+                        ),
                       ],
                     ).expand(),
                     // Image.asset(ic_forward_arrow,

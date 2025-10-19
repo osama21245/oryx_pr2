@@ -1,11 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:orex/extensions/extension_util/int_extensions.dart';
 import 'package:orex/extensions/extension_util/widget_extensions.dart';
 import 'package:orex/screens/choose_transaction_type_screen.dart';
 import 'package:orex/screens/filter_category.dart';
 import 'package:orex/models/category_list_model.dart';
 import 'package:orex/network/RestApis.dart';
-
+import 'package:orex/screens/filter_screen.dart';
+import 'package:orex/screens/search_screen.dart';
+import 'package:orex/utils/app_textfiled.dart';
+import 'package:orex/utils/images.dart';
 import '../extensions/colors.dart';
 import '../extensions/decorations.dart';
 import '../extensions/shared_pref.dart';
@@ -27,6 +31,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  TextEditingController mSearchCont = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -110,6 +116,11 @@ class _MainScreenState extends State<MainScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //?? add by Axon
+            
+            // Search widget above grid
+            searchWidget(),
+            20.height,
+            
             // old code
             _buldGrid(),
             // new code
@@ -121,6 +132,8 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
+  
 
   Widget _buldGrid() {
     if (data?.propertyCity?.isNotEmpty ?? false) {
@@ -164,6 +177,19 @@ class _MainScreenState extends State<MainScreen> {
           selectCityName = selectedCity;
           userStore.setUserCity(selectCityName!).then((value) =>
               ChooseTransactionTypeScreen().launch(context, isNewTask: false));
+                await getDashBoardData({"latitude": userStore.latitude,
+    "longitude": userStore.longitude, "city": userStore.cityName,
+     "player_id": getStringAsync(PLAYER_ID)}).then((value) {
+      data = value;
+      userStore.setMinPrice(data!.filterConfiguration!.minPrice.toString());
+      userStore.setMaxPrice(data!.filterConfiguration!.maxPrice.toString());
+      setState(() {});
+    }).catchError((e) {
+      setState(() {});
+      print("=======>${e.toString()}");
+    }).whenComplete(
+      () => appStore.setLoading(false),
+    );
           // selectedCity = data!.propertyCity![index].id.toString();
           // selectCityName = data!.propertyCity![index].name.toString();
           // userStore.setUserCity(selectCityName!).then((value) {
@@ -259,6 +285,50 @@ class _MainScreenState extends State<MainScreen> {
   //     return SizedBox.shrink();
   //   }
   // }
+
+  //region search widget
+  Widget searchWidget() {
+    return Container(
+      margin: EdgeInsets.fromLTRB(16, 6, 16, 0),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: boxDecorationWithRoundedCorners(
+        borderRadius: radius(10), 
+        backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(ic_magnifier, height: 30, width: 20),
+          10.width,
+          AppTextField(
+            readOnly: true,
+            controller: mSearchCont,
+            textStyle: primaryTextStyle(),
+            textFieldType: TextFieldType.NAME,
+            onTap: () async {
+              bool? res = await SearchScreen(isBack: true).launch(context);
+              if (res == true) {
+                getData();
+                setState(() {});
+              }
+              setState(() {});
+            },
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(0),
+              border: InputBorder.none,
+              hintText: language.search,
+              hintStyle: primaryTextStyle(color: grey),
+              fillColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight
+            )
+          ).expand(),
+          Image.asset(ic_filter, height: 20, width: 20).onTap(() {
+            FilterScreen(isSelect: true).launch(context);
+          })
+        ],
+      ),
+    );
+  }
+  //endregion
 
   Widget _buildFirstDropdown() {
     if (data?.propertyCity?.isNotEmpty ?? false) {

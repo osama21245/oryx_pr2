@@ -47,10 +47,13 @@ class SplashScreenState extends State<SplashScreen>
           defaultServerLanguageData = value.data;
           performLanguageOperation(defaultServerLanguageData);
           setValue(LanguageJsonDataRes, value.toJson());
-          // Check if default language set from server
+          // ✅ Check if user has already selected a language
+          String? savedLangCode = getStringAsync(SELECTED_LANGUAGE_CODE);
           bool isSetLanguage =
               getBoolAsync(IS_SELECTED_LANGUAGE_CHANGE, defaultValue: false);
-          if (!isSetLanguage) {
+          
+          if (!isSetLanguage && savedLangCode.isEmpty) {
+            // ✅ Only set server default if no user selection exists
             for (int i = 0; i < value.data!.length; i++) {
               int isDefaultLang = value.data![i].isDefaultLanguage ?? 0;
               if (isDefaultLang == 1) {
@@ -62,6 +65,10 @@ class SplashScreenState extends State<SplashScreen>
                 break;
               }
             }
+          } else if (savedLangCode.isNotEmpty) {
+            // ✅ User has selected a language - use it with server data
+            appStore.setLanguage(savedLangCode, context: context);
+            print('🌍 Using saved language with server data: $savedLangCode');
           }
         } else {
           defaultServerLanguageData = [];

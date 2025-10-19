@@ -265,6 +265,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               return;
             }
             var type = userStore.userType;
+            log("type : $type");
             if (type != 'developer' && index == 2) {
               toast('must your role is developer by admins');
               return;
