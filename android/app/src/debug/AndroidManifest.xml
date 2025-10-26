@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.oryxinvestmentsegypt.orex">
+    package="com.oryxinvestmentsegypt.oryx">
 
     <uses-permission android:name="android.permission.INTERNET" />
      <application
@@ -12,7 +12,7 @@
         android:icon="@mipmap/launcher_icon">
         <meta-data
             android:name="onesignal_app_id"
-            android:value="ADD_ONESIGNAL_APP_ID" />
+            android:value="b2dcff93-86ec-4a14-8449-2af38ed76a77" />
         <meta-data
             android:name="onesignal_google_project_number"
             android:value="REMOTE" />

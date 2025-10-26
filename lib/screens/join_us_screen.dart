@@ -27,7 +27,7 @@ class JoinUsScreen extends StatelessWidget {
             ),
             15.height,
             Text(
-              'سجل الان',
+             language.registerNow,
               style: TextStyle(
                   color: appStore.isDarkModeOn ? Colors.white : Colors.black,
                   fontSize: 32,
@@ -35,7 +35,7 @@ class JoinUsScreen extends StatelessWidget {
             ),
             20.height,
             AppButton(
-              text:  'تسجيل الدخول',
+              text: language.login,
               width: context.width(),
               color: primaryColor,
               textColor: Colors.white,
@@ -44,7 +44,7 @@ class JoinUsScreen extends StatelessWidget {
               },
             ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
             AppButton(
-              text: 'الاستمرار كضيف',
+              text: language.continueAsGuest,
               width: context.width(),
               color: Color(0xffE9E9E9),
               textColor: primaryColor,

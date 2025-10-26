@@ -1,8 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.oryxinvestmentsegypt.orex">
+    package="com.oryxinvestmentsegypt.oryx">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- OneSignal Permissions -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
      <application
         android:usesCleartextTraffic="true"
@@ -12,9 +17,10 @@
         android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:icon="@mipmap/launcher_icon">
+        <!-- OneSignal Configuration -->
         <meta-data
             android:name="onesignal_app_id"
-            android:value="ADD_ONESIGNAL_APP_ID" />
+            android:value="b2dcff93-86ec-4a14-8449-2af38ed76a77" />
         <meta-data
             android:name="onesignal_google_project_number"
             android:value="REMOTE" />

@@ -563,5 +563,9 @@ class BaseLanguage {
 
   String get yearly => getContentValueFromKey(339);
 
-  String get propertyDetail => getContentValueFromKey(332);
+  String get propertyDetail => getContentValueFromKey(348);
+  String get registerNow => getContentValueFromKey(344);
+  String get login => getContentValueFromKey(345);
+  String get continueAsGuest => getContentValueFromKey(346);
+  String get transactionType => getContentValueFromKey(347);
 }

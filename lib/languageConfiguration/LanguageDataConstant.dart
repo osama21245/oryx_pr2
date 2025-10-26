@@ -88,18 +88,23 @@ List<Locale> getSupportedLocales() {
 String getContentValueFromKey(int keywordId) {
   String defaultKeyValue = defaultKeyNotFoundValue;
   bool isFoundKey = false;
+
   if (selectedServerLanguageData != null) {
     for (int index = 0;
         index < selectedServerLanguageData!.contentData!.length;
         index++) {
+
       if (selectedServerLanguageData!.contentData![index].keywordId ==
           keywordId) {
+
         defaultKeyValue =
             selectedServerLanguageData!.contentData![index].keywordValue!;
+            
         isFoundKey = true;
         break;
       }
     }
+
   } else {
     for (int index = 0; index < defaultLanguageDataKeys.length; index++) {
       if (defaultLanguageDataKeys[index].keywordId == keywordId) {

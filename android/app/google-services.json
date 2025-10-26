@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "521631638082",
-    "project_id": "orex-b59ce",
-    "storage_bucket": "orex-b59ce.firebasestorage.app"
+    "project_number": "863986906019",
+    "project_id": "oryx-a7b1c",
+    "storage_bucket": "oryx-a7b1c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:521631638082:android:101d1b5159284fd64103db",
+        "mobilesdk_app_id": "1:863986906019:android:f2a8b3968e90f333bb6016",
         "android_client_info": {
-          "package_name": "com.oryxinvestmentsegypt.orex"
+          "package_name": "com.oryxinvestmentsegypt.oryx"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBhKr_QRdhUA-FznJfOgtUvJQDKwHJnPQk"
+          "current_key": "AIzaSyCpFFoFcCqqRUpmZDfeiiDhUa5DDI15_Uw"
         }
       ],
       "services": {

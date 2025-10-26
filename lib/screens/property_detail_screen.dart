@@ -206,7 +206,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
     print(mDetail?.data?.propertyImage?.isEmpty);
     return Scaffold(
       appBar: AppBar(
-        title: Text('تفاصيل الوحدة',
+        title: Text(language.propertyDetail,
             style:
                 boldTextStyle(color: white, size: 20, weight: FontWeight.w800)),
         centerTitle: true,

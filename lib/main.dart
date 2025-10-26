@@ -112,12 +112,14 @@ void main() async {
     print('🌍 Using user-selected language: $savedLangCode');
   }
 
-  // ✅ Set the determined language
+  // ✅ Set the determined language and initialize language object
   if (defaultServerLanguageData != null && defaultServerLanguageData!.isNotEmpty) {
-    appStore.setLanguage(languageToUse);
+    await appStore.setLanguage(languageToUse);
   } else {
-    // ✅ No server data yet - set basic language for now
+    // ✅ No server data yet - set basic language for now and initialize language object
     appStore.selectedLanguage = languageToUse;
+    // Initialize the language object to prevent LateInitializationError
+    language = (await AppLocalizations().load(Locale(languageToUse)));
     print('🌍 No server data yet, using: $languageToUse');
   }
 

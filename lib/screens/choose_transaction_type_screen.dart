@@ -58,7 +58,7 @@ class _ChooseTransactionTypeDropdownState
       child: DropdownButtonFormField<int>(
         value: selectedTransactionTypeId,
         decoration: InputDecoration(
-          labelText: 'اختار نوع المعاملة',
+          labelText: language.transactionType,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         ),
         items: transactionTypes.map((type) {
@@ -199,7 +199,7 @@ class _ChooseTransactionTypeScreenState
             width:
                 40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */
           ).paddingOnly(left: 16, top: 8, bottom: 8),
-          title: Text("اختار نوع المعاملة"),
+          title: Text(language.transactionType),
           centerTitle: true,
         ),
         // body: appStore.isLoading
@@ -335,7 +335,7 @@ class _ChooseTransactionTypeScreenState
                       child: TransactionTypeCard(
                         isSelected: isSale,
                         imagePath: ic_sale,
-                        type: 'بيع',
+                        type: language.sell,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -351,7 +351,7 @@ class _ChooseTransactionTypeScreenState
                       child: TransactionTypeCard(
                         isSelected: isRent,
                         imagePath: ic_rent,
-                        type: 'ايجار',
+                        type: language.rent,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -363,7 +363,7 @@ class _ChooseTransactionTypeScreenState
                         borderRadius: BorderRadius.circular(23),
                       ),
                       child: Text(
-                        "مساحة اعلانية",
+                       language.advertisement,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
