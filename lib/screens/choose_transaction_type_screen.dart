@@ -310,72 +310,79 @@ class _ChooseTransactionTypeScreenState
                   color: context.primaryColor,
                 ),
               )
-            : Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center, // وسط الشاشة
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TransactionTypeCard(
-                      isSelected: false,
-                      imagePath: gifUrl,
-                      padding: 0,
-                      isGif: true,
-                    ),
-                    const SizedBox(height: 24),
-                    GestureDetector(
-                      onTap: () {
-                        iWantToSale();
-                        selectedTransactionTypeId = 1;
-                        DashboardScreen(
-                          transactionType: selectedTransactionTypeId,
-                          isSplash: false,
-                        ).launch(context, isNewTask: false);
-                      },
-                      child: TransactionTypeCard(
-                        isSelected: isSale,
-                        imagePath: ic_sale,
-                        type: language.sell,
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center, // وسط الشاشة
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TransactionTypeCard(
+                        isSelected: false,
+                        imagePath: gifUrl,
+                        padding: 0,
+                        isGif: true,
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    GestureDetector(
-                      onTap: () {
-                        iWantToRent();
-                        selectedTransactionTypeId = 0;
-                        DashboardScreen(
-                          transactionType: selectedTransactionTypeId,
-                          isSplash: false,
-                        ).launch(context, isNewTask: true);
-                      },
-                      child: TransactionTypeCard(
-                        isSelected: isRent,
-                        imagePath: ic_rent,
-                        type: language.rent,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).disabledColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(23),
-                      ),
-                      child: Text(
-                       language.advertisement,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 24,
-                          fontFamily: 'Cairo',
-                          color: appStore.isDarkModeOn
-                              ? textOnDarkMode
-                              : textOnLightMode,
+                      const SizedBox(height: 24),
+                      GestureDetector(
+                        onTap: () {
+                          iWantToSale();
+                          selectedTransactionTypeId = 1;
+                          DashboardScreen(
+                            transactionType: selectedTransactionTypeId,
+                            isSplash: false,
+                          ).launch(context, isNewTask: false);
+                        },
+                        child: TransactionTypeCard(
+                          isSelected: isSale,
+                          imagePath: ic_sale,
+                          type: language.sell,
+                          height: 130,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 24),
+                      GestureDetector(
+                        onTap: () {
+                          iWantToRent();
+                          selectedTransactionTypeId = 0;
+                          DashboardScreen(
+                            transactionType: selectedTransactionTypeId,
+                            isSplash: false,
+                          ).launch(context, isNewTask: true);
+                        },
+                        child: TransactionTypeCard(
+                          isSelected: isRent,
+                          imagePath: ic_rent,
+                          type: language.rent,
+                          height: 130,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Container(
+                        alignment: Alignment.center,
+                        height: 130,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).disabledColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(23),
+                        ),
+                        child: Text(
+                          language.advertisement,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 24,
+                            fontFamily: 'Cairo',
+                            color: appStore.isDarkModeOn
+                                ? textOnDarkMode
+                                : textOnLightMode,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
       );

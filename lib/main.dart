@@ -56,14 +56,19 @@ get getContext1 => navigatorKey.currentState?.overlay?.context;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((value) {
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  });
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.debug,
-  );
+  try {
+    await Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform)
+        .then((value) {
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    });
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.debug,
+    );
+  } catch (e) {
+    print(e);
+  }
 
   sharedPreferences = await SharedPreferences.getInstance();
   appStore.setLogin(getBoolAsync(IS_LOGGED_IN), isInitializing: true);
@@ -77,34 +82,38 @@ void main() async {
 
 // ✅ Step: get saved language and check if user has made a language selection
   String? savedLangCode = getStringAsync(SELECTED_LANGUAGE_CODE);
-  bool hasUserSelectedLanguage = getBoolAsync(IS_SELECTED_LANGUAGE_CHANGE, defaultValue: false);
+  bool hasUserSelectedLanguage =
+      getBoolAsync(IS_SELECTED_LANGUAGE_CHANGE, defaultValue: false);
 
   // ✅ Load cached language data first
   setDefaultLocate();
 
   // ✅ Determine which language to use
   String languageToUse;
-  
+
   if (!hasUserSelectedLanguage || savedLangCode.isEmpty) {
     // ✅ No user selection or system default → use system language
     final Locale systemLocale = PlatformDispatcher.instance.locale;
     String systemLangCode = systemLocale.languageCode;
-    
+
     // ✅ Check if system language is supported in server data
     bool isSystemLangSupported = false;
-    if (defaultServerLanguageData != null && defaultServerLanguageData!.isNotEmpty) {
-      isSystemLangSupported = defaultServerLanguageData!.any((lang) => lang.languageCode == systemLangCode);
+    if (defaultServerLanguageData != null &&
+        defaultServerLanguageData!.isNotEmpty) {
+      isSystemLangSupported = defaultServerLanguageData!
+          .any((lang) => lang.languageCode == systemLangCode);
     } else {
       // Fallback check for basic supported languages
       isSystemLangSupported = ['en', 'ar'].contains(systemLangCode);
     }
-    
+
     if (isSystemLangSupported) {
       languageToUse = systemLangCode;
       print('🌍 Using system language: $systemLangCode');
     } else {
       languageToUse = defaultLanguageCode;
-      print('🌍 System language not supported, using fallback: $defaultLanguageCode');
+      print(
+          '🌍 System language not supported, using fallback: $defaultLanguageCode');
     }
   } else {
     // ✅ User has selected a specific language → use it
@@ -113,7 +122,8 @@ void main() async {
   }
 
   // ✅ Set the determined language and initialize language object
-  if (defaultServerLanguageData != null && defaultServerLanguageData!.isNotEmpty) {
+  if (defaultServerLanguageData != null &&
+      defaultServerLanguageData!.isNotEmpty) {
     await appStore.setLanguage(languageToUse);
   } else {
     // ✅ No server data yet - set basic language for now and initialize language object
@@ -122,7 +132,6 @@ void main() async {
     language = (await AppLocalizations().load(Locale(languageToUse)));
     print('🌍 No server data yet, using: $languageToUse');
   }
-
 
   // Remove By SK
   /*await initialize(aLocaleLanguageList: languageList());

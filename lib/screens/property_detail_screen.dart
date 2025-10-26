@@ -200,7 +200,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-        print("%R%%%%%%%% ${widget.propertyId}");
+    print("%R%%%%%%%% ${widget.propertyId}");
 
     var size = MediaQuery.of(context).size;
     print(mDetail?.data?.propertyImage?.isEmpty);
@@ -233,47 +233,52 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                             width: context.width(),
                             fit: BoxFit.cover,
                           )
-                        else if ((mDetail?.data?.propertyGallary?.isEmpty ?? true)&& (mDetail?.data?.propertyGallary?.contains('default') ?? false))
+                        else if ((mDetail?.data?.propertyGallary?.isEmpty ??
+                                true) &&
+                            (mDetail?.data?.propertyGallary
+                                    ?.contains('default') ??
+                                false))
                           Image.asset(
                             ic_placeholder,
                             height: context.height() * 0.34,
                             width: context.width(),
                             fit: BoxFit.cover,
                           )
-                        else if (mDetail?.data?.propertyGallary?.isEmpty ?? true )
+                        else if (mDetail?.data?.propertyGallary?.isEmpty ??
+                            true)
                           Image.network(
                             mDetail?.data?.propertyImage ?? "",
                             height: context.height() * 0.34,
                             width: context.width(),
                             fit: BoxFit.cover,
                           )
-else
-                        CarouselSlider(
-                          carouselController: _carouselController,
-                          items:
-                              mDetail!.data!.propertyGallary!.map((imageUrl) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                image: DecorationImage(
-                                  image: NetworkImage(imageUrl),
-                                  fit: BoxFit.cover,
+                        else
+                          CarouselSlider(
+                            carouselController: _carouselController,
+                            items:
+                                mDetail!.data!.propertyGallary!.map((imageUrl) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                    image: NetworkImage(imageUrl),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                          options: CarouselOptions(
-                            height: context.height() * 0.34,
-                            viewportFraction: 1.0,
-                            autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 3),
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _currentIndex = index; // Update current index
-                              });
-                            },
+                              );
+                            }).toList(),
+                            options: CarouselOptions(
+                              height: context.height() * 0.34,
+                              viewportFraction: 1.0,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 3),
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _currentIndex = index; // Update current index
+                                });
+                              },
+                            ),
                           ),
-                        ),
                         Positioned(
                           left: 16,
                           top: context.height() * 0.15,
@@ -432,6 +437,12 @@ else
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(mDetail!.data!.name.toString(),
+                            style: boldTextStyle(size: 18)),
+                        Text(
+                          'الفئة :- ${mDetail!.data!.category}',
+                          style: primaryTextStyle(size: 16),
+                        ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         //   children: [
@@ -486,8 +497,6 @@ else
                         10.height,
                         Row(
                           children: [
-                            // Text(mDetail!.data!.name.toString(),
-                            //     style: boldTextStyle(size: 18)),
                             mDetail!.data!.propertyFor == 1
                                 ? PriceWidget(
                                     price: formatNumberString(
@@ -523,6 +532,7 @@ else
                           ],
                         ).paddingSymmetric(horizontal: 0),
                         16.height,
+
                         // horizontalWidget(),
                         // Divider(
                         //     thickness: 1,
@@ -948,10 +958,12 @@ else
                         ),
                         onTap: () {
                           print("phone : ${mDetail!.customer!.contactNumber}");
-                         final  phone = mDetail!.customer!.contactNumber?.replaceAll('+', '').replaceAll(':', '').trim();
+                          final phone = mDetail!.customer!.contactNumber
+                              ?.replaceAll('+', '')
+                              .replaceAll(':', '')
+                              .trim();
 
-                          commonLaunchUrl(
-                              'https://wa.me/${phone}');
+                          commonLaunchUrl('https://wa.me/${phone}');
                         },
                       ),
                       8.width,

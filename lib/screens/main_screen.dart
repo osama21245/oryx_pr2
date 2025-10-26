@@ -306,6 +306,7 @@ class _MainScreenState extends State<MainScreen> {
                   controller: mSearchCont,
                   textStyle: primaryTextStyle(),
                   textFieldType: TextFieldType.NAME,
+               
                   onTap: () async {
                     bool? res =
                         await SearchScreen(isBack: true).launch(context);

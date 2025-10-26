@@ -12,9 +12,7 @@ import '../utils/app_common.dart';
 
 class SlidesComponents extends StatefulWidget {
   final List<MSlider>? data;
-
   SlidesComponents({required this.data});
-
   @override
   State<SlidesComponents> createState() => _SlidesComponentsState();
 }
@@ -23,7 +21,6 @@ class _SlidesComponentsState extends State<SlidesComponents> {
   PageController pageController = PageController();
   late Timer _autoScrollTimer;
   int currentIndex = 0;
-
   @override
   void initState() {
     super.initState();

@@ -83,7 +83,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   rename: ^3.1.0
-  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -95,8 +94,8 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/splash.png"
-  adaptive_icon_foreground: "assets/splash.png"
+  image_path: "assets/logo_app.png"
+  adaptive_icon_foreground: "assets/logo_app.png"
   adaptive_icon_background: "#d10e0e"
   min_sdk_android: 21
 

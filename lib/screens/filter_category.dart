@@ -37,34 +37,35 @@ class _FilterCategoryState extends State<FilterCategory> {
   Future<void> init() async {
     await getFilterCategory();
   }
-getFilterCategory() async {
-  appStore.setLoading(true);
 
-  await getFilterCategoryApi(widget.categoryId!).then((value) {
-    appStore.setLoading(false);
+  getFilterCategory() async {
+    appStore.setLoading(true);
 
-    // Always navigate to CategorySelectedScreen
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CategorySelectedScreen(
-          categoryId: widget.categoryId ?? 0,
-          categoryName: widget.categoryName ?? '',
-          transactionType: widget.transactionType ?? 0,
-          selectedOptions: selectedOptions,
+    await getFilterCategoryApi(widget.categoryId!).then((value) {
+      appStore.setLoading(false);
+
+      // Always navigate to CategorySelectedScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CategorySelectedScreen(
+            categoryId: widget.categoryId ?? 0,
+            categoryName: widget.categoryName ?? '',
+            transactionType: widget.transactionType ?? 0,
+            selectedOptions: selectedOptions,
+          ),
         ),
-      ),
-    );
-  }).catchError((e) {
-    appStore.setLoading(false);
-    print(e.toString());
-  });
-}
+      );
+    }).catchError((e) {
+      appStore.setLoading(false);
+      print(e.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( 
+      appBar: AppBar(
         title: Text(widget.categoryName ?? 'Filter Category'),
         centerTitle: true,
       ),

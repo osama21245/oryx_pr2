@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -60,6 +62,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<Property> mergePropertyData = [];
+  late Debouncer _debouncer;
 
   List<String> list = [];
   num? latitude;
@@ -79,6 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
+    _debouncer = Debouncer(milliseconds: 500);
     super.initState();
     init();
   }
@@ -110,7 +114,7 @@ class _SearchScreenState extends State<SearchScreen> {
         userStore.mRecentSearchList.remove(mSearchValue);
         userStore.mRecentSearchList.insert(0, mSearchValue!);
       }
-      mSearchCont.clear();
+      //mSearchCont.clear();
     });
   }
 
@@ -232,6 +236,17 @@ class _SearchScreenState extends State<SearchScreen> {
                               border: InputBorder.none,
                               hintText: language.searchLocation,
                               hintStyle: primaryTextStyle(color: grey)),
+                          onChanged: (v) {
+                            _debouncer.run(() {
+                              mSearchValue = v;
+                              latitude = 0.0;
+                              longitude = 0.0;
+                              searchAndUpdateList(v.trim());
+                              searchPropertyApi();
+                              widget.isFilter = false;
+                              if (mounted) setState(() {});
+                            });
+                          },
                           onFieldSubmitted: (v) {
                             mSearchValue = v;
                             latitude = 0.0;
@@ -594,5 +609,17 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       );
     }));
+  }
+}
+
+class Debouncer {
+  final int milliseconds;
+  Timer? _timer;
+
+  Debouncer({required this.milliseconds});
+
+  run(VoidCallback action) {
+    _timer?.cancel();
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
