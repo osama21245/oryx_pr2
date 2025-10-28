@@ -120,11 +120,12 @@ class _MainScreenState extends State<MainScreen> {
             searchWidget(),
             20.height,
             _buildFirstDropdown(),
+              _buildSecondDropdown(),
+            _buildCategoryDropdown(),
             // old code
             _buldGrid(),
             // new code
-            _buildSecondDropdown(),
-            _buildCategoryDropdown(),
+          
           ],
         ),
       ),

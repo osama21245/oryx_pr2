@@ -289,9 +289,9 @@ String formatDateString(String dateString) {
 }
 
 String formatNumberString(num priceValue) {
-  String formattedPrice = NumberFormat('#,##,##0').format(priceValue);
-
-  return formattedPrice;
+  // Use the Egyptian locale (ar_EG) for grouping separators
+  final formatter = NumberFormat('#,###', );
+  return formatter.format(priceValue);
 }
 
 String formatFilterNumberString(double priceValue) {
