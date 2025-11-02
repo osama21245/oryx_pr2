@@ -8,20 +8,20 @@ class LimitPropertyResponse {
 
   LimitPropertyResponse.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['data'] != null) {
       data = <LimitPropertyModel>[];
       json['data'].forEach((v) {
-        data!.add(new LimitPropertyModel.fromJson(v));
+        data!.add(LimitPropertyModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -62,14 +62,14 @@ class LimitPropertyModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['limit'] = this.limit;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['type'] = this.type;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['limit'] = limit;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['type'] = type;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../extensions/extension_util/widget_extensions.dart';
 import '../models/dashBoard_response.dart';
-import '../components/adMob_component.dart';
 import '../components/advertisement_property_component.dart';
-import '../components/app_bar_components.dart';
 import '../extensions/loader_widget.dart';
 import '../extensions/system_utils.dart';
 import '../main.dart';
@@ -75,15 +73,15 @@ class _CategorySelectedScreenState extends State<CategorySelectedScreen> {
     };
     if (widget.selectedOptions != null && widget.selectedOptions!.isNotEmpty) {
       int i = 1;
-      widget.selectedOptions!.values.forEach((value) {
+      for (var value in widget.selectedOptions!.values) {
         req["filter_option[]$i"] = value;
         i++;
-      });
+      }
     }
     if (kDebugMode) {
       print('object req: $req');
     }
-    await filterApi(req, page: 1).then((value) {
+    await filterApi(req, page: page).then((value) {
       numPage = value.pagination!.totalPages;
       isLastPage = false;
       if (page == 1) {
@@ -91,6 +89,10 @@ class _CategorySelectedScreenState extends State<CategorySelectedScreen> {
       }
       Iterable it = value.property!;
       it.map((e) => mPropertyDataSelected.add(e)).toList();
+      // Filter the list to only include properties matching the transaction type
+      mPropertyDataSelected = mPropertyDataSelected
+          .where((p) => p.propertyFor == widget.transactionType)
+          .toList();
       appStore.setLoading(false);
       setState(() {});
     }).catchError((error) {

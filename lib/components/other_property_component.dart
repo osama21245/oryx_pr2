@@ -19,7 +19,7 @@ class OtherPropertyComponents extends StatefulWidget {
 
   final OwnerProperty? ownerProperty;
 
-  OtherPropertyComponents({/*this.img, this.name, this.property, this.isPremium,*/ this.ownerProperty});
+  const OtherPropertyComponents({super.key, /*this.img, this.name, this.property, this.isPremium,*/ this.ownerProperty});
 
   @override
   State<OtherPropertyComponents> createState() => _OtherPropertyComponentsState();

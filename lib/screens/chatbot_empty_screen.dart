@@ -10,8 +10,8 @@ import '../utils/colors.dart';
 class ChatBotEmptyScreen extends StatefulWidget {
   final Function(String value) onTap;
   final bool isScroll;
-
-  ChatBotEmptyScreen({Key? key, required this.onTap, this.isScroll = false}) : super(key: key);
+  const ChatBotEmptyScreen(
+      {super.key, required this.onTap, this.isScroll = false});
 
   @override
   State<ChatBotEmptyScreen> createState() => _ChatBotEmptyScreenState();
@@ -48,7 +48,8 @@ class _ChatBotEmptyScreenState extends State<ChatBotEmptyScreen> {
     }
 
     return SingleChildScrollView(
-      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: widget.isScroll ? 185 : 90),
+      padding: EdgeInsets.only(
+          left: 16, right: 16, top: 16, bottom: widget.isScroll ? 185 : 90),
       controller: controller,
       child: Column(
         children: [
@@ -61,14 +62,22 @@ class _ChatBotEmptyScreenState extends State<ChatBotEmptyScreen> {
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration:
-                      appStore.isDarkModeOn ? boxDecorationWithRoundedCorners(borderRadius: radius(8)) : boxDecorationWithRoundedCorners(borderRadius: radius(8), backgroundColor: primaryVariant),
+                  decoration: appStore.isDarkModeOn
+                      ? boxDecorationWithRoundedCorners(borderRadius: radius(8))
+                      : boxDecorationWithRoundedCorners(
+                          borderRadius: radius(8),
+                          backgroundColor: primaryVariant),
                   child: Row(
                     children: [
                       2.width,
-                      Text(questionList[index], style: primaryTextStyle()).expand(),
+                      Text(questionList[index], style: primaryTextStyle())
+                          .expand(),
                       16.width,
-                      Icon(Icons.arrow_forward_ios, color: appStore.isDarkModeOn ? Colors.white : primaryColor, size: 16),
+                      Icon(Icons.arrow_forward_ios,
+                          color: appStore.isDarkModeOn
+                              ? Colors.white
+                              : primaryColor,
+                          size: 16),
                     ],
                   ),
                 ),

@@ -147,6 +147,8 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -177,7 +179,7 @@ class _MyAppState extends State<MyApp> {
     try {
       // result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {
-      log('Couldn\'t check connectivity status' + e.message.validate());
+      log('Couldn\'t check connectivity status${e.message.validate()}');
       return;
     }
     if (!mounted) {
@@ -200,14 +202,15 @@ class _MyAppState extends State<MyApp> {
       }
       log('connected');
     }
-    print("_connectionStatus-->" + _connectionStatus.name);
+    print("_connectionStatus-->${_connectionStatus.name}");
   }
 
   @override
   void didChangeDependencies() {
-    if (getIntAsync(THEME_MODE_INDEX) == ThemeModeSystem)
+    if (getIntAsync(THEME_MODE_INDEX) == ThemeModeSystem) {
       appStore.setDarkMode(
           MediaQuery.of(context).platformBrightness == Brightness.dark);
+    }
     super.didChangeDependencies();
   }
 

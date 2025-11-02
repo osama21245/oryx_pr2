@@ -4,11 +4,11 @@ class LogInResponse {
   LogInResponse({this.data});
 
   LogInResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -102,33 +102,33 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['username'] = this.username;
-    data['contact_number'] = this.contactNumber;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['address'] = this.address;
-    data['user_type'] = this.userType;
-    data['is_agent'] = this.isAgent;
-    data['is_builder'] = this.isBuilder;
-    data['player_id'] = this.playerId;
-    data['fcm_token'] = this.fcmToken;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['last_notification_seen'] = this.lastNotificationSeen;
-    data['status'] = this.status;
-    data['uid'] = this.uid;
-    data['display_name'] = this.displayName;
-    data['login_type'] = this.loginType;
-    data['otp_verify_at'] = this.otpVerifyAt;
-    data['timezone'] = this.timezone;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['api_token'] = this.apiToken;
-    data['profile_image'] = this.profileImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['username'] = username;
+    data['contact_number'] = contactNumber;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['address'] = address;
+    data['user_type'] = userType;
+    data['is_agent'] = isAgent;
+    data['is_builder'] = isBuilder;
+    data['player_id'] = playerId;
+    data['fcm_token'] = fcmToken;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['last_notification_seen'] = lastNotificationSeen;
+    data['status'] = status;
+    data['uid'] = uid;
+    data['display_name'] = displayName;
+    data['login_type'] = loginType;
+    data['otp_verify_at'] = otpVerifyAt;
+    data['timezone'] = timezone;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['api_token'] = apiToken;
+    data['profile_image'] = profileImage;
     return data;
   }
 }

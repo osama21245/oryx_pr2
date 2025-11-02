@@ -14,9 +14,10 @@ import '../models/walk_through_model.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../utils/images.dart';
-import 'login_screen.dart';
 
 class WalkThroughScreen extends StatefulWidget {
+  const WalkThroughScreen({super.key});
+
   @override
   _WalkThroughScreenState createState() => _WalkThroughScreenState();
 }
@@ -96,7 +97,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
             child: TextButton(
                 style: ButtonStyle(
                     overlayColor:
-                        MaterialStateProperty.all(Colors.transparent)),
+                        WidgetStateProperty.all(Colors.transparent)),
                 onPressed: () {
                   setValue(IS_FIRST_TIME, true);
                   JoinUsScreen().launch(context, isNewTask: true);
@@ -122,11 +123,10 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                               .toUpperCase(),
                           style: boldTextStyle(size: 20)),
                       TextSpan(
-                          text: " " +
-                              mWalkList[mCurrentIndex]
+                          text: " ${mWalkList[mCurrentIndex]
                                   .title2
                                   .toString()
-                                  .toUpperCase(),
+                                  .toUpperCase()}",
                           style: boldTextStyle(color: primaryColor, size: 20)),
                     ],
                   ),

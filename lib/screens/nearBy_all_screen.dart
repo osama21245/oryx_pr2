@@ -14,7 +14,7 @@ import 'property_detail_screen.dart';
 class NearBySeeAllScreen extends StatefulWidget {
   final Function? onCall;
 
-  const NearBySeeAllScreen({this.onCall});
+  const NearBySeeAllScreen({super.key, this.onCall});
 
   @override
   State<NearBySeeAllScreen> createState() => _NearBySeeAllScreenState();

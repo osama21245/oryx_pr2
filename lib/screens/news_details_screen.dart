@@ -10,7 +10,6 @@ import '../../extensions/text_styles.dart';
 import '../../screens/tags_screen.dart';
 import '../../utils/constants.dart';
 import 'package:share_plus/share_plus.dart';
-import '../components/HtmlWidget.dart';
 import '../extensions/decorations.dart';
 import '../main.dart';
 import '../models/article_model.dart';
@@ -52,9 +51,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
               .paddingSymmetric(horizontal: 16)
               .onTap(() {
             Share.share(
-                language.checkoutNewsArticles +
-                    " " +
-                    widget.articles.name.validate(),
+                "${language.checkoutNewsArticles} ${widget.articles.name.validate()}",
                 subject: widget.articles.name.validate());
           })
         ]),

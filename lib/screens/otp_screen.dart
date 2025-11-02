@@ -5,13 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:orex/screens/dashboard_screen.dart';
-import 'package:orex/screens/home_screen.dart';
 import 'package:orex/screens/login_screen.dart';
-import 'package:orex/screens/main_screen.dart';
 import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/otp_field_style.dart';
-import 'package:otp_text_field/style.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../extensions/app_button.dart';
 import '../extensions/colors.dart';
 import '../extensions/common.dart';
@@ -25,7 +20,6 @@ import '../extensions/system_utils.dart';
 import '../extensions/text_styles.dart';
 import '../main.dart';
 import '../network/RestApis.dart';
-import '../screens/signup_screen.dart';
 import '../services/auth_service.dart';
 import '../utils/app_common.dart';
 import '../utils/colors.dart';
@@ -42,9 +36,12 @@ class OTPScreen extends StatefulWidget {
   final bool? isCodeSent;
   final PhoneAuthCredential? credential;
   final Function? onCall;
+  final String? gGovernorate;
 
-  OTPScreen({
+  const OTPScreen({
+    super.key,
     this.verificationId,
+    this.gGovernorate,
     this.isCodeSent,
     required this.phoneNumber,
     this.firstName,
@@ -154,6 +151,7 @@ class _OTPScreenState extends State<OTPScreen> {
       "first_name": widget.firstName,
       "last_name": widget.lastName,
       "username": widget.phoneNumber,
+      "address": widget.gGovernorate,
       "email": '${widget.firstName}@gmail.com',
       "password": getStringAsync(FIREBASE_USER_ID),
       "user_type": LoginUser,
@@ -187,7 +185,7 @@ class _OTPScreenState extends State<OTPScreen> {
             await userStore.setLogin(true);
             appStore.setLoading(false);
             await setValue(IS_OTP, true);
-            userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
+            userStore.setPhoneNo(widget.phoneNumber.replaceAll('+', ''));
             await appStore.setLogin(true);
             //DashboardScreen().launch(context, isNewTask: true);
             debugPrint("data is ${res.data.toString()}");
@@ -200,7 +198,7 @@ class _OTPScreenState extends State<OTPScreen> {
             debugPrint(" فشل التسجيل: ${res.message}");
           }
         });
-      } catch (e) { 
+      } catch (e) {
         appStore.setLoading(false);
         final errorMessage = e.toString().toLowerCase();
         if (errorMessage.contains('otp is invalid')) {
@@ -213,7 +211,7 @@ class _OTPScreenState extends State<OTPScreen> {
           toast(errorMessage ?? 'فشل التسجيل');
         }
         toast(errorMessage ?? 'فشل التسجيل');
-        debugPrint(" فشل التسجيل: ${errorMessage}");
+        debugPrint(" فشل التسجيل: $errorMessage");
         setState(
           () {},
         );
@@ -241,7 +239,7 @@ class _OTPScreenState extends State<OTPScreen> {
             await userStore.setLogin(true);
             appStore.setLoading(false);
             await setValue(IS_OTP, true);
-            userStore.setPhoneNo(widget.phoneNumber!.replaceAll('+', ''));
+            userStore.setPhoneNo(widget.phoneNumber.replaceAll('+', ''));
             await appStore.setLogin(true);
             //DashboardScreen().launch(context, isNewTask: true);
             debugPrint("data is ${res.data.toString()}");
@@ -271,7 +269,7 @@ class _OTPScreenState extends State<OTPScreen> {
         } else {
           toast('حدث خطأ: $e');
         }
-        log("error->" + e.toString());
+        log("error->$e");
 
         setState(() {});
       }
@@ -439,9 +437,8 @@ class _OTPScreenState extends State<OTPScreen> {
                             style: secondaryTextStyle(size: 16),
                           ),
                           TextSpan(
-                              text: " " +
-                                  widget.phoneNumber.toString().replaceAll(
-                                      RegExp(r'(?<=.{3}).(?=.*...)'), '*'),
+                              text:
+                                  " ${widget.phoneNumber.toString().replaceAll(RegExp(r'(?<=.{3}).(?=.*...)'), '*')}",
                               style: boldTextStyle(size: 16, color: grayColor)),
                         ],
                       ),

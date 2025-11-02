@@ -10,7 +10,7 @@ import '../utils/constants.dart';
 class ImageViewScreen extends StatefulWidget {
   final List<PropertyGallaryArray>? propertyGallery;
 
-  ImageViewScreen({this.propertyGallery});
+  const ImageViewScreen({super.key, this.propertyGallery});
 
   @override
   _ImageViewScreenState createState() => _ImageViewScreenState();
@@ -38,7 +38,7 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
           );
         },
         loadingBuilder: (context, event) => Center(
-          child: Container(
+          child: SizedBox(
             width: 20.0,
             height: 20.0,
             child: CircularProgressIndicator(

@@ -11,20 +11,20 @@ class MyPropertiesResponseModel {
 
   MyPropertiesResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
+    pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
       data = <Property>[];
       json['data'].forEach((v) {
-        data!.add(new Property.fromJson(v));
+        data!.add(Property.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();

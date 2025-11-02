@@ -16,7 +16,7 @@ class HtmlWidget extends StatelessWidget {
   final Color? color;
   final int? size;
 
-  HtmlWidget({this.postContent, this.color, this.size});
+  const HtmlWidget({super.key, this.postContent, this.color, this.size});
 
   @override
   Widget build(BuildContext context) {

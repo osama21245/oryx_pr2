@@ -9,7 +9,6 @@ import '../extensions/extension_util/widget_extensions.dart';
 import '../extensions/price_widget.dart';
 import '../extensions/text_styles.dart';
 import '../main.dart';
-import '../screens/payment_screen.dart';
 import '../utils/colors.dart';
 import '../utils/images.dart';
 import '../extensions/app_button.dart';
@@ -21,7 +20,7 @@ import '../utils/app_common.dart';
 class LimitScreen extends StatefulWidget {
   final String? limit;
 
-  LimitScreen({super.key, this.limit});
+  const LimitScreen({super.key, this.limit});
 
   @override
   State<LimitScreen> createState() => _LimitScreenState();
@@ -94,7 +93,7 @@ class _LimitScreenState extends State<LimitScreen> {
                       child: Row(children: [
                         Image.asset(_selectedIndex == i ? ic_radio_fill : ic_radio, height: 18, width: 18),
                         10.width,
-                        Text(mLimitPropertyResponse.data![i].limit.toString() + " " + language.limit,
+                        Text("${mLimitPropertyResponse.data![i].limit} ${language.limit}",
                                 style: primaryTextStyle(
                                     color: appStore.isDarkModeOn
                                         ? _selectedIndex == i

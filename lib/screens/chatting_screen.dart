@@ -26,7 +26,7 @@ class ChattingScreen extends StatefulWidget {
 
   final bool isDirect;
 
-  ChattingScreen({this.isDirect = false});
+  const ChattingScreen({super.key, this.isDirect = false});
 
   @override
   _ChattingScreenState createState() => _ChattingScreenState();
@@ -68,7 +68,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
   void statusListener(String status) {
     setState(() {
-      lastStatus = "$status";
+      lastStatus = status;
     });
   }
 

@@ -34,7 +34,7 @@ import 'home_screen.dart';
 class FilterScreen extends StatefulWidget {
  final bool isSelect;
 
-  FilterScreen({this.isSelect = false});
+  const FilterScreen({super.key, this.isSelect = false});
 
   @override
   State<FilterScreen> createState() => _FilterScreenState();
@@ -108,9 +108,7 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
   }
 
   Future<void> filterData() async {
-    if (_apiSendValues == null) {
-      _apiSendValues = RangeValues(0, 0);
-    }
+    _apiSendValues ??= RangeValues(0, 0);
 
     appStore.setLoading(true);
     Map req;
@@ -130,7 +128,7 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
       it.map((e) => filterProperty.add(e)).toList();
       appStore.setLoading(false);
 
-      print("Request Is For Filter ==> " + req.toString());
+      print("Request Is For Filter ==> $req");
 
       SearchScreen(
         propertyId: propertyForId,
@@ -167,7 +165,8 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
             })
           ],
           showBack: true,
-          backWidget: Icon(appStore.selectedLanguage == 'ar' ? MaterialIcons.arrow_forward_ios : Octicons.chevron_left, color: primaryColor, size: 28).onTap(() {
+          backWidget: Icon(appStore.selectedLanguage == 'ar' ?
+          MaterialIcons.arrow_forward_ios : Octicons.chevron_left, color: primaryColor, size: 28).onTap(() {
             if (widget.isSelect == false) {
               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => DashboardScreen()), (route) => true);
             } else {
@@ -221,7 +220,7 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
             Text(language.priceRange, style: boldTextStyle()),
             20.height,
             SliderTheme(
-              data: SliderThemeData(showValueIndicator: ShowValueIndicator.always),
+              data: SliderThemeData(showValueIndicator: ShowValueIndicator.onDrag),
               child: RangeSlider(
                 values: RangeValues(_values.start, _values.end),
                 min: getStringAsync(MIN_PRICE).toDouble(),
@@ -368,8 +367,8 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
               }).toList(),
               onChanged: (String? value) async {
                 cityName = value??'';
-                
-              
+
+
 
                 setState(() {});
               },

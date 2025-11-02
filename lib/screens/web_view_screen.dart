@@ -16,7 +16,7 @@ class WebViewScreen extends StatefulWidget {
   final String? mInitialUrl;
   final bool isAdsLoad;
 
-  WebViewScreen({this.mInitialUrl, this.isAdsLoad = false});
+  const WebViewScreen({super.key, this.mInitialUrl, this.isAdsLoad = false});
 
   @override
   WebViewScreenState createState() => WebViewScreenState();
@@ -70,7 +70,7 @@ class WebViewScreenState extends State<WebViewScreen> {
             shouldOverrideUrlLoading: (controller, navigationAction) async {
               var uri = navigationAction.request.url;
               var url = navigationAction.request.url.toString();
-              log("URL" + url.toString());
+              log("URL$url");
 
               if (Platform.isAndroid && url.contains("intent")) {
                 if (url.contains("maps")) {
@@ -130,7 +130,7 @@ class WebViewScreenState extends State<WebViewScreen> {
               });
             },
             onLoadError: (controller, url, code, message) {
-              log("onLoadError" + message);
+              log("onLoadError$message");
               setState(() {
                 isLoading = false;
               });

@@ -7,7 +7,7 @@ class RequiredValidationText extends StatefulWidget {
   final bool required;
 
 
-  RequiredValidationText({this.required = false, this.titleText});
+  const RequiredValidationText({super.key, this.required = false, this.titleText});
 
   @override
   State<RequiredValidationText> createState() => _RequiredValidationTextState();

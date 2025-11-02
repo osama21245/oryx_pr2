@@ -14,7 +14,7 @@ import '../utils/images.dart';
 class BoostDialog extends StatefulWidget {
   final Function()? onAccept;
 
-  BoostDialog({super.key, this.onAccept});
+  const BoostDialog({super.key, this.onAccept});
 
   @override
   State<BoostDialog> createState() => _BoostDialogState();

@@ -8,20 +8,20 @@ class CategoryListModel {
 
   CategoryListModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['data'] != null) {
       data = <CategoryData>[];
       json['data'].forEach((v) {
-        data!.add(new CategoryData.fromJson(v));
+        data!.add(CategoryData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -56,7 +56,7 @@ class CategoryData {
     if (json['amenity_name'] != null) {
       amenityName = <AmenityName>[];
       json['amenity_name'].forEach((v) {
-        amenityName!.add(new AmenityName.fromJson(v));
+        amenityName!.add(AmenityName.fromJson(v));
       });
     }
     createdAt = json['created_at'];
@@ -64,16 +64,16 @@ class CategoryData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['status'] = this.status;
-    data['category_image'] = this.categoryImage;
-    if (this.amenityName != null) {
-      data['amenity_name'] = this.amenityName!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['status'] = status;
+    data['category_image'] = categoryImage;
+    if (amenityName != null) {
+      data['amenity_name'] = amenityName!.map((v) => v.toJson()).toList();
     }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -110,24 +110,24 @@ class AmenityName {
     name = json['name'];
     status = json['status'];
     type = json['type'];
-    value = json['value'] == null ? null : json['value'];
+    value = json['value'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     amenityImage = json['amenity_image'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['property_id'] = this.propertyId;
-    data['amenity_id'] = this.amenityId;
-    data['name'] = this.name;
-    data['status'] = this.status;
-    data['type'] = this.type;
-    data['value'] = this.value;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['amenity_image'] = this.amenityImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['property_id'] = propertyId;
+    data['amenity_id'] = amenityId;
+    data['name'] = name;
+    data['status'] = status;
+    data['type'] = type;
+    data['value'] = value;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['amenity_image'] = amenityImage;
     return data;
   }
 }

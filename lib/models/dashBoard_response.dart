@@ -35,7 +35,7 @@ class DashboardResponse {
 
   DashboardResponse.fromJson(Map<String, dynamic> json) {
     appSetting = json['app_setting'] != null
-        ? new AppSetting.fromJson(json['app_setting'])
+        ? AppSetting.fromJson(json['app_setting'])
         : null;
     if (json['category'] != null) {
       category = <Category>[];
@@ -104,7 +104,7 @@ class DashboardResponse {
       });
     }
     filterConfiguration = json['filter_configuration'] != null
-        ? new FilterConfiguration.fromJson(json['filter_configuration'])
+        ? FilterConfiguration.fromJson(json['filter_configuration'])
         : null;
     if (json['advertisement_property'] != null) {
       advertisementProperty = <Property>[];
@@ -115,54 +115,51 @@ class DashboardResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.appSetting != null) {
-      data['app_setting'] = this.appSetting!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (appSetting != null) {
+      data['app_setting'] = appSetting!.toJson();
     }
-    if (this.category != null) {
-      data['category'] = this.category!.map((v) => v.toJson()).toList();
+    if (category != null) {
+      data['category'] = category!.map((v) => v.toJson()).toList();
     }
-    if (this.slider != null) {
-      data['slider'] = this.slider!.map((v) => v.toJson()).toList();
+    if (slider != null) {
+      data['slider'] = slider!.map((v) => v.toJson()).toList();
     }
-    if (this.amenity != null) {
-      data['amenity'] = this.amenity!.map((v) => v.toJson()).toList();
+    if (amenity != null) {
+      data['amenity'] = amenity!.map((v) => v.toJson()).toList();
     }
     // if (this.userProperty != null) {
     //   data['user_property'] = this.userProperty!.map((v) => v.toJson()).toList();
     // }
-    if (this.ownerProperty != null) {
-      data['owner_property'] =
-          this.ownerProperty!.map((v) => v.toJson()).toList();
+    if (ownerProperty != null) {
+      data['owner_property'] = ownerProperty!.map((v) => v.toJson()).toList();
     }
-    if (this.property != null) {
-      data['property'] = this.property!.map((v) => v.toJson()).toList();
+    if (property != null) {
+      data['property'] = property!.map((v) => v.toJson()).toList();
     }
-    if (this.nearByProperty != null) {
+    if (nearByProperty != null) {
       data['near_by_property'] =
-          this.nearByProperty!.map((v) => v.toJson()).toList();
+          nearByProperty!.map((v) => v.toJson()).toList();
     }
-    if (this.fullyFurnishedProperty != null) {
+    if (fullyFurnishedProperty != null) {
       data['fully_furnished_property'] =
-          this.fullyFurnishedProperty!.map((v) => v.toJson()).toList();
+          fullyFurnishedProperty!.map((v) => v.toJson()).toList();
     }
-    if (this.propertyType != null) {
-      data['property_type'] =
-          this.propertyType!.map((v) => v.toJson()).toList();
+    if (propertyType != null) {
+      data['property_type'] = propertyType!.map((v) => v.toJson()).toList();
     }
-    if (this.article != null) {
-      data['article'] = this.article!.map((v) => v.toJson()).toList();
+    if (article != null) {
+      data['article'] = article!.map((v) => v.toJson()).toList();
     }
-    if (this.propertyCity != null) {
-      data['property_city'] =
-          this.propertyCity!.map((v) => v.toJson()).toList();
+    if (propertyCity != null) {
+      data['property_city'] = propertyCity!.map((v) => v.toJson()).toList();
     }
-    if (this.filterConfiguration != null) {
-      data['filter_configuration'] = this.filterConfiguration!.toJson();
+    if (filterConfiguration != null) {
+      data['filter_configuration'] = filterConfiguration!.toJson();
     }
-    if (this.advertisementProperty != null) {
+    if (advertisementProperty != null) {
       data['advertisement_property'] =
-          this.advertisementProperty!.map((v) => v.toJson()).toList();
+          advertisementProperty!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -243,49 +240,49 @@ class AppSetting {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     termsCondition = json['terms_condition'] != null
-        ? new TermsCondition.fromJson(json['terms_condition'])
+        ? TermsCondition.fromJson(json['terms_condition'])
         : null;
     privacyPolicy = json['privacy_policy'] != null
-        ? new TermsCondition.fromJson(json['privacy_policy'])
+        ? TermsCondition.fromJson(json['privacy_policy'])
         : null;
     subscription = json['subscription'];
     currencySetting = json['currency_setting'] != null
-        ? new CurrencySetting.fromJson(json['currency_setting'])
+        ? CurrencySetting.fromJson(json['currency_setting'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['site_name'] = this.siteName;
-    data['site_email'] = this.siteEmail;
-    data['site_logo'] = this.siteLogo;
-    data['site_favicon'] = this.siteFavicon;
-    data['site_description'] = this.siteDescription;
-    data['site_copyright'] = this.siteCopyright;
-    data['facebook_url'] = this.facebookUrl;
-    data['instagram_url'] = this.instagramUrl;
-    data['twitter_url'] = this.twitterUrl;
-    data['linkedin_url'] = this.linkedinUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['site_name'] = siteName;
+    data['site_email'] = siteEmail;
+    data['site_logo'] = siteLogo;
+    data['site_favicon'] = siteFavicon;
+    data['site_description'] = siteDescription;
+    data['site_copyright'] = siteCopyright;
+    data['facebook_url'] = facebookUrl;
+    data['instagram_url'] = instagramUrl;
+    data['twitter_url'] = twitterUrl;
+    data['linkedin_url'] = linkedinUrl;
     // data['language_option'] = this.languageOption;
-    data['contact_email'] = this.contactEmail;
-    data['contact_number'] = this.contactNumber;
-    data['help_support_url'] = this.helpSupportUrl;
+    data['contact_email'] = contactEmail;
+    data['contact_number'] = contactNumber;
+    data['help_support_url'] = helpSupportUrl;
     // if (this.notificationSettings != null) {
     //   data['notification_settings'] =
     //       this.notificationSettings!.map((v) => v.toJson()).toList();
     // }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.termsCondition != null) {
-      data['terms_condition'] = this.termsCondition!.toJson();
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (termsCondition != null) {
+      data['terms_condition'] = termsCondition!.toJson();
     }
-    if (this.privacyPolicy != null) {
-      data['privacy_policy'] = this.privacyPolicy!.toJson();
+    if (privacyPolicy != null) {
+      data['privacy_policy'] = privacyPolicy!.toJson();
     }
-    data['subscription'] = this.subscription;
-    if (this.currencySetting != null) {
-      data['currency_setting'] = this.currencySetting!.toJson();
+    data['subscription'] = subscription;
+    if (currencySetting != null) {
+      data['currency_setting'] = currencySetting!.toJson();
     }
     return data;
   }
@@ -307,11 +304,11 @@ class TermsCondition {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['key'] = this.key;
-    data['type'] = this.type;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['key'] = key;
+    data['type'] = type;
+    data['value'] = value;
     return data;
   }
 }
@@ -332,11 +329,11 @@ class CurrencySetting {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['symbol'] = this.symbol;
-    data['code'] = this.code;
-    data['position'] = this.position;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['symbol'] = symbol;
+    data['code'] = code;
+    data['position'] = position;
     return data;
   }
 }
@@ -367,7 +364,7 @@ class Category {
     if (json['amenity_name'] != null) {
       amenityName = <AmenityName>[];
       json['amenity_name'].forEach((v) {
-        amenityName!.add(new AmenityName.fromJson(v));
+        amenityName!.add(AmenityName.fromJson(v));
       });
     }
     createdAt = json['created_at'];
@@ -375,16 +372,16 @@ class Category {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['status'] = this.status;
-    data['category_image'] = this.categoryImage;
-    if (this.amenityName != null) {
-      data['amenity_name'] = this.amenityName!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['status'] = status;
+    data['category_image'] = categoryImage;
+    if (amenityName != null) {
+      data['amenity_name'] = amenityName!.map((v) => v.toJson()).toList();
     }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -422,15 +419,15 @@ class AmenityName {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['status'] = this.status;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['status'] = status;
+    data['type'] = type;
     // data['value'] = this.value;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['amenity_image'] = this.amenityImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['amenity_image'] = amenityImage;
     return data;
   }
 }
@@ -448,6 +445,7 @@ class MSlider {
   String? updatedAt;
   String? name;
   List<AreaPrice>? areaPrices;
+  int? propertyFor;
 
   MSlider({
     this.id,
@@ -462,10 +460,12 @@ class MSlider {
     this.updatedAt,
     this.name,
     this.areaPrices,
+    this.propertyFor,
   });
 
   MSlider.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    propertyFor = json["property_for"];
     categoryId = json['category_id'];
     categoryName = json['category_name'];
     propertyId = json['property_id'];
@@ -484,17 +484,18 @@ class MSlider {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['category_id'] = this.categoryId;
-    data['category_name'] = this.categoryName;
-    data['property_id'] = this.propertyId;
-    data['property_name'] = this.propertyName;
-    data['description'] = this.description;
-    data['status'] = this.status;
-    data['slider_image'] = this.sliderImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['property_for'] = propertyFor;
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
+    data['property_id'] = propertyId;
+    data['property_name'] = propertyName;
+    data['description'] = description;
+    data['status'] = status;
+    data['slider_image'] = sliderImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     data['name'] = name;
     if (areaPrices != null) {
       data['area_prices'] = areaPrices!.map((x) => x.toJson()).toList();
@@ -560,15 +561,15 @@ class Amenity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['type'] = type;
+    data['status'] = status;
     // data['values'] = this.values;
-    data['amenity_image'] = this.amenityImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['amenity_image'] = amenityImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -632,24 +633,24 @@ class Property {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['address'] = this.address;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['property_image'] = this.propertyImage;
-    data['is_favourite'] = this.isFavourite;
-    data['property_type_id'] = this.propertyTypeId;
-    data['property_type'] = this.propertyType;
-    data['property_for'] = this.propertyFor;
-    data['advertisement_property'] = this.advertisementProperty;
-    data['advertisement_property_date'] = this.advertisementPropertyDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['address'] = address;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['property_image'] = propertyImage;
+    data['is_favourite'] = isFavourite;
+    data['property_type_id'] = propertyTypeId;
+    data['property_type'] = propertyType;
+    data['property_for'] = propertyFor;
+    data['advertisement_property'] = advertisementProperty;
+    data['advertisement_property_date'] = advertisementPropertyDate;
     return data;
   }
 }
@@ -680,13 +681,13 @@ class PropertyType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['status'] = this.status;
-    data['property_type_image'] = this.propertyTypeImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['status'] = status;
+    data['property_type_image'] = propertyTypeImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -747,23 +748,23 @@ class OwnerProperty {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['address'] = this.address;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['price_duration'] = this.priceDuration;
-    data['property_image'] = this.propertyImage;
-    data['is_favourite'] = this.isFavourite;
-    data['property_for'] = this.propertyFor;
-    data['advertisement_property'] = this.advertisementProperty;
-    data['advertisement_property_date'] = this.advertisementPropertyDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['address'] = address;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['price_duration'] = priceDuration;
+    data['property_image'] = propertyImage;
+    data['is_favourite'] = isFavourite;
+    data['property_for'] = propertyFor;
+    data['advertisement_property'] = advertisementProperty;
+    data['advertisement_property_date'] = advertisementPropertyDate;
     return data;
   }
 }
@@ -824,23 +825,23 @@ class AdvertisementProperty {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['address'] = this.address;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['price_duration'] = this.priceDuration;
-    data['property_image'] = this.propertyImage;
-    data['is_favourite'] = this.isFavourite;
-    data['property_for'] = this.propertyFor;
-    data['advertisement_property'] = this.advertisementProperty;
-    data['advertisement_property_date'] = this.advertisementPropertyDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['address'] = address;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['price_duration'] = priceDuration;
+    data['property_image'] = propertyImage;
+    data['is_favourite'] = isFavourite;
+    data['property_for'] = propertyFor;
+    data['advertisement_property'] = advertisementProperty;
+    data['advertisement_property_date'] = advertisementPropertyDate;
     return data;
   }
 }
@@ -901,23 +902,23 @@ class NearbyProperty {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['address'] = this.address;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['price_duration'] = this.priceDuration;
-    data['property_image'] = this.propertyImage;
-    data['is_favourite'] = this.isFavourite;
-    data['property_for'] = this.propertyFor;
-    data['advertisement_property'] = this.advertisementProperty;
-    data['advertisement_property_date'] = this.advertisementPropertyDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['address'] = address;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['price_duration'] = priceDuration;
+    data['property_image'] = propertyImage;
+    data['is_favourite'] = isFavourite;
+    data['property_for'] = propertyFor;
+    data['advertisement_property'] = advertisementProperty;
+    data['advertisement_property_date'] = advertisementPropertyDate;
     return data;
   }
 }
@@ -978,23 +979,23 @@ class FullyFurnishedProperty {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['address'] = this.address;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['price_duration'] = this.priceDuration;
-    data['property_image'] = this.propertyImage;
-    data['is_favourite'] = this.isFavourite;
-    data['property_for'] = this.propertyFor;
-    data['advertisement_property'] = this.advertisementProperty;
-    data['advertisement_property_date'] = this.advertisementPropertyDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['address'] = address;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['price_duration'] = priceDuration;
+    data['property_image'] = propertyImage;
+    data['is_favourite'] = isFavourite;
+    data['property_for'] = propertyFor;
+    data['advertisement_property'] = advertisementProperty;
+    data['advertisement_property_date'] = advertisementPropertyDate;
     return data;
   }
 }
@@ -1011,9 +1012,9 @@ class Tags {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }
@@ -1032,10 +1033,10 @@ class PropertyCity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['images'] = this.images;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['images'] = images;
+    data['id'] = id;
     return data;
   }
 }
@@ -1072,15 +1073,15 @@ class FilterConfiguration {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['min_price'] = this.minPrice;
-    data['max_price'] = this.maxPrice;
-    data['min_brokerage'] = this.minBrokerage;
-    data['max_brokerage'] = this.maxBrokerage;
-    data['min_security_deposit'] = this.minSecurityDeposit;
-    data['max_security_deposit'] = this.maxSecurityDeposit;
-    data['min_age_of_property'] = this.minAgeOfProperty;
-    data['max_age_of_property'] = this.maxAgeOfProperty;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['min_price'] = minPrice;
+    data['max_price'] = maxPrice;
+    data['min_brokerage'] = minBrokerage;
+    data['max_brokerage'] = maxBrokerage;
+    data['min_security_deposit'] = minSecurityDeposit;
+    data['max_security_deposit'] = maxSecurityDeposit;
+    data['min_age_of_property'] = minAgeOfProperty;
+    data['max_age_of_property'] = maxAgeOfProperty;
     return data;
   }
 }

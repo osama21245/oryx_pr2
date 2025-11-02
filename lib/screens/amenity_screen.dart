@@ -12,7 +12,7 @@ import '../utils/colors.dart';
 class AmenityScreen extends StatefulWidget {
   final List<AmenityName> amenityValue;
 
-  const AmenityScreen({required this.amenityValue});
+  const AmenityScreen({super.key, required this.amenityValue});
 
   @override
   State<AmenityScreen> createState() => _AmenityScreenState();

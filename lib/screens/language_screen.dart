@@ -20,6 +20,8 @@ import '../utils/colors.dart';
 import '../utils/images.dart';
 
 class LanguageScreen extends StatefulWidget {
+  const LanguageScreen({super.key});
+
   @override
   _LanguageScreenState createState() => _LanguageScreenState();
 }
@@ -27,7 +29,7 @@ class LanguageScreen extends StatefulWidget {
 class _LanguageScreenState extends State<LanguageScreen> {
   List<LanguageJsonData> get allLanguageOptions {
     List<LanguageJsonData> options = [];
-    
+
     // Add system default option as first item
     options.add(LanguageJsonData(
       id: -1, // Special ID for system default
@@ -36,30 +38,30 @@ class _LanguageScreenState extends State<LanguageScreen> {
       countryCode: 'system_default',
       isDefaultLanguage: 0,
     ));
-    
+
     // Add server language data
     if (defaultServerLanguageData != null) {
       options.addAll(defaultServerLanguageData!);
     }
-    
+
     return options;
   }
 
   String get currentSelectedLanguageCode {
     String savedCode = getStringAsync(SELECTED_LANGUAGE_CODE, defaultValue: defaultLanguageCode);
-    
+
     // If no language is selected or it's empty, consider it as system default
     if (savedCode.isEmpty || !getBoolAsync(IS_SELECTED_LANGUAGE_CHANGE, defaultValue: false)) {
       return 'system_default';
     }
-    
+
     return savedCode;
   }
 
   String getSystemLanguageCode() {
     final Locale systemLocale = PlatformDispatcher.instance.locale;
     String systemLangCode = systemLocale.languageCode;
-    
+
     // Check if system language is supported
     if (defaultServerLanguageData != null) {
       bool isSupported = defaultServerLanguageData!.any((lang) => lang.languageCode == systemLangCode);
@@ -67,7 +69,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
         return systemLangCode;
       }
     }
-    
+
     // Fallback to default language if system language is not supported
     return defaultLanguageCode;
   }
@@ -89,7 +91,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           itemBuilder: (context, index) {
             LanguageJsonData data = allLanguageOptions[index];
             bool isSelected = currentSelectedLanguageCode == data.languageCode.validate();
-            
+
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               margin: EdgeInsets.only(bottom: 16),
@@ -113,7 +115,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('${data.languageName.validate()}',
+                          Text(data.languageName.validate(),
                               style: boldTextStyle(
                                   color: isSelected
                                       ? Colors.white
@@ -132,7 +134,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                       ).expand(),
                     ] else ...[
                       16.width,
-                      Text('${data.languageName.validate()}',
+                      Text(data.languageName.validate(),
                               style: boldTextStyle(
                                   color: isSelected
                                       ? Colors.white
@@ -154,7 +156,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   await setValue(SELECTED_LANGUAGE_COUNTRY_CODE, '');
                   await setValue(IS_SELECTED_LANGUAGE_CHANGE, false);
                   selectedServerLanguageData = null;
-                  
+
                   // Apply system language
                   String systemLangCode = getSystemLanguageCode();
                   appStore.setLanguage(systemLangCode, context: context);
@@ -166,7 +168,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   await setValue(IS_SELECTED_LANGUAGE_CHANGE, true);
                   appStore.setLanguage(data.languageCode!, context: context);
                 }
-                
+
                 finish(context, true);
                 setState(() {});
               }),

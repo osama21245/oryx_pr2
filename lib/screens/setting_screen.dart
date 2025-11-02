@@ -13,6 +13,8 @@ import '../utils/colors.dart';
 import '../utils/images.dart';
 
 class SettingScreen extends StatefulWidget {
+  const SettingScreen({super.key});
+
   @override
   State<SettingScreen> createState() => _SettingScreenState();
 }

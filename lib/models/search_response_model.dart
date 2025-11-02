@@ -14,26 +14,26 @@ class SearchResponse {
     if (json['data'] != null) {
       propertyData = <Property>[];
       json['data'].forEach((v) {
-        propertyData!.add(new Property.fromJson(v));
+        propertyData!.add(Property.fromJson(v));
       });
     }
     if (json['near_by_property'] != null) {
       nearByProperty = <Property>[];
       json['near_by_property'].forEach((v) {
-        nearByProperty!.add(new Property.fromJson(v));
+        nearByProperty!.add(Property.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.propertyData != null) {
-      data['data'] = this.propertyData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (propertyData != null) {
+      data['data'] = propertyData!.map((v) => v.toJson()).toList();
     }
-    if (this.nearByProperty != null) {
+    if (nearByProperty != null) {
       data['near_by_property'] =
-          this.nearByProperty!.map((v) => v.toJson()).toList();
+          nearByProperty!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -92,22 +92,22 @@ class NearByProperty {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['address'] = this.address;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['property_image'] = this.propertyImage;
-    data['is_favourite'] = this.isFavourite;
-    data['property_type_id'] = this.propertyTypeId;
-    data['property_type'] = this.propertyType;
-    data['property_for'] = this.propertyFor;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['address'] = address;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['property_image'] = propertyImage;
+    data['is_favourite'] = isFavourite;
+    data['property_type_id'] = propertyTypeId;
+    data['property_type'] = propertyType;
+    data['property_for'] = propertyFor;
     return data;
   }
 }

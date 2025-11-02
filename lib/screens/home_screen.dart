@@ -7,7 +7,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../components/advertisement_property_component.dart';
-import '../components/carouser_slider_components.dart';
 import '../components/news_components.dart';
 import '../components/other_property_component.dart';
 import '../components/property_components.dart';
@@ -49,7 +48,7 @@ import 'search_screen.dart';
 import 'see_all_screen.dart';
 DashboardResponse? data;
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -89,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   void init() async {
-    print("one Signal player id Received" + getStringAsync(PLAYER_ID).toString());
+    print("one Signal player id Received${getStringAsync(PLAYER_ID)}");
     selectedBhkIndex = 0;
     getUSerDetail(context, userStore.userId);
     _waveAnimationKey = GlobalKey<WaveAnimationState>();
@@ -100,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     await getData();
     // await updateUserLatLong();
     // }
-    if (await checkPermission()) {
+    if (
+      await checkPermission()) {
       await checkLocationPermissionOnLaunch(context);
     }
     setState(() {});
@@ -538,7 +538,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               decoration: boxDecorationWithRoundedCorners(borderRadius: radius(8.0), backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight),
-              child: Text(bhkList[i].toString() + " " + language.bhk, style: primaryTextStyle(color: grey)),
+              child: Text("${bhkList[i]} ${language.bhk}", style: primaryTextStyle(color: grey)),
             ).onTap(() async {
               setState(() {
                 if (selectedBhkIndex == i) {
@@ -651,7 +651,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: Text(language.upTo + " " + formatNumberString(myList[index].toInt()), style: secondaryTextStyle(size: 16)),
+              child: Text("${language.upTo} ${formatNumberString(myList[index].toInt())}", style: secondaryTextStyle(size: 16)),
             ).onTap(() async {
               if (index == 0) {
                 budgetMinPrice = 0.0;

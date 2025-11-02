@@ -7,21 +7,21 @@ class AppSettingResponse {
   AppSettingResponse({this.appSetting, this.termsCondition, this.privacyPolicy, this.currencySetting});
 
   AppSettingResponse.fromJson(Map<String, dynamic> json) {
-    appSetting = json['app_setting'] != null ? new AppSetting.fromJson(json['app_setting']) : null;
-    termsCondition = json['terms_condition'] != null ? new TermsCondition.fromJson(json['terms_condition']) : null;
-    privacyPolicy = json['privacy_policy'] != null ? new TermsCondition.fromJson(json['privacy_policy']) : null;
-    currencySetting = json['currency_setting'] != null ? new CurrencySetting.fromJson(json['currency_setting']) : null;
+    appSetting = json['app_setting'] != null ? AppSetting.fromJson(json['app_setting']) : null;
+    termsCondition = json['terms_condition'] != null ? TermsCondition.fromJson(json['terms_condition']) : null;
+    privacyPolicy = json['privacy_policy'] != null ? TermsCondition.fromJson(json['privacy_policy']) : null;
+    currencySetting = json['currency_setting'] != null ? CurrencySetting.fromJson(json['currency_setting']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.appSetting != null) {
-      data['app_setting'] = this.appSetting!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (appSetting != null) {
+      data['app_setting'] = appSetting!.toJson();
     }
-    data['terms_condition'] = this.termsCondition;
-    data['privacy_policy'] = this.privacyPolicy;
-    if (this.currencySetting != null) {
-      data['currency_setting'] = this.currencySetting!.toJson();
+    data['terms_condition'] = termsCondition;
+    data['privacy_policy'] = privacyPolicy;
+    if (currencySetting != null) {
+      data['currency_setting'] = currencySetting!.toJson();
     }
     return data;
   }
@@ -179,41 +179,41 @@ class AppSetting {
     notificationSettings = json['notificationSettings'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    termsCondition = json['terms_condition'] != null ? new TermsCondition.fromJson(json['terms_condition']) : null;
-    privacyPolicy = json['privacy_policy'] != null ? new TermsCondition.fromJson(json['privacy_policy']) : null;
+    termsCondition = json['terms_condition'] != null ? TermsCondition.fromJson(json['terms_condition']) : null;
+    privacyPolicy = json['privacy_policy'] != null ? TermsCondition.fromJson(json['privacy_policy']) : null;
     subscription = json['subscription'];
-    currencySetting = json['currency_setting'] != null ? new CurrencySetting.fromJson(json['currency_setting']) : null;
+    currencySetting = json['currency_setting'] != null ? CurrencySetting.fromJson(json['currency_setting']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['site_name'] = this.siteName;
-    data['site_email'] = this.siteEmail;
-    data['site_logo'] = this.siteLogo;
-    data['site_favicon'] = this.siteFavicon;
-    data['site_description'] = this.siteDescription;
-    data['site_copyright'] = this.siteCopyright;
-    data['facebook_url'] = this.facebookUrl;
-    data['instagram_url'] = this.instagramUrl;
-    data['twitter_url'] = this.twitterUrl;
-    data['linkedin_url'] = this.linkedinUrl;
-    data['language_option'] = this.languageOption;
-    data['contact_email'] = this.contactEmail;
-    data['contact_number'] = this.contactNumber;
-    data['help_support_url'] = this.helpSupportUrl;
-    data['notification_settings'] = this.notificationSettings;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.termsCondition != null) {
-      data['terms_condition'] = this.termsCondition!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['site_name'] = siteName;
+    data['site_email'] = siteEmail;
+    data['site_logo'] = siteLogo;
+    data['site_favicon'] = siteFavicon;
+    data['site_description'] = siteDescription;
+    data['site_copyright'] = siteCopyright;
+    data['facebook_url'] = facebookUrl;
+    data['instagram_url'] = instagramUrl;
+    data['twitter_url'] = twitterUrl;
+    data['linkedin_url'] = linkedinUrl;
+    data['language_option'] = languageOption;
+    data['contact_email'] = contactEmail;
+    data['contact_number'] = contactNumber;
+    data['help_support_url'] = helpSupportUrl;
+    data['notification_settings'] = notificationSettings;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (termsCondition != null) {
+      data['terms_condition'] = termsCondition!.toJson();
     }
-    if (this.privacyPolicy != null) {
-      data['privacy_policy'] = this.privacyPolicy!.toJson();
+    if (privacyPolicy != null) {
+      data['privacy_policy'] = privacyPolicy!.toJson();
     }
-    data['subscription'] = this.subscription;
-    if (this.currencySetting != null) {
-      data['currency_setting'] = this.currencySetting!.toJson();
+    data['subscription'] = subscription;
+    if (currencySetting != null) {
+      data['currency_setting'] = currencySetting!.toJson();
     }
     return data;
   }
@@ -235,11 +235,11 @@ class TermsCondition {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['key'] = this.key;
-    data['type'] = this.type;
-    data['value'] = this.value;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['key'] = key;
+    data['type'] = type;
+    data['value'] = value;
     return data;
   }
 }
@@ -260,11 +260,11 @@ class CurrencySetting {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['symbol'] = this.symbol;
-    data['code'] = this.code;
-    data['position'] = this.position;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['symbol'] = symbol;
+    data['code'] = code;
+    data['position'] = position;
     return data;
   }
 }

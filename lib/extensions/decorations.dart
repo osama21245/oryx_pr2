@@ -22,7 +22,7 @@ InputDecoration defaultInputDecoration(
     fillColor: appStore.isDarkModeOn ? cardDarkColor : fillColor ?? primaryExtraLight,
     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     floatingLabelBehavior: FloatingLabelBehavior.never,
-    prefixIcon: mPrefix ?? null,
+    prefixIcon: mPrefix,
     border: OutlineInputBorder(borderRadius: radius(8), borderSide: BorderSide(color: isFocusTExtField == true ? Colors.transparent : Colors.transparent)),
     // border: OutlineInputBorder(borderRadius: radius(), borderSide: BorderSide(color: isFocusTExtField == true ? context.dividerColor.withOpacity(0.7) : context.dividerColor.withOpacity(0.7))),
     focusedErrorBorder: OutlineInputBorder(borderRadius: radius(8), borderSide: BorderSide(color: isFocusTExtField == true ? context.dividerColor.withOpacity(0.7) : primaryColor)),
@@ -102,11 +102,9 @@ Decoration boxDecorationWithRoundedCorners({
   BoxShape boxShape = BoxShape.rectangle,
 }) {
   return BoxDecoration(
-    color: backgroundColor == null
-        ? appStore.isDarkModeOn
+    color: backgroundColor ?? (appStore.isDarkModeOn
             ? cardDarkColor
-            : cardLightColor
-        : backgroundColor,
+            : cardLightColor),
     borderRadius: boxShape == BoxShape.circle ? null : (borderRadius ?? radius()),
     gradient: gradient,
     border: border,
@@ -139,11 +137,9 @@ Decoration boxDecorationWithShadow({
           spreadRadius: spreadRadius,
           offset: offset,
         ),
-    color: backgroundColor == null
-        ? appStore.isDarkModeOn
+    color: backgroundColor ?? (appStore.isDarkModeOn
             ? cardDarkColor
-            : cardLightColor
-        : backgroundColor,
+            : cardLightColor),
     gradient: gradient,
     border: border,
     image: decorationImage,
@@ -169,11 +165,9 @@ Decoration boxDecorationRoundedWithShadow(
       spreadRadius: spreadRadius ?? defaultSpreadRadius,
       offset: offset,
     ),
-    color: backgroundColor == null
-        ? appStore.isDarkModeOn
+    color: backgroundColor ?? (appStore.isDarkModeOn
             ? cardDarkColor
-            : cardLightColor
-        : backgroundColor,
+            : cardLightColor),
     gradient: gradient,
     borderRadius: radius(radiusAll.toDouble()),
   );

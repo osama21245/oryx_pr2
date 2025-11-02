@@ -8,7 +8,6 @@ import '../extensions/extension_util/widget_extensions.dart';
 import '../main.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../components/VideoPlayerScreen.dart';
-import '../components/adMob_component.dart';
 import '../extensions/decorations.dart';
 import '../models/property_details_model.dart';
 import '../utils/app_common.dart';
@@ -20,7 +19,7 @@ import 'YoutubePlayerScreen.dart';
 class PhotoGalleyScreen extends StatefulWidget {
   final PropertyDetail? mPropertyDetail;
 
-  PhotoGalleyScreen({required this.mPropertyDetail});
+  const PhotoGalleyScreen({super.key, required this.mPropertyDetail});
 
   @override
   State<PhotoGalleyScreen> createState() => _PhotoGalleyScreenState();

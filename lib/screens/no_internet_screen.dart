@@ -8,6 +8,8 @@ import '../main.dart';
 import '../utils/images.dart';
 
 class NoInternetScreen extends StatefulWidget {
+  const NoInternetScreen({super.key});
+
   @override
   _NoInternetScreenState createState() => _NoInternetScreenState();
 }

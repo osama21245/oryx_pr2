@@ -28,7 +28,7 @@ class SettingItemWidget extends StatelessWidget {
   final double? borderRadius;
   final BorderRadius? radius;
 
-  SettingItemWidget({
+  const SettingItemWidget({
     required this.title,
     this.onTap,
     this.width,
@@ -47,8 +47,8 @@ class SettingItemWidget extends StatelessWidget {
     this.hoverColor,
     this.splashColor,
     this.radius,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

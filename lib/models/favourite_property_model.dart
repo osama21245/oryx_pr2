@@ -8,19 +8,19 @@ class FavouritePropertyModel {
   FavouritePropertyModel({this.pagination, this.data});
 
   FavouritePropertyModel.fromJson(Map<String, dynamic> json) {
-    pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
+    pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
       data = <Property>[];
       json['data'].forEach((v) {
-        data!.add(new Property.fromJson(v));
+        data!.add(Property.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -307,45 +307,45 @@ class FavouriteProperty {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['property_type_id'] = this.propertyTypeId;
-    data['property_type'] = this.propertyType;
-    data['price'] = this.price;
-    data['furnished_type'] = this.furnishedType;
-    data['saller_type'] = this.sallerType;
-    data['property_for'] = this.propertyFor;
-    data['age_of_property'] = this.ageOfProperty;
-    data['maintenance'] = this.maintenance;
-    data['security_deposit'] = this.securityDeposit;
-    data['brokerage'] = this.brokerage;
-    data['bhk'] = this.bhk;
-    data['sqft'] = this.sqft;
-    data['description'] = this.description;
-    data['country'] = this.country;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['address'] = this.address;
-    data['video_url'] = this.videoUrl;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['property_image'] = this.propertyImage;
-    data['property_gallary'] = this.propertyGallary;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['property_type_id'] = propertyTypeId;
+    data['property_type'] = propertyType;
+    data['price'] = price;
+    data['furnished_type'] = furnishedType;
+    data['saller_type'] = sallerType;
+    data['property_for'] = propertyFor;
+    data['age_of_property'] = ageOfProperty;
+    data['maintenance'] = maintenance;
+    data['security_deposit'] = securityDeposit;
+    data['brokerage'] = brokerage;
+    data['bhk'] = bhk;
+    data['sqft'] = sqft;
+    data['description'] = description;
+    data['country'] = country;
+    data['state'] = state;
+    data['city'] = city;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['address'] = address;
+    data['video_url'] = videoUrl;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['property_image'] = propertyImage;
+    data['property_gallary'] = propertyGallary;
     // if (this.propertyGallaryArray != null) {
     //   data['property_gallary_array'] =
     //       this.propertyGallaryArray!.map((v) => v.toJson()).toList();
     // }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['is_favourite'] = this.isFavourite;
-    data['advertisement_property'] = this.advertisementProperty;
-    data['advertisement_property_date'] = this.advertisementPropertyDate;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_favourite'] = isFavourite;
+    data['advertisement_property'] = advertisementProperty;
+    data['advertisement_property_date'] = advertisementPropertyDate;
     return data;
   }
 }
@@ -362,15 +362,15 @@ class AmenityValue {
     id = json['id'];
     name = json['name'];
     value = json['value'];
-    values = json['values'] == null ? null : json['values'];
+    values = json['values'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['value'] = this.value;
-    data['values'] = this.values;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['value'] = value;
+    data['values'] = values;
     return data;
   }
 }
@@ -397,14 +397,14 @@ class Customer {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['contact_number'] = this.contactNumber;
-    data['address'] = this.address;
-    data['user_type'] = this.userType;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['contact_number'] = contactNumber;
+    data['address'] = address;
+    data['user_type'] = userType;
     return data;
   }
 }
@@ -419,8 +419,8 @@ class PropertyGallery {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['images'] = this.images;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['images'] = images;
 
     return data;
   }

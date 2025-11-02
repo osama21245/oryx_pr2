@@ -10,7 +10,7 @@ class PremiumBtn extends StatefulWidget {
   final bool? pDetail;
   final bool? isFromSearch;
 
-  PremiumBtn({this.pDetail, this.isFromSearch});
+  const PremiumBtn({super.key, this.pDetail, this.isFromSearch});
 
   @override
   State<PremiumBtn> createState() => _PremiumBtnState();

@@ -8,20 +8,20 @@ class PaymentListModel {
 
   PaymentListModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['data'] != null) {
       data = <PaymentModel>[];
       json['data'].forEach((v) {
-        data!.add(new PaymentModel.fromJson(v));
+        data!.add(PaymentModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -62,10 +62,10 @@ class PaymentModel {
     status = json['status'];
     isTest = json['is_test'];
     testValue = json['test_value'] != null
-        ? new LiveValue.fromJson(json['test_value'])
+        ? LiveValue.fromJson(json['test_value'])
         : null;
     liveValue = json['live_value'] != null
-        ? new LiveValue.fromJson(json['live_value'])
+        ? LiveValue.fromJson(json['live_value'])
         : null;
     gatewayImage = json['gateway_image'];
     createdAt = json['created_at'];
@@ -73,21 +73,21 @@ class PaymentModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['type'] = this.type;
-    data['status'] = this.status;
-    data['is_test'] = this.isTest;
-    if (this.testValue != null) {
-      data['test_value'] = this.testValue!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['type'] = type;
+    data['status'] = status;
+    data['is_test'] = isTest;
+    if (testValue != null) {
+      data['test_value'] = testValue!.toJson();
     }
-    if (this.liveValue != null) {
-      data['live_value'] = this.liveValue!.toJson();
+    if (liveValue != null) {
+      data['live_value'] = liveValue!.toJson();
     }
-    data['gateway_image'] = this.gatewayImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['gateway_image'] = gatewayImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -106,10 +106,10 @@ class TestValue {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['secret_key'] = this.secretKey;
-    data['publishable_key'] = this.publishableKey;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    data['secret_key'] = secretKey;
+    data['publishable_key'] = publishableKey;
     return data;
   }
 }
@@ -168,21 +168,21 @@ class LiveValue {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['publishable_key'] = this.publishableKey;
-    data['secret_key'] = this.secretKey;
-    data['url'] = this.url;
-    data['secret_id'] = this.secretId;
-    data['key_id'] = this.keyId;
-    data['public_key'] = this.publicKey;
-    data['tokenization_key'] = this.tokenizationKey;
-    data['access_token'] = this.accessToken;
-    data['encryption_key'] = this.encryptionKey;
-    data['profile_id'] = this.profileId;
-    data['server_key'] = this.serverKey;
-    data['client_key'] = this.clientKey;
-    data['merchant_id'] = this.merchantId;
-    data['merchant_key'] = this.merchantKey;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['publishable_key'] = publishableKey;
+    data['secret_key'] = secretKey;
+    data['url'] = url;
+    data['secret_id'] = secretId;
+    data['key_id'] = keyId;
+    data['public_key'] = publicKey;
+    data['tokenization_key'] = tokenizationKey;
+    data['access_token'] = accessToken;
+    data['encryption_key'] = encryptionKey;
+    data['profile_id'] = profileId;
+    data['server_key'] = serverKey;
+    data['client_key'] = clientKey;
+    data['merchant_id'] = merchantId;
+    data['merchant_key'] = merchantKey;
 
     return data;
   }

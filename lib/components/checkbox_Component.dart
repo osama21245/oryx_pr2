@@ -19,7 +19,7 @@ class CheckBoxComponent<T> extends StatefulWidget {
 
   final Function(List<String>?, int? id) onUpdate;
 
-  const CheckBoxComponent({this.checkboxValues, this.amenityId, required this.onUpdate, this.propertyId, this.pId, this.newCheckboxValues, this.isUpdateProperty = false});
+  const CheckBoxComponent({super.key, this.checkboxValues, this.amenityId, required this.onUpdate, this.propertyId, this.pId, this.newCheckboxValues, this.isUpdateProperty = false});
 
   @override
   State<CheckBoxComponent> createState() => _CheckBoxComponentState();

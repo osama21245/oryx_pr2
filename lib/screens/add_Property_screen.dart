@@ -58,8 +58,8 @@ class AddPropertyScreen extends StatefulWidget {
   final int? propertyFor;
   final PropertyDetailsModel? updatePropertyData;
 
-  AddPropertyScreen(
-      {this.propertyFor,
+  const AddPropertyScreen(
+      {super.key, this.propertyFor,
       this.updateProperty = false,
       this.pId,
       this.updatePropertyData});
@@ -184,7 +184,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
     setUpdatePropertyData();
     await getPropertyCategory();
-    print("---" + priceDurationValue.toString());
+    print("---$priceDurationValue");
     setState(() {});
   }
 
@@ -193,12 +193,12 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     await getFilterCategoryApi(selectedCategoryId!).then((value) {
       filterCategoryList.clear();
       if (value.isNotEmpty) {
-        value.forEach((element) {
+        for (var element in value) {
           if (kDebugMode) {
             print('element.toJson(): ${element.toJson()}');
           }
           filterCategoryList.add(element);
-        });
+        }
       } else {
         filterCategoryList.add(
             FilterCategoryModel(name: 'No Filters Available', options: []));
@@ -278,10 +278,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       newAmenityValueData = updatePropertyData!.propertyAmenityValue!;
       furnishedType = updatePropertyData!.data!.furnishedType;
       isPremium = updatePropertyData!.data!.premiumProperty == 1 ? true : false;
-      updatePropertyData!.data!.propertyGallary!.forEach((element) {
+      for (var element in updatePropertyData!.data!.propertyGallary!) {
         selectedImages.add(element);
         existingImages.add(element);
-      });
+      }
       latitude = updatePropertyData!.data!.latitude.toDouble();
       longitude = updatePropertyData!.data!.longitude.toDouble();
       setState(() {});
@@ -296,174 +296,184 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       hideKeyboard(context);
       appStore.setLoading(true);
       setState(() {});
-    MultipartRequest multiPartRequest = !widget.updateProperty.validate()
-        ? await getMultiPartRequest('property-save')
-        : await getMultiPartRequest('property-update/${widget.pId}');
-    // Build filter_options map
-    print('responsssssssssssssssssssss $multiPartRequest');
-    Map<String, dynamic> filterOptionsMap = {};
-    for (var filter in filterCategoryList) {
-      var value = selectedOptions[filter.name ?? ''];
-      filterOptionsMap[filter.name ?? ''] =
-          (value == null || value.isEmpty) ? null : value;
-    }
-    multiPartRequest.fields['name'] = propertyNameController.text;
-    multiPartRequest.fields['category_id'] = selectedCategoryId.toString();
-    if (widget.propertyFor == 0 || widget.propertyFor == 2)
-      multiPartRequest.fields['price_duration'] =
-          priceDurationValue!.toLowerCase();
-    multiPartRequest.fields['price'] = priceController.text.replaceAll(',', '');
-    multiPartRequest.fields['furnished_type'] = furnishedType.toString();
-    multiPartRequest.fields['saller_type'] = sellerType.toString();
-    multiPartRequest.fields['property_for'] = widget.propertyFor.toString();
-    multiPartRequest.fields['age_of_property'] = ageOfPropertyController.text.isEmptyOrNull ? "0" : ageOfPropertyController.text;
-    multiPartRequest.fields['maintenance'] = mChargesController.text.isEmptyOrNull ? "0" : mChargesController.text;
-    multiPartRequest.fields['security_deposit'] = depositController.text.isEmptyOrNull ? "0" : depositController.text;
-    multiPartRequest.fields['brokerage'] = brokerageController.text.isEmptyOrNull ? "0" : brokerageController.text;
-    multiPartRequest.fields['bhk'] = selectedBhkIndex.toString();
-    multiPartRequest.fields['sqft'] = areaController.text;
-    multiPartRequest.fields['description'] = descriptionController.text;
-    multiPartRequest.fields['country'] = countryController.text;
-    multiPartRequest.fields['state'] = stateController.text;
-    multiPartRequest.fields['city'] = cityController.text;
-    multiPartRequest.fields['latitude'] = latitude.toString();
-    multiPartRequest.fields['longitude'] = longitude.toString();
-    multiPartRequest.fields['address'] = addressController.text;
-    multiPartRequest.fields['video_url'] = videoUrlController.text;
-    multiPartRequest.fields['status'] = PROPERTY_ACTIVE;
-    multiPartRequest.fields['premium_property'] = isPremium == true ? '1' : '0';
-    multiPartRequest.fields['filter_options'] = jsonEncode(filterOptionsMap);
-    print(
-        'Filter Options Map: ${multiPartRequest.fields}'); // Debugging line
-    isAmenityIsEmpty = false;
-    dynamicAmenityList.forEach((element) {
-      if (!element.dynamicAmenityValue.toString().isEmptyOrNull) {
-        if (element.dynamicAmenityValue is String) {
-          multiPartRequest
-                  .fields['amenity_' + element.dynamicAmenityId.toString()] =
-              element.dynamicAmenityValue;
-          log(multiPartRequest
-              .fields['amenity_' + element.dynamicAmenityId.toString()]);
-        } else if (element.dynamicAmenityValue is List) {
-          List data = [];
-          data.add(element.dynamicAmenityValue);
-          multiPartRequest
-                  .fields['amenity_' + element.dynamicAmenityId.toString()] =
-              data.toString().replaceAll('[[', '[').replaceAll(']]', ']');
-          log(multiPartRequest
-              .fields['amenity_' + element.dynamicAmenityId.toString()]);
-        }
-      } else if (element.dynamicAmenityValue.toString().isEmptyOrNull) {
-        isAmenityIsEmpty = true;
+      MultipartRequest multiPartRequest = !widget.updateProperty.validate()
+          ? await getMultiPartRequest('property-save')
+          : await getMultiPartRequest('property-update/${widget.pId}');
+      // Build filter_options map
+      print('responsssssssssssssssssssss $multiPartRequest');
+      Map<String, dynamic> filterOptionsMap = {};
+      for (var filter in filterCategoryList) {
+        var value = selectedOptions[filter.name ?? ''];
+        filterOptionsMap[filter.name ?? ''] =
+            (value == null || value.isEmpty) ? null : value;
       }
-      setState(() {});
-    });
-    if (isAmenityIsEmpty) {
-      // toast(language.addRequiredAmenityMessage);
-      appStore.setLoading(false);
-    }
-
-    if (imageMain != null) {
-      if (!mainImage!.contains('https'))
-        multiPartRequest.files.add(MultipartFile.fromBytes(
-            'property_image', mainImage!,
-            filename: mainImageName));
-    }
-
-    for (var i = 0; i < existingImages.length; i++) {
-      multiPartRequest.fields['property_gallary[]'] = existingImages[i];
-    }
-    for (var i = 0; i < selectedImages.length; i++) {
-      if (!selectedImages[i].contains('https')) {
-        var file = File(selectedImages[i]);
-        multiPartRequest.files.add(
-          MultipartFile.fromBytes(
-              'property_gallary[]', await file.readAsBytes(),
-              filename: 'image$i.jpg'),
-        );
+      multiPartRequest.fields['name'] = propertyNameController.text;
+      multiPartRequest.fields['category_id'] = selectedCategoryId.toString();
+      if (widget.propertyFor == 0 || widget.propertyFor == 2) {
+        multiPartRequest.fields['price_duration'] =
+            priceDurationValue!.toLowerCase();
       }
-    }
-
-    // if (!isAmenityIsEmpty) {
-    multiPartRequest.headers.addAll(buildHeaderTokens());
-    sendMultiPartRequest(
-      multiPartRequest,
-      onSuccess: (dynamic data) async {
-        try {
-          var jsonData = data is String ? jsonDecode(data) : data;
-
-          if (jsonData != null && jsonData['status'] == true) {
-            final dynamic responseData = jsonData['data'];
-
-            // الحالة 1: رابط دفع
-            if (responseData is String && responseData.startsWith('http')) {
-              final paymentResult = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => WebViewScreenPay(uri: responseData),
-                ),
-              );
-
-              // if (paymentResult != null) {
-              //   try {
-              //     final Map<String, dynamic> result =
-              //         Map<String, dynamic>.from(paymentResult);
-              //     print('✅ status: ${result['status']}');
-
-              //     if (result['status'] == true ||
-              //         result['status'].toString().toLowerCase() == 'true') {
-              //       final res = EPropertyBaseResponse.fromJson(result);
-              //       toast(res.message.toString());
-              //       SuccessPropertyScreen(propertyId: res.propertyId)
-              //           .launch(context);
-              //     } else {
-              //       toast('❌ الدفع فشل: ${result['message']}');
-              //       finish(context, true);
-              //     }
-              //     appStore.addPropertyIndex = 0;
-              //   } catch (e) {
-              //     toast('⚠️ خطأ أثناء معالجة الدفع: $e');
-              //   }
-              // }
-            }
-
-            // الحالة 2: تم الدفع بالفعل وجاء الرد النهائي
-            else {
-              final result = Map<String, dynamic>.from(jsonData);
-              if (result['status'] == true ||
-                  result['status'].toString().toLowerCase() == 'true') {
-                final res = EPropertyBaseResponse.fromJson(result);
-                toast(res.message.toString());
-                SuccessPropertyScreen(propertyId: res.propertyId)
-                    .launch(context);
-              } else {
-                toast('❌ الدفع فشل: ${result['message']}');
-                finish(context, true);
-              }
-              appStore.addPropertyIndex = 0;
-            }
-            // else {
-            //   toast('⚠️ استجابة غير متوقعة من السيرفر');
-            // }
-          } else {
-            toast('❌ فشل العملية: ${jsonData['message'] ?? "لا يوجد رسالة"}');
+      multiPartRequest.fields['price'] =
+          priceController.text.replaceAll(',', '');
+      multiPartRequest.fields['furnished_type'] = furnishedType.toString();
+      multiPartRequest.fields['saller_type'] = sellerType.toString();
+      multiPartRequest.fields['property_for'] = widget.propertyFor.toString();
+      multiPartRequest.fields['age_of_property'] =
+          ageOfPropertyController.text.isEmptyOrNull
+              ? "0"
+              : ageOfPropertyController.text;
+      multiPartRequest.fields['maintenance'] =
+          mChargesController.text.isEmptyOrNull ? "0" : mChargesController.text;
+      multiPartRequest.fields['security_deposit'] =
+          depositController.text.isEmptyOrNull ? "0" : depositController.text;
+      multiPartRequest.fields['brokerage'] =
+          brokerageController.text.isEmptyOrNull
+              ? "0"
+              : brokerageController.text;
+      multiPartRequest.fields['bhk'] = selectedBhkIndex.toString();
+      multiPartRequest.fields['sqft'] = areaController.text;
+      multiPartRequest.fields['description'] = descriptionController.text;
+      multiPartRequest.fields['country'] = countryController.text;
+      multiPartRequest.fields['state'] = stateController.text;
+      multiPartRequest.fields['city'] = cityController.text;
+      multiPartRequest.fields['latitude'] = latitude.toString();
+      multiPartRequest.fields['longitude'] = longitude.toString();
+      multiPartRequest.fields['address'] = addressController.text;
+      multiPartRequest.fields['video_url'] = videoUrlController.text;
+      multiPartRequest.fields['status'] = PROPERTY_ACTIVE;
+      multiPartRequest.fields['premium_property'] =
+          isPremium == true ? '1' : '0';
+      multiPartRequest.fields['filter_options'] = jsonEncode(filterOptionsMap);
+      print('Filter Options Map: ${multiPartRequest.fields}'); // Debugging line
+      isAmenityIsEmpty = false;
+      for (var element in dynamicAmenityList) {
+        if (!element.dynamicAmenityValue.toString().isEmptyOrNull) {
+          if (element.dynamicAmenityValue is String) {
+            multiPartRequest
+                    .fields['amenity_${element.dynamicAmenityId}'] =
+                element.dynamicAmenityValue;
+            log(multiPartRequest
+                .fields['amenity_${element.dynamicAmenityId}']);
+          } else if (element.dynamicAmenityValue is List) {
+            List data = [];
+            data.add(element.dynamicAmenityValue);
+            multiPartRequest
+                    .fields['amenity_${element.dynamicAmenityId}'] =
+                data.toString().replaceAll('[[', '[').replaceAll(']]', ']');
+            log(multiPartRequest
+                .fields['amenity_${element.dynamicAmenityId}']);
           }
-        } catch (e) {
-          print('Error processing payment: $e');
-          toast('⚠️ خطأ أثناء معالجة الرد من السيرفر');
+        } else if (element.dynamicAmenityValue.toString().isEmptyOrNull) {
+          isAmenityIsEmpty = true;
         }
+        setState(() {});
+      }
+      if (isAmenityIsEmpty) {
+        // toast(language.addRequiredAmenityMessage);
+        appStore.setLoading(false);
+      }
 
-        isAmenityIsEmpty = false;
-      },
-      onError: (error) {
-        print("Error is $error");
-        toast(error.toString());
-      },
-    ).catchError((e) {
-      print("Error issssss " + e.toString());
-      toast(e.toString());
-    }).whenComplete(() => appStore.setLoading(false));
+      if (imageMain != null) {
+        if (!mainImage!.contains('https')) {
+          multiPartRequest.files.add(MultipartFile.fromBytes(
+              'property_image', mainImage!,
+              filename: mainImageName));
+        }
+      }
 
+      for (var i = 0; i < existingImages.length; i++) {
+        multiPartRequest.fields['property_gallary[]'] = existingImages[i];
+      }
+      for (var i = 0; i < selectedImages.length; i++) {
+        if (!selectedImages[i].contains('https')) {
+          var file = File(selectedImages[i]);
+          multiPartRequest.files.add(
+            MultipartFile.fromBytes(
+                'property_gallary[]', await file.readAsBytes(),
+                filename: 'image$i.jpg'),
+          );
+        }
+      }
+
+      // if (!isAmenityIsEmpty) {
+      multiPartRequest.headers.addAll(buildHeaderTokens());
+      sendMultiPartRequest(
+        multiPartRequest,
+        onSuccess: (dynamic data) async {
+          try {
+            var jsonData = data is String ? jsonDecode(data) : data;
+
+            if (jsonData != null && jsonData['status'] == true) {
+              final dynamic responseData = jsonData['data'];
+
+              // الحالة 1: رابط دفع
+              if (responseData is String && responseData.startsWith('http')) {
+                final paymentResult = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WebViewScreenPay(uri: responseData),
+                  ),
+                );
+
+                // if (paymentResult != null) {
+                //   try {
+                //     final Map<String, dynamic> result =
+                //         Map<String, dynamic>.from(paymentResult);
+                //     print('✅ status: ${result['status']}');
+
+                //     if (result['status'] == true ||
+                //         result['status'].toString().toLowerCase() == 'true') {
+                //       final res = EPropertyBaseResponse.fromJson(result);
+                //       toast(res.message.toString());
+                //       SuccessPropertyScreen(propertyId: res.propertyId)
+                //           .launch(context);
+                //     } else {
+                //       toast('❌ الدفع فشل: ${result['message']}');
+                //       finish(context, true);
+                //     }
+                //     appStore.addPropertyIndex = 0;
+                //   } catch (e) {
+                //     toast('⚠️ خطأ أثناء معالجة الدفع: $e');
+                //   }
+                // }
+              }
+
+              // الحالة 2: تم الدفع بالفعل وجاء الرد النهائي
+              else {
+                final result = Map<String, dynamic>.from(jsonData);
+                if (result['status'] == true ||
+                    result['status'].toString().toLowerCase() == 'true') {
+                  final res = EPropertyBaseResponse.fromJson(result);
+                  toast(res.message.toString());
+                  SuccessPropertyScreen(propertyId: res.propertyId)
+                      .launch(context);
+                } else {
+                  toast('❌ الدفع فشل: ${result['message']}');
+                  finish(context, true);
+                }
+                appStore.addPropertyIndex = 0;
+              }
+              // else {
+              //   toast('⚠️ استجابة غير متوقعة من السيرفر');
+              // }
+            } else {
+              toast('❌ فشل العملية: ${jsonData['message'] ?? "لا يوجد رسالة"}');
+            }
+          } catch (e) {
+            print('Error processing payment: $e');
+            toast('⚠️ خطأ أثناء معالجة الرد من السيرفر');
+          }
+
+          isAmenityIsEmpty = false;
+        },
+        onError: (error) {
+          print("Error is $error");
+          toast(error.toString());
+        },
+      ).catchError((e) {
+        print("Error issssss $e");
+        toast(e.toString());
+      }).whenComplete(() => appStore.setLoading(false));
     } catch (e) {
       print("Error in saveProperty: $e");
       toast("حدث خطأ أثناء حفظ العقار");
@@ -490,7 +500,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       }
       setState(() {});
     }).catchError((e) {
-      print("Error is " + e.toString());
+      print("Error is $e");
       isLastPage = true;
     }).whenComplete(() => appStore.setLoading(false));
   }
@@ -505,36 +515,36 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     dynamicAmenityList.clear();
     if (!widget.updateProperty.validate()) {
       isCategoryChanged = false;
-      amenityValueData.forEach((element) {
+      for (var element in amenityValueData) {
         AmenityDynamicModel dynamicModel = AmenityDynamicModel();
         dynamicModel.dynamicAmenityId = element.id;
         dynamicAmenityList.add(dynamicModel);
-      });
+      }
     } else {
       if (selectedCategoryId == updatePropertyData!.data!.categoryId) {
         isCategoryChanged = false;
         if (newAmenityValueData == [] && newAmenityValueData!.isEmpty) {
           newAmenityValueData = updatePropertyData!.propertyAmenityValue!;
         }
-        newAmenityValueData!.forEach((element) {
+        for (var element in newAmenityValueData!) {
           AmenityDynamicModel dynamicModel = AmenityDynamicModel();
           dynamicModel.dynamicAmenityId = element.amenityId;
           dynamicModel.dynamicAmenityValue = element.value;
           dynamicAmenityList.add(dynamicModel);
-        });
+        }
       } else {
         isCategoryChanged = true;
-        amenityValueData.forEach((element) {
+        for (var element in amenityValueData) {
           AmenityDynamicModel dynamicModel = AmenityDynamicModel();
           dynamicModel.dynamicAmenityId = element.id;
           dynamicAmenityList.add(dynamicModel);
-        });
+        }
         // newAmenityValueData!.clear();
       }
     }
-    dynamicAmenityList.forEach((element) {
+    for (var element in dynamicAmenityList) {
       log("=======Dynamic Amenity List ${element.toJson().toString()}");
-    });
+    }
   }
 
   ///SelectSingleImage
@@ -566,7 +576,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             titleSpace: 0,
             showBack: true,
             actions: [
-              Text("${appStore.addPropertyIndex + 1}" + "/" + "2",
+              Text("${appStore.addPropertyIndex + 1}" "/" + "2",
                       style: secondaryTextStyle())
                   .paddingOnly(right: 30, top: 15),
             ],
@@ -633,7 +643,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           ),
                           16.width,
@@ -654,69 +665,76 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       onTap: appStore.isLoading
                           ? null
                           : () {
-                            try {
-                              if (appStore.addPropertyIndex == 0) {
-                                if (selectedCategoryId != null) {
-                                  appStore.addPropertyIndex = 1;
-                                  getFilterCategory(); // Add this line to call getFilterCategory
-                                } else {
-                                  toast(language.pleaseSelectCategory);
-                                }
-                              } else if (appStore.addPropertyIndex == 1) {
-                                if (mSecondComponentFormKey.currentState!
-                                    .validate()) {
-                                  if (widget.propertyFor == 0 ||
-                                      widget.propertyFor == 2) {
-                                    if (priceDurationValue != null &&
-                                            selectedBhkIndex != null
-                                        //  &&
-                                        // latitude != null &&
-                                        // longitude != null &&
-                                        // mapLocation.text.isNotEmpty
-                                        ) {
-                                      // Submit directly instead of going to third screen
-                                      saveProperty();
-                                      selectedOptions.clear();
-                                    } else {
-                                      if (priceDurationValue.isEmptyOrNull)
-                                        toast(
-                                            language.pleaseSelectPriceDuration);
-                                      if (mainImagePath.isEmptyOrNull)
-                                        toast(language.pleaseSelectMainPicture);
-                                      if (selectedImages.isEmpty)
-                                        toast(
-                                            language.pleaseSelectOtherPicture);
-                                      if (selectedBhkIndex == null)
-                                        toast(language.pleaseSelectBHK);
-                                      // if (mapLocation.text.isEmpty) toast(language.pleaseSelectAddress);
-                                    }
+                              try {
+                                if (appStore.addPropertyIndex == 0) {
+                                  if (selectedCategoryId != null) {
+                                    appStore.addPropertyIndex = 1;
+                                    getFilterCategory(); // Add this line to call getFilterCategory
                                   } else {
-                                    print('dddddddddddddddddddddddddd');
-                                    if (
-                                        mainImagePath != null &&
-                                        selectedBhkIndex != null) {
-                                      // Submit directly instead of going to third screen
-                                      saveProperty();
-                                      selectedOptions.clear();
+                                    toast(language.pleaseSelectCategory);
+                                  }
+                                } else if (appStore.addPropertyIndex == 1) {
+                                  if (mSecondComponentFormKey.currentState!
+                                      .validate()) {
+                                    if (widget.propertyFor == 0 ||
+                                        widget.propertyFor == 2) {
+                                      if (priceDurationValue != null &&
+                                              selectedBhkIndex != null
+                                          //  &&
+                                          // latitude != null &&
+                                          // longitude != null &&
+                                          // mapLocation.text.isNotEmpty
+                                          ) {
+                                        // Submit directly instead of going to third screen
+                                        saveProperty();
+                                        selectedOptions.clear();
+                                      } else {
+                                        if (priceDurationValue.isEmptyOrNull) {
+                                          toast(language
+                                              .pleaseSelectPriceDuration);
+                                        }
+                                        if (mainImagePath.isEmptyOrNull) {
+                                          toast(
+                                              language.pleaseSelectMainPicture);
+                                        }
+                                        if (selectedImages.isEmpty) {
+                                          toast(language
+                                              .pleaseSelectOtherPicture);
+                                        }
+                                        if (selectedBhkIndex == null) {
+                                          toast(language.pleaseSelectBHK);
+                                        }
+                                        // if (mapLocation.text.isEmpty) toast(language.pleaseSelectAddress);
+                                      }
                                     } else {
-                                      if (mainImagePath == null)
-                                        toast(language.pleaseSelectMainPicture);
-                                      // if (selectedImages.isEmpty)
-                                      //   toast(
-                                      //       language.pleaseSelectOtherPicture);
-                                      if (selectedBhkIndex == null)
-                                        toast(language.pleaseSelectBHK);
+                                      print('dddddddddddddddddddddddddd');
+                                      if (mainImagePath != null &&
+                                          selectedBhkIndex != null) {
+                                        // Submit directly instead of going to third screen
+                                        saveProperty();
+                                        selectedOptions.clear();
+                                      } else {
+                                        if (mainImagePath == null) {
+                                          toast(
+                                              language.pleaseSelectMainPicture);
+                                        }
+                                        // if (selectedImages.isEmpty)
+                                        //   toast(
+                                        //       language.pleaseSelectOtherPicture);
+                                        if (selectedBhkIndex == null) {
+                                          toast(language.pleaseSelectBHK);
+                                        }
+                                      }
                                     }
                                   }
+                                  log('Selected index $selectedCategoryId');
+                                  addSelectedCategoryData();
                                 }
-                                log('Selected index $selectedCategoryId');
-                                addSelectedCategoryData();
+                                setState(() {});
+                              } catch (error) {
+                                print('errooooooooo$error');
                               }
-                              setState(() {});
-                            } catch (error) {
-                              print('errooooooooo$error');
-                            }
-                          },
+                            },
                     ),
             ),
           ),
@@ -743,8 +761,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 items: propertySellerType
                     .map(
                       (value) => DropdownMenuItem<String>(
-                        child: Text(value, style: primaryTextStyle()),
                         value: value,
+                        child: Text(value, style: primaryTextStyle()),
                       ),
                     )
                     .toList(),
@@ -752,7 +770,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 isDense: true,
                 borderRadius: radius(),
                 decoration: defaultInputDecoration(context),
-                value: sellerType == 0
+                initialValue: sellerType == 0
                     ? OWNER
                     : sellerType == 1
                         ? BROKER
@@ -769,8 +787,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                     sellerType = 2;
                   }
                   setState(() {});
-                  print("====" + sellerType.toString());
-                  print("====" + propertySellerType.toString());
+                  print("====$sellerType");
+                  print("====$propertySellerType");
                 }),
             20.height,
             Text(language.selectCategory, style: primaryTextStyle()),
@@ -1288,9 +1306,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
               onTap: () async {
                 List<XFile> image = await ImagePicker().pickMultiImage();
                 imageFileList!.addAll(image);
-                imageFileList!.forEach((image) {
+                for (var image in imageFileList!) {
                   selectedImages.add(image.path);
-                });
+                }
                 imageFileList!.clear();
                 setState(() {});
               },
@@ -1353,7 +1371,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             //   ],
             // ),
             // 22.height,
-            
+
             // Add filter categories section from third screen
             // 20.height,
             // Text(language.extraFacilities, style: primaryTextStyle()),
@@ -1670,8 +1688,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
   address(String? finalMapAddress) {
     mapLocation.text = finalMapAddress.toString();
-    print("Final Location Is From Properties Screen ==>" +
-        mapLocation.toString());
+    print("Final Location Is From Properties Screen ==>$mapLocation");
     setState(() {});
   }
 
@@ -1680,10 +1697,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       cityController.text = city.toString();
       stateController.text = state.toString();
       countryController.text = country.toString();
-      print("CITY" +
-          cityController.text.toString() +
-          stateController.text.toString() +
-          countryController.text.toString());
+      print("CITY${cityController.text}${stateController.text}${countryController.text}");
     }
     setState(() {});
   }

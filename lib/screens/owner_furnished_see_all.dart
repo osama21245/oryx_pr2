@@ -15,7 +15,7 @@ class OwnerFurnishedSeeAllScreen extends StatefulWidget {
   final Function? onCall;
   final bool seller;
 
-  OwnerFurnishedSeeAllScreen({
+  const OwnerFurnishedSeeAllScreen({super.key,
     this.onCall,
     this.seller = false,
   });
@@ -78,13 +78,13 @@ class _OwnerFurnishedSeeAllScreenState extends State<OwnerFurnishedSeeAllScreen>
         "city": userStore.cityName,
       };
     }
-    await filterApi(req, page: 1).then((value) {
+    await filterApi(req, page: page).then((value) {
       appStore.setLoading(true);
       filterProperty.clear();
       Iterable it = value.property!;
       it.map((e) => filterProperty.add(e)).toList();
       appStore.setLoading(false);
-      print("Filter Response " + filterProperty.toString());
+      print("Filter Response $filterProperty");
       setState(() {});
     }).catchError((e) {
       print(req);

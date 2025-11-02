@@ -11,6 +11,8 @@ import 'property_detail_screen.dart';
 import 'subscribe_screen.dart';
 
 class FavouriteScreen extends StatefulWidget {
+  const FavouriteScreen({super.key});
+
   @override
   State<FavouriteScreen> createState() => _FavouriteScreenState();
 }
@@ -54,10 +56,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       Iterable it = value.data!;
       it.map((e) => mFavouriteProperty.add(e)).toList();
 
-      print("Favourite Property List Is ==>" + mFavouriteProperty.toString());
+      print("Favourite Property List Is ==>$mFavouriteProperty");
       setState(() {});
     }).catchError((e) {
-      print("Error is " + e.toString());
+      print("Error is $e");
       appStore.setLoading(false);
     });
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:orex/extensions/app_button.dart';
 import 'package:orex/extensions/colors.dart';
@@ -43,6 +42,8 @@ class _FilterCategoryState extends State<FilterCategory> {
 
     await getFilterCategoryApi(widget.categoryId!).then((value) {
       appStore.setLoading(false);
+            print('Transaction type: ${widget.transactionType}');
+
 
       // Always navigate to CategorySelectedScreen
       Navigator.pushReplacement(

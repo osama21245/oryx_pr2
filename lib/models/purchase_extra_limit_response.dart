@@ -4,11 +4,11 @@ class PurchaseExtraLimitResponse {
   PurchaseExtraLimitResponse({this.data});
 
   PurchaseExtraLimitResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -102,33 +102,33 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['display_name'] = this.displayName;
-    data['email'] = this.email;
-    data['username'] = this.username;
-    data['status'] = this.status;
-    data['user_type'] = this.userType;
-    data['address'] = this.address;
-    data['contact_number'] = this.contactNumber;
-    data['profile_image'] = this.profileImage;
-    data['login_type'] = this.loginType;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['uid'] = this.uid;
-    data['player_id'] = this.playerId;
-    data['timezone'] = this.timezone;
-    data['is_agent'] = this.isAgent;
-    data['is_builder'] = this.isBuilder;
-    data['last_notification_seen'] = this.lastNotificationSeen;
-    data['is_subscribe'] = this.isSubscribe;
-    data['view_limit_count'] = this.viewLimitCount;
-    data['add_limit_count'] = this.addLimitCount;
-    data['advertisement_limit'] = this.advertisementLimit;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['display_name'] = displayName;
+    data['email'] = email;
+    data['username'] = username;
+    data['status'] = status;
+    data['user_type'] = userType;
+    data['address'] = address;
+    data['contact_number'] = contactNumber;
+    data['profile_image'] = profileImage;
+    data['login_type'] = loginType;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['uid'] = uid;
+    data['player_id'] = playerId;
+    data['timezone'] = timezone;
+    data['is_agent'] = isAgent;
+    data['is_builder'] = isBuilder;
+    data['last_notification_seen'] = lastNotificationSeen;
+    data['is_subscribe'] = isSubscribe;
+    data['view_limit_count'] = viewLimitCount;
+    data['add_limit_count'] = addLimitCount;
+    data['advertisement_limit'] = advertisementLimit;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

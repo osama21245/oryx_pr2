@@ -12,6 +12,8 @@ import '../utils/constants.dart';
 class ThemeSelectionDialog extends StatefulWidget {
   static String tag = '/ThemeSelectionDialog';
 
+  const ThemeSelectionDialog({super.key});
+
   @override
   ThemeSelectionDialogState createState() => ThemeSelectionDialogState();
 }

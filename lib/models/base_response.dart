@@ -28,10 +28,10 @@ class EPropertyBaseResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    data['status'] = this.status;
-    data['property_id'] = this.propertyId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message'] = message;
+    data['status'] = status;
+    data['property_id'] = propertyId;
     return data;
   }
 }

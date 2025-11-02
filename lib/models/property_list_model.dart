@@ -10,20 +10,20 @@ class PropertyListModel {
 
   PropertyListModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['data'] != null) {
       data = <Property>[];
       json['data'].forEach((v) {
-        data!.add(new Property.fromJson(v));
+        data!.add(Property.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -85,22 +85,22 @@ class PropertyData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['address'] = this.address;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['property_image'] = this.propertyImage;
-    data['is_favourite'] = this.isFavourite;
-    data['property_type_id'] = this.propertyTypeId;
-    data['property_type'] = this.propertyType;
-    data['property_for'] = this.propertyFor;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['address'] = address;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['property_image'] = propertyImage;
+    data['is_favourite'] = isFavourite;
+    data['property_type_id'] = propertyTypeId;
+    data['property_type'] = propertyType;
+    data['property_for'] = propertyFor;
     return data;
   }
 }

@@ -6,7 +6,6 @@ import '../extensions/extension_util/num_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/loader_widget.dart';
 import '../screens/subscribe_screen.dart';
-import '../components/HtmlWidget.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/LiveStream.dart';
 import '../extensions/animatedList/animated_list_view.dart';
@@ -28,6 +27,8 @@ import '../utils/images.dart';
 import 'no_data_screen.dart';
 
 class SubscriptionDetailScreen extends StatefulWidget {
+  const SubscriptionDetailScreen({super.key});
+
   @override
   State<SubscriptionDetailScreen> createState() => _SubscriptionDetailScreenState();
 }
@@ -77,7 +78,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
       Iterable it = value.data!;
       it.map((e) => mSubscriptionPlanList.add(e)).toList();
 
-      mSubscriptionPlanList.forEach((element) {});
+      for (var element in mSubscriptionPlanList) {}
       appStore.setLoading(false);
 
       setState(() {});
@@ -230,7 +231,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                                 ],
                               )
                             : userStore.subscriptionDetail!.subscriptionPlan == null || userStore.subscriptionDetail!.subscriptionPlan!.status == "inactive"
-                                ? Container(
+                                ? SizedBox(
                                     height: context.height() - context.height() * 0.45,
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -281,11 +282,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                                                 ),
                                                 8.height,
                                                 Text(
-                                                    language.yourPlanValid +
-                                                        " " +
-                                                        parseDocumentDate(DateTime.parse(userStore.subscriptionDetail!.subscriptionPlan!.subscriptionStartDate.validate())) +
-                                                        " ${language.to} " +
-                                                        parseDocumentDate(DateTime.parse(userStore.subscriptionDetail!.subscriptionPlan!.subscriptionEndDate.validate())),
+                                                    "${language.yourPlanValid} ${parseDocumentDate(DateTime.parse(userStore.subscriptionDetail!.subscriptionPlan!.subscriptionStartDate.validate()))} ${language.to} ${parseDocumentDate(DateTime.parse(userStore.subscriptionDetail!.subscriptionPlan!.subscriptionEndDate.validate()))}",
                                                     style: primaryTextStyle(color: grayColor, size: 12)),
                                                 // HtmlWidget(postContent: userStore.subscriptionDetail!.subscriptionPlan!.packageData!.description.validate(), color: textSecondaryColor, size: 14),
                                                 8.height,
@@ -415,9 +412,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                                                   ),
                                                   10.height,
                                                   Text(
-                                                    parseDocumentDate(DateTime.parse(mSubscriptionPlanList[index].subscriptionStartDate.validate())) +
-                                                        " ${language.to} " +
-                                                        parseDocumentDate(DateTime.parse(mSubscriptionPlanList[index].subscriptionEndDate.validate())),
+                                                    "${parseDocumentDate(DateTime.parse(mSubscriptionPlanList[index].subscriptionStartDate.validate()))} ${language.to} ${parseDocumentDate(DateTime.parse(mSubscriptionPlanList[index].subscriptionEndDate.validate()))}",
                                                     style: secondaryTextStyle(),
                                                   ),
                                                   10.height.visible(mSubscriptionPlanList[index].cancelDate != null),
@@ -427,7 +422,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                                                       children: [
                                                         Icon(Icons.circle, size: 6, color: Colors.black),
                                                         4.width,
-                                                        Text(language.cancelledOn + " ", style: primaryTextStyle(size: 14)),
+                                                        Text("${language.cancelledOn} ", style: primaryTextStyle(size: 14)),
                                                         Text(parseDocumentDate(DateTime.parse(mSubscriptionPlanList[index].cancelDate.validate())), style: secondaryTextStyle()),
                                                       ],
                                                     ),
@@ -438,7 +433,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                                                       children: [
                                                         Icon(Icons.circle, size: 6, color: Colors.black),
                                                         4.width,
-                                                        Text(language.paymentVia + " " + mSubscriptionPlanList[index].paymentType.toString(), style: primaryTextStyle(size: 14)),
+                                                        Text("${language.paymentVia} ${mSubscriptionPlanList[index].paymentType}", style: primaryTextStyle(size: 14)),
                                                       ],
                                                     ),
                                                 ],

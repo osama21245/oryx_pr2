@@ -9,7 +9,7 @@ import '../utils/app_common.dart';
 import '../utils/colors.dart';
 
 class SubscriptionComponents extends StatefulWidget {
-  SubscriptionComponents(
+  const SubscriptionComponents(
       {super.key,
       required this.mainTitle,
       required this.mainSubTitle,
@@ -45,7 +45,7 @@ class _SubscriptionComponentsState extends State<SubscriptionComponents> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(widget.mainTitle, style: primaryTextStyle(color: widget.textColor, size: 20)),
           5.height,
-          Text("${widget.mainSubTitle}", style: boldTextStyle(color: widget.subColor, size: 16)),
+          Text(widget.mainSubTitle, style: boldTextStyle(color: widget.subColor, size: 16)),
           Container(
             margin: EdgeInsets.all(10),
             padding: EdgeInsets.all(10),

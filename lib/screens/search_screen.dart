@@ -44,7 +44,7 @@ class SearchScreen extends StatefulWidget {
   bool? isFilter;
 
   SearchScreen(
-      {this.budgetMaxPrice,
+      {super.key, this.budgetMaxPrice,
       this.budgetMinPrice,
       this.bhkSend,
       this.selectCategory,
@@ -140,8 +140,9 @@ class _SearchScreenState extends State<SearchScreen> {
       its.map((e) => mergePropertyData.add(e)).toList();
       it.map((e) => mergePropertyData.add(e)).toList();
 
-      if (!mSearchCont.text.isEmptyOrNull)
+      if (!mSearchCont.text.isEmptyOrNull) {
         userStore.addToRecentSearchList(mSearchValue.toString());
+      }
 
       setState(() {});
     }).catchError((error) {

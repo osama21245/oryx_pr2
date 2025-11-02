@@ -48,12 +48,12 @@ class _PropertyContactHistoryScreenState extends State<PropertyContactHistoryScr
           future: getWhoInquiredMyPropertyUserDetailsListApi(widget.customerId),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              ContactInfoDetailsResponse _categoryListModel = snapshot.data!;
+              ContactInfoDetailsResponse categoryListModel = snapshot.data!;
               return SingleChildScrollView(
                 child: ListView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     shrinkWrap: true,
-                    itemCount: _categoryListModel.data!.length,
+                    itemCount: categoryListModel.data!.length,
                     itemBuilder: (context, index) {
                       return Container(
                         margin: EdgeInsets.only(bottom: 16),
@@ -61,15 +61,15 @@ class _PropertyContactHistoryScreenState extends State<PropertyContactHistoryScr
                         padding: EdgeInsets.all(10),
                         decoration: boxDecorationRoundedWithShadow(8, backgroundColor: primaryExtraLight),
                         child: Row(children: [
-                          cachedImage(_categoryListModel.data![index].propertyImage, height: 60, width: 60, fit: BoxFit.fill).cornerRadiusWithClipRRect(4),
+                          cachedImage(categoryListModel.data![index].propertyImage, height: 60, width: 60, fit: BoxFit.fill).cornerRadiusWithClipRRect(4),
                           10.width,
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(_categoryListModel.data![index].propertyName.validate(), style: primaryTextStyle(size: 20)),
+                              Text(categoryListModel.data![index].propertyName.validate(), style: primaryTextStyle(size: 20)),
                               10.height,
-                              if (_categoryListModel.data![index].createdAt!.isNotEmpty)
-                                Text(language.seenOn + parseDocumentDate(DateTime.parse(_categoryListModel.data![index].createdAt.validate())), style: secondaryTextStyle())
+                              if (categoryListModel.data![index].createdAt!.isNotEmpty)
+                                Text(language.seenOn + parseDocumentDate(DateTime.parse(categoryListModel.data![index].createdAt.validate())), style: secondaryTextStyle())
                             ],
                           )
                         ]),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../components/HtmlWidget.dart';
 import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';

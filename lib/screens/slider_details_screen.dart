@@ -23,6 +23,7 @@ class SliderDetailsScreen extends StatefulWidget {
 
   @override
   State<SliderDetailsScreen> createState() => _SliderDetailsScreenState();
+  
 }
 
 class _SliderDetailsScreenState extends State<SliderDetailsScreen> {

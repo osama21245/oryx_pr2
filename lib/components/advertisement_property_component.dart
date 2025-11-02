@@ -22,8 +22,8 @@ class AdvertisementPropertyComponent extends StatefulWidget {
   final Function? onCall;
   final bool fromFav;
 
-  AdvertisementPropertyComponent(
-      {this.property,
+  const AdvertisementPropertyComponent(
+      {super.key, this.property,
       this.isFullWidth = false,
       this.onCall,
       this.fromFav = false});

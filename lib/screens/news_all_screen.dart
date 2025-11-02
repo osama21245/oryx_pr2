@@ -17,7 +17,7 @@ import '../utils/app_common.dart';
 import 'news_details_screen.dart';
 
 class NewsAllScreen extends StatefulWidget {
-  NewsAllScreen({super.key});
+  const NewsAllScreen({super.key});
 
   @override
   State<NewsAllScreen> createState() => _NewsAllScreenState();

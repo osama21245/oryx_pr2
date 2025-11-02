@@ -12,7 +12,7 @@ class NoDataScreen extends StatefulWidget {
 
   final String? mTitle;
 
-  NoDataScreen({this.mTitle});
+  const NoDataScreen({super.key, this.mTitle});
 
   @override
   NoDataScreenState createState() => NoDataScreenState();

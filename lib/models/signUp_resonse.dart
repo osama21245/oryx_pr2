@@ -7,12 +7,12 @@ class SignUpResponse {
 
   SignUpResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    data = json['data'] == null ?null :new UserModel.fromJson(json['data'])  ;
+    data = json['data'] == null ?null :UserModel.fromJson(json['data'])  ;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -64,22 +64,22 @@ class UserModel {
       this.phoneNumber});
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    firstName = json['first_name']== null ? null :json['first_name'];
-    lastName = json['last_name']== null ? null : json['last_name'];
-    username = json['username']== null ? null : json['username'];
-    email = json['email']== null ? null :json['email'];
-    userType = json['user_type']== null ? null : json['user_type'];
-    status = json['status']== null ? null : json['status'];
-    address = json['address']== null ? null : json['address'];
-    isAgent = json['is_agent']== null ? null : json['is_agent'];
-    isBuilder = json['is_builder']== null ? null :json['is_builder'];
-    displayName = json['display_name']== null ? null :json['display_name'];
-    updatedAt = json['updated_at']== null ? null :json['updated_at'];
-    createdAt = json['created_at']== null ? null : json['created_at'];
-    id = json['id']== null ? null :json['id'];
-    apiToken = json['api_token'] == null ? null : json['api_token'];
-    profileImage = json['profile_image']== null ? null :json['profile_image'];
-    phoneNumber= json['phone_number']== null? null: json['phone_number'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    username = json['username'];
+    email = json['email'];
+    userType = json['user_type'];
+    status = json['status'];
+    address = json['address'];
+    isAgent = json['is_agent'];
+    isBuilder = json['is_builder'];
+    displayName = json['display_name'];
+    updatedAt = json['updated_at'];
+    createdAt = json['created_at'];
+    id = json['id'];
+    apiToken = json['api_token'];
+    profileImage = json['profile_image'];
+    phoneNumber= json['phone_number'];
     // if (json['roles'] != null) {
     //   roles = <Roles>[];
     //   json['roles'].forEach((v) {
@@ -89,38 +89,38 @@ class UserModel {
     if (json['media'] != null) {
       media = <Media>[];
       json['media'].forEach((v) {
-        media!.add(new Media.fromJson(v));
+        media!.add(Media.fromJson(v));
       });
     }
-    contactNumber = json['contact_number'] == null ? null : json['contact_number'];
+    contactNumber = json['contact_number'];
 
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['username'] = this.username;
-    data['email'] = this.email;
-    data['user_type'] = this.userType;
-    data['status'] = this.status;
-    data['address'] = this.address;
-    data['is_agent'] = this.isAgent;
-    data['is_builder'] = this.isBuilder;
-    data['display_name'] = this.displayName;
-    data['updated_at'] = this.updatedAt;
-    data['created_at'] = this.createdAt;
-    data['id'] = this.id;
-    data['api_token'] = this.apiToken;
-    data['profile_image'] = this.profileImage;
-    data['phone_number'] = this.phoneNumber;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['username'] = username;
+    data['email'] = email;
+    data['user_type'] = userType;
+    data['status'] = status;
+    data['address'] = address;
+    data['is_agent'] = isAgent;
+    data['is_builder'] = isBuilder;
+    data['display_name'] = displayName;
+    data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
+    data['api_token'] = apiToken;
+    data['profile_image'] = profileImage;
+    data['phone_number'] = phoneNumber;
     // if (this.roles != null) {
     //   data['roles'] = this.roles!.map((v) => v.toJson()).toList();
     // }
-    if (this.media != null) {
-      data['media'] = this.media!.map((v) => v.toJson()).toList();
+    if (media != null) {
+      data['media'] = media!.map((v) => v.toJson()).toList();
     }
-    data['contact_number'] = this.contactNumber;
+    data['contact_number'] = contactNumber;
 
     return data;
   }
@@ -172,17 +172,17 @@ class Media {
         this.previewUrl});
 
   Media.fromJson(Map<String, dynamic> json) {
-    id = json['id']== null ? null :json['id'] ;
-    modelType = json['model_type']== null ? null : json['model_type'] ;
-    modelId = json['model_id']== null ? null : json['model_id'] ;
-    uuid = json['uuid']== null ? null : json['uuid'] ;
-    collectionName = json['collection_name']== null ? null : json['collection_name'] ;
-    name = json['name']== null ? null :json['name'] ;
-    fileName = json['file_name']== null ? null :json['file_name'] ;
-    mimeType = json['mime_type']== null ? null : json['mime_type'] ;
-    disk = json['disk']== null ? null : json['disk'] ;
-    conversionsDisk = json['conversions_disk']== null ? null :  json['conversions_disk'];
-    size = json['size']== null ? null : json['size'] ;
+    id = json['id'] ;
+    modelType = json['model_type'] ;
+    modelId = json['model_id'] ;
+    uuid = json['uuid'] ;
+    collectionName = json['collection_name'] ;
+    name = json['name'] ;
+    fileName = json['file_name'] ;
+    mimeType = json['mime_type'] ;
+    disk = json['disk'] ;
+    conversionsDisk = json['conversions_disk'];
+    size = json['size'] ;
     // if (json['manipulations'] != null) {
     //   manipulations = <Null>[];
     //   json['manipulations'].forEach((v) {
@@ -207,26 +207,26 @@ class Media {
     //     responsiveImages!.add(new Null.fromJson(v));
     //   });
     // }
-    orderColumn = json['order_column']== null ? null :json['order_column'] ;
-    createdAt = json['created_at']== null ? null :  json['created_at'];
-    updatedAt = json['updated_at']== null ? null : json['updated_at'] ;
-    originalUrl = json['original_url']== null ? null : json['original_url'] ;
-    previewUrl = json['preview_url']== null ? null :json['preview_url'] ;
+    orderColumn = json['order_column'] ;
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'] ;
+    originalUrl = json['original_url'] ;
+    previewUrl = json['preview_url'] ;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['model_type'] = this.modelType;
-    data['model_id'] = this.modelId;
-    data['uuid'] = this.uuid;
-    data['collection_name'] = this.collectionName;
-    data['name'] = this.name;
-    data['file_name'] = this.fileName;
-    data['mime_type'] = this.mimeType;
-    data['disk'] = this.disk;
-    data['conversions_disk'] = this.conversionsDisk;
-    data['size'] = this.size;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['model_type'] = modelType;
+    data['model_id'] = modelId;
+    data['uuid'] = uuid;
+    data['collection_name'] = collectionName;
+    data['name'] = name;
+    data['file_name'] = fileName;
+    data['mime_type'] = mimeType;
+    data['disk'] = disk;
+    data['conversions_disk'] = conversionsDisk;
+    data['size'] = size;
     // if (this.manipulations != null) {
     //   data['manipulations'] =
     //       this.manipulations!.map((v) => v.toJson()).toList();
@@ -243,11 +243,11 @@ class Media {
     //   data['responsive_images'] =
     //       this.responsiveImages!.map((v) => v.toJson()).toList();
     // }
-    data['order_column'] = this.orderColumn;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['original_url'] = this.originalUrl;
-    data['preview_url'] = this.previewUrl;
+    data['order_column'] = orderColumn;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['original_url'] = originalUrl;
+    data['preview_url'] = previewUrl;
     return data;
   }
 }

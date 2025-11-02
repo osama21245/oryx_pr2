@@ -7,19 +7,19 @@ class PropertyContactInfoResponse {
   PropertyContactInfoResponse({this.pagination, this.data});
 
   PropertyContactInfoResponse.fromJson(Map<String, dynamic> json) {
-    pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
+    pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
       data = <ContactInfoModel>[];
       json['data'].forEach((v) {
-        data!.add(new ContactInfoModel.fromJson(v));
+        data!.add(ContactInfoModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -54,16 +54,16 @@ class ContactInfoModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['property_id'] = this.propertyId;
-    data['customer_id'] = this.customerId;
-    data['customer_name'] = this.customerName;
-    data['property_name'] = this.propertyName;
-    data['contact_number'] = this.contactNumber;
-    data['customer_profile_image'] = this.customerProfileImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['property_id'] = propertyId;
+    data['customer_id'] = customerId;
+    data['customer_name'] = customerName;
+    data['property_name'] = propertyName;
+    data['contact_number'] = contactNumber;
+    data['customer_profile_image'] = customerProfileImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

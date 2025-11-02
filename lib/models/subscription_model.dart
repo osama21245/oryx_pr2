@@ -102,20 +102,20 @@ class SubscriptionResponse {
 
   SubscriptionResponse.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['data'] != null) {
       data = <SubscriptionModel>[];
       json['data'].forEach((v) {
-        data!.add(new SubscriptionModel.fromJson(v));
+        data!.add(SubscriptionModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -177,22 +177,22 @@ class SubscriptionModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['duration_unit'] = this.durationUnit;
-    data['duration'] = this.duration;
-    data['price'] = this.price;
-    data['property'] = this.property;
-    data['add_property'] = this.addProperty;
-    data['advertisement'] = this.advertisement;
-    data['view_property_limit'] = this.viewPropertyLimit;
-    data['add_property_limit'] = this.addPropertyLimit;
-    data['advertisement_limit'] = this.advertisementLimit;
-    data['status'] = this.status;
-    data['description'] = this.description;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['duration_unit'] = durationUnit;
+    data['duration'] = duration;
+    data['price'] = price;
+    data['property'] = property;
+    data['add_property'] = addProperty;
+    data['advertisement'] = advertisement;
+    data['view_property_limit'] = viewPropertyLimit;
+    data['add_property_limit'] = addPropertyLimit;
+    data['advertisement_limit'] = advertisementLimit;
+    data['status'] = status;
+    data['description'] = description;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

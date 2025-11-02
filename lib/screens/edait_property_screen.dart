@@ -17,6 +17,7 @@ import 'package:orex/extensions/colors.dart';
 import 'package:orex/extensions/common.dart';
 import 'package:orex/extensions/decorations.dart';
 import 'package:orex/models/base_response.dart';
+import 'package:orex/models/dashBoard_response.dart' hide Property;
 import 'package:orex/models/get_property_developer.dart';
 import 'package:orex/network/network_utills.dart';
 import 'package:orex/screens/dashboard_screen.dart';
@@ -42,20 +43,21 @@ import 'package:http/http.dart' as http;
 
 import 'package:intl/intl.dart';
 
-class DeveloperScreen extends StatefulWidget {
-  const DeveloperScreen({super.key});
+class EdaitPropertyScreen extends StatefulWidget {
+  final MSlider? mSlider;
+
+  const EdaitPropertyScreen({super.key, this.mSlider});
 
   @override
-  State<DeveloperScreen> createState() => _DeveloperScreenState();
+  State<EdaitPropertyScreen> createState() => _EdaitPropertyScreenState();
 }
 
-class _DeveloperScreenState extends State<DeveloperScreen> {
+class _EdaitPropertyScreenState extends State<EdaitPropertyScreen> {
   int? selectedCategoryId;
   int sellerType = 0;
   int page = 1;
   int? numPage;
   bool isLastPage = false;
-
   List<CategoryData> categoryData = [];
   PropertyResponseModel? preporty;
   List<String> selectedImages = [];
@@ -100,7 +102,31 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
 
   void init() async {
     await getPropertyCategory();
+
+    if (widget.mSlider?.categoryId != null) {
+      await getProperty(widget.mSlider!.categoryId);
+    }
+    initialSliderToEdait();
+
     appStore.addPropertyIndex = 0;
+  }
+
+  void initialSliderToEdait() {
+    propertyNameController.text = widget.mSlider?.propertyName ?? "";
+    descriptionController.text = widget.mSlider?.description ?? "";
+    selectedCategoryId = widget.mSlider?.categoryId;
+    priceMeterList = widget.mSlider?.areaPrices
+            ?.map((e) => {
+                  "price":
+                      TextEditingController(text: e.price.toString() ?? ""),
+                  "area": TextEditingController(text: e.area ?? ""),
+                  "type": TextEditingController(text: e.type ?? ""),
+                })
+            .toList() ??
+        [];
+
+    mainImagePath = widget.mSlider?.sliderImage;
+    selectedProperty = widget.mSlider?.propertyId.toString();
   }
 
   getProperty(categoryId) async {
@@ -109,7 +135,6 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
 
     try {
       final response = await getPropertyForDeveloper(categoryId);
-
       // preportyList.clear();
       if (response.data != null && response.data!.isNotEmpty) {
         if (kDebugMode) {
@@ -131,6 +156,9 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
     print('start fitch category');
     appStore.setLoading(true);
     await getCategory().then((value) {
+      print('categoryData: $categoryData');
+      print('value is**** : $value');
+
       numPage = value.pagination!.totalPages;
       isLastPage = false;
       if (page == 1) {
@@ -149,20 +177,73 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
     }).whenComplete(() => appStore.setLoading(false));
   }
 
-  Future<void> saveProperty() async {
+  // Future<void> saveProperty() async {
+  //   hideKeyboard(context);
+  //   appStore.setLoading(true);
+  //   http.MultipartRequest multiPartRequest =
+  //       await getMultiPartRequest('sliders');
+  //   // البيانات العامة
+  //   multiPartRequest.fields['category_id'] = selectedCategoryId.toString();
+  //   multiPartRequest.fields['property_id'] = selectedProperty!;
+  //   multiPartRequest.fields['name'] = propertyNameController.text;
+  //   multiPartRequest.fields['status'] = '1';
+  //   multiPartRequest.fields['description'] = descriptionController.text;
+  //   multiPartRequest.fields['area_prices'] = jsonEncode(
+  //     priceMeterList
+  //         .map((item) => {
+  //               'area': item['area']?.text ?? '',
+  //               'price': int.tryParse(item['price']?.text ?? '') ?? 0,
+  //               'type': item['type']?.text ?? '',
+  //             })
+  //         .toList(),
+  //   );
+  //   if (mainImagePath != null && !mainImagePath!.contains('https')) {
+  //     multiPartRequest.files
+  //         .add(await http.MultipartFile.fromPath('image', mainImagePath!));
+  //   }
+  //   multiPartRequest.headers.addAll(buildHeaderTokens());
+  //   sendMultiPartRequest(
+  //     multiPartRequest,
+  //     onSuccess: (data) async {
+  //       appStore.setLoading(false);
+  //       if ((data as String).isJson()) {
+  //         final res = EPropertyBaseResponse.fromJson(jsonDecode(data));
+  //         toast(res.message ?? 'تم الحفظ');
+  //         if (res.message == "Slider has been save successfully") {
+  //           DashboardScreen().launch(context);
+  //           appStore.addPropertyIndex = 0;
+  //           setState(() {});
+  //         } else if (res.message == "Plan Has Expired") {
+  //           SubscribeScreen().launch(context);
+  //         } else {
+  //           finish(context, true);
+  //         }
+  //         appStore.addPropertyIndex = 0;
+  //       }
+  //     },
+  //     onError: (error) {
+  //       toast("Error: $error");
+  //       appStore.setLoading(false);
+  //     },
+  //   ).catchError((e) {
+  //     appStore.setLoading(false);
+  //     print('errererer ${e.toString()}');
+  //     toast("Exception: ${e.toString()}");
+  //   });
+  // }
+
+  Future<void> updateProperty() async {
     hideKeyboard(context);
     appStore.setLoading(true);
 
     http.MultipartRequest multiPartRequest =
-        await getMultiPartRequest('sliders');
+        await updateMultiPartRequest('sliders/${widget.mSlider!.id}');
 
-    // البيانات العامة
     multiPartRequest.fields['category_id'] = selectedCategoryId.toString();
     multiPartRequest.fields['property_id'] = selectedProperty!;
     multiPartRequest.fields['name'] = propertyNameController.text;
     multiPartRequest.fields['status'] = '1';
     multiPartRequest.fields['description'] = descriptionController.text;
-
     multiPartRequest.fields['area_prices'] = jsonEncode(
       priceMeterList
           .map((item) => {
@@ -177,26 +258,18 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
       multiPartRequest.files
           .add(await http.MultipartFile.fromPath('image', mainImagePath!));
     }
-
+    print('multiPartRequest: ${multiPartRequest.fields}');
     multiPartRequest.headers.addAll(buildHeaderTokens());
-
     sendMultiPartRequest(
       multiPartRequest,
       onSuccess: (data) async {
         appStore.setLoading(false);
         if ((data as String).isJson()) {
           final res = EPropertyBaseResponse.fromJson(jsonDecode(data));
-          toast(res.message ?? 'تم الحفظ');
-          if (res.message == "Slider has been save successfully") {
-            DashboardScreen().launch(context);
-            appStore.addPropertyIndex = 0;
-            setState(() {});
-          } else if (res.message == "Plan Has Expired") {
-            SubscribeScreen().launch(context);
-          } else {
-            finish(context, true);
-          }
-          appStore.addPropertyIndex = 0;
+          toast(res.message ?? 'تم التعديل بنجاح');
+
+          finish(context, true);
+          DashboardScreen().launch(context);
         }
       },
       onError: (error) {
@@ -205,7 +278,6 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
       },
     ).catchError((e) {
       appStore.setLoading(false);
-      print('errererer ${e.toString()}');
       toast("Exception: ${e.toString()}");
     });
   }
@@ -389,7 +461,8 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
                   toast('من فضلك اختر العقار');
                   return;
                 }
-                saveProperty();
+                //saveProperty();
+                updateProperty();
               }
             }
             setState(() {});
@@ -404,6 +477,9 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
   Widget filterItem(PropertyResponseModel? model) {
     print('model!.toJson(): ${model?.toJson()}');
     return DropdownButtonFormField<Property>(
+      initialValue: preporty?.data?.firstWhere(
+        (option) => option.id.toString() == selectedProperty,
+      ),
       icon: Icon(Icons.keyboard_arrow_down_rounded, color: black),
       decoration: InputDecoration(
         border: OutlineInputBorder(

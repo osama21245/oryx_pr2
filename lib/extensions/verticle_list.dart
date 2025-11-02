@@ -14,7 +14,7 @@ class VerticleList extends StatelessWidget {
   final WrapAlignment? wrapAlignment;
   final WrapCrossAlignment? crossAxisAlignment;
 
-  VerticleList({
+  const VerticleList({
     required this.itemCount,
     required this.itemBuilder,
     this.spacing,
@@ -25,8 +25,8 @@ class VerticleList extends StatelessWidget {
     this.reverse = false,
     this.wrapAlignment,
     this.crossAxisAlignment,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

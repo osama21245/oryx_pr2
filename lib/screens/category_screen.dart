@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orex/components/slider_components.dart';
+import 'package:orex/models/dashBoard_response.dart';
 import 'package:orex/screens/filter_category.dart';
 import 'package:orex/screens/home_screen.dart';
 import 'package:orex/utils/images.dart';
@@ -7,18 +8,14 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/extension_util/widget_extensions.dart';
-import '../components/app_bar_components.dart';
 import '../extensions/animatedList/animated_wrap.dart';
 import '../extensions/colors.dart';
 import '../extensions/decorations.dart';
-import '../extensions/loader_widget.dart';
 import '../extensions/text_styles.dart';
 import '../main.dart';
 import '../models/category_list_model.dart';
 import '../network/RestApis.dart';
 import '../utils/app_common.dart';
-import '../utils/colors.dart';
-import 'category_selected_screen.dart';
 import 'no_data_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -52,7 +49,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   Future<void> init() async {
-    getPropertyCategory();
+    await getPropertyCategory();
+    await getFilterSliders();
   }
 
   @override
@@ -78,6 +76,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
     });
   }
 
+  //Filter sliders based on selected transaction type
+  List<MSlider>? filteredSliders;
+  Future<void> getFilterSliders() async {
+    if (widget.transactionType == 0) {
+      filteredSliders = data!.slider!.where((slider) {
+        return slider.propertyFor != null &&
+            slider.propertyFor == widget.transactionType;
+      }).toList();
+    } else if (widget.transactionType == 1) {
+      filteredSliders = data!.slider!.where((slider) {
+        return slider.propertyFor != null &&
+            slider.propertyFor == widget.transactionType;
+      }).toList();
+    } else {}
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     print('ddddddaaaaaaaaaaaa ${data!.slider!.length}');
@@ -99,7 +115,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   child: Column(
                     children: [
                       if (data!.slider!.isNotEmpty)
-                        SlidesComponents(data: data!.slider),
+
+                        // Show slider only if a transaction type is selected
+                        if (widget.transactionType != null &&
+                            filteredSliders != null &&
+                            filteredSliders!.isNotEmpty)
+                          SlidesComponents(data: filteredSliders),
                       const SizedBox(height: 16),
                       AnimatedWrap(
                         runSpacing: 16,

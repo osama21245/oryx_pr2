@@ -31,7 +31,7 @@ class SearchResultScreen extends StatefulWidget {
   final bool? title1;
   final int? bhk;
 
-  SearchResultScreen({
+  const SearchResultScreen({super.key,
     this.budgetMaxPrice,
     this.budgetMinPrice,
     this.bhkSend,
@@ -64,7 +64,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
   init() async {
     if (widget.title == true) {
-      title = " for " + widget.bhk.toString() + " bhk";
+      title = " for ${widget.bhk} bhk";
     } else if (widget.title1 == true) {
       title = " for budget";
     } else {
@@ -214,7 +214,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               10.height,
-                              Text(language.found + " " + filterProperty.length.toString() + " " + language.estates, style: primaryTextStyle())
+                              Text("${language.found} ${filterProperty.length} ${language.estates}", style: primaryTextStyle())
                                   .paddingSymmetric(horizontal: 16)
                                   .visible(userStore.mRecentSearchList.isNotEmpty),
                               20.height.visible(userStore.mRecentSearchList.isNotEmpty),

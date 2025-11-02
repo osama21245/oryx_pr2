@@ -13,7 +13,7 @@ import 'property_detail_screen.dart';
 class SeeAllScreen extends StatefulWidget {
   final Function? onCall;
 
-  const SeeAllScreen({this.onCall});
+  const SeeAllScreen({super.key, this.onCall});
 
   @override
   State<SeeAllScreen> createState() => _SeeAllScreenState();
@@ -71,7 +71,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
       Iterable it = value.property!;
       it.map((e) => mPropertyData.add(e)).toList();
       appStore.setLoading(false);
-      print("Filter Response " + mPropertyData.toString());
+      print("Filter Response $mPropertyData");
       setState(() {});
     }).catchError((e) {
       print(req);

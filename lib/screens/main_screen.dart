@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:orex/extensions/extension_util/int_extensions.dart';
 import 'package:orex/extensions/extension_util/widget_extensions.dart';
@@ -15,12 +14,9 @@ import '../extensions/decorations.dart';
 import '../extensions/shared_pref.dart';
 import '../extensions/text_styles.dart';
 import '../main.dart';
-import '../network/RestApis.dart';
 import '../utils/app_common.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
-import '../utils/images.dart';
-import 'dashboard_screen.dart';
 import 'home_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -50,6 +46,7 @@ class _MainScreenState extends State<MainScreen> {
   String? selectedCategoryId;
   String? selectedCategoryName;
   List<CategoryData> categoryData = [];
+  int? selectedTransactionType;
 
   Future<void> getData() async {
     appStore.setLoading(true);
@@ -120,12 +117,11 @@ class _MainScreenState extends State<MainScreen> {
             searchWidget(),
             20.height,
             _buildFirstDropdown(),
-              _buildSecondDropdown(),
+            _buildSecondDropdown(),
             _buildCategoryDropdown(),
             // old code
             _buldGrid(),
             // new code
-          
           ],
         ),
       ),
@@ -172,6 +168,7 @@ class _MainScreenState extends State<MainScreen> {
             .onTap(() async {
           selectedCity = data!.propertyCity![index].name.toString();
           selectCityName = selectedCity;
+          // appStore.setLoading(true);
           userStore.setUserCity(selectCityName!).then((value) =>
               ChooseTransactionTypeScreen().launch(context, isNewTask: false));
           await getDashBoardData({
@@ -206,7 +203,6 @@ class _MainScreenState extends State<MainScreen> {
           // userStore.setUserCity(selectCityName!).then((value) =>
           //     ChooseTransactionTypeScreen()
           //         .launch(context, isNewTask: false));
-
           // DashboardScreen().launch(context, isNewTask: true);
         }),
       );
@@ -287,7 +283,6 @@ class _MainScreenState extends State<MainScreen> {
   //     return SizedBox.shrink();
   //   }
   // }
-
   //region search widget
   Widget searchWidget() {
     return Container(
@@ -307,7 +302,6 @@ class _MainScreenState extends State<MainScreen> {
                   controller: mSearchCont,
                   textStyle: primaryTextStyle(),
                   textFieldType: TextFieldType.NAME,
-               
                   onTap: () async {
                     bool? res =
                         await SearchScreen(isBack: true).launch(context);
@@ -347,7 +341,7 @@ class _MainScreenState extends State<MainScreen> {
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: DropdownButtonFormField<String>(
-          value: selectedCityId,
+          initialValue: selectedCityId,
           decoration: InputDecoration(
             labelText: language.selectCity,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -405,6 +399,7 @@ class _MainScreenState extends State<MainScreen> {
     return showSacandDropdown
         ? ChooseTransactionTypeDropdown(onChanged: (value) {
             setState(() {
+              selectedTransactionType = value;
               showCategoryDropdown = true;
             });
             getPropertyCategory();
@@ -432,7 +427,7 @@ class _MainScreenState extends State<MainScreen> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: DropdownButtonFormField<String>(
-        value: selectedCategoryId,
+        initialValue: selectedCategoryId,
         decoration: InputDecoration(
           labelText: language.category,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -487,7 +482,7 @@ class _MainScreenState extends State<MainScreen> {
             categoryId: int.parse(selectedCategoryId!),
             categoryName: selectedCategoryName!,
             transactionType:
-                null, // You can pass the transaction type here if needed
+                selectedTransactionType, // You can pass the transaction type here if needed
           ).launch(context);
         },
       ),

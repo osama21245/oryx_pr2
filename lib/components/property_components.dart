@@ -29,8 +29,8 @@ class PropertyComponents extends StatefulWidget {
   //  final int? propertyId;
   //  final int? isPremium;
 
-  PropertyComponents(
-      {
+  const PropertyComponents(
+      {super.key,
       // this.propertyImg,
       // this.propertyCategory,
       // this.propertyPrice,

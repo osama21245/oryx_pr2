@@ -18,7 +18,7 @@ class ChatMessageWidget extends StatefulWidget {
   final QuestionAnswerModel data;
   final bool isLoading;
 
-  ChatMessageWidget({
+  const ChatMessageWidget({super.key,
     required this.answer,
     required this.data,
     required this.isLoading,
@@ -85,7 +85,7 @@ class _ChatMessageWidgetState extends State<ChatMessageWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SelectableText('${widget.answer}', style: primaryTextStyle(size: 14, color: Colors.white)),
+                      SelectableText(widget.answer, style: primaryTextStyle(size: 14, color: Colors.white)),
                       8.height,
                       Text(
                         "${widget.answer.calculateReadTime().toStringAsFixed(1).toDouble().ceil()} min read",

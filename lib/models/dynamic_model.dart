@@ -11,13 +11,13 @@ class AmenityDynamicModel {
 
   AmenityDynamicModel.fromJson(Map<String, dynamic> json) {
     dynamicAmenityId = json['id'];
-    dynamicAmenityValue = json['value'] == null ? null : json['value'];
+    dynamicAmenityValue = json['value'];
     // dynamicAmenityValues = json['value'] == null ? null : json['value'];
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.dynamicAmenityId;
-    data['value'] = this.dynamicAmenityValue;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = dynamicAmenityId;
+    data['value'] = dynamicAmenityValue;
     // data['value'] = this.dynamicAmenityValues;
     return data;
   }

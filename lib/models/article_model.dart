@@ -18,7 +18,7 @@ class Article {
     if (json['tags'] != null) {
       tags = <Tags>[];
       json['tags'].forEach((v) {
-        tags!.add(new Tags.fromJson(v));
+        tags!.add(Tags.fromJson(v));
       });
     }
     description = json['description'];
@@ -29,17 +29,17 @@ class Article {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    if (this.tags != null) {
-      data['tags'] = this.tags!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    if (tags != null) {
+      data['tags'] = tags!.map((v) => v.toJson()).toList();
     }
-    data['description'] = this.description;
-    data['status'] = this.status;
-    data['article_image'] = this.articleImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['description'] = description;
+    data['status'] = status;
+    data['article_image'] = articleImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

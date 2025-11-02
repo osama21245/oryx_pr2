@@ -9,20 +9,20 @@ class PropertyTypeResponse {
 
   PropertyTypeResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
+    pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
       data = <PropertyTypeModel>[];
       json['data'].forEach((v) {
-        data!.add(new PropertyTypeModel.fromJson(v));
+        data!.add(PropertyTypeModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -61,13 +61,13 @@ class PropertyTypeModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['status'] = this.status;
-    data['property_type_image'] = this.propertyTypeImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['status'] = status;
+    data['property_type_image'] = propertyTypeImage;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

@@ -28,9 +28,9 @@ class Permissions {
 
   static void _handleInvalidPermissions(PermissionStatus notificationPermissionStatus) {
     if (notificationPermissionStatus == PermissionStatus.denied) {
-      throw new PlatformException(code: "PERMISSION_DENIED", message: "Access to camera and microphone denied", details: null);
+      throw PlatformException(code: "PERMISSION_DENIED", message: "Access to camera and microphone denied", details: null);
     } else if (notificationPermissionStatus == PermissionStatus.denied) {
-      throw new PlatformException(code: "PERMISSION_DISABLED", message: "Location data is not available on device", details: null);
+      throw PlatformException(code: "PERMISSION_DISABLED", message: "Location data is not available on device", details: null);
     }
   }
 

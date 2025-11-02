@@ -52,9 +52,11 @@ class PropertyDetailScreen extends StatefulWidget {
   final bool? fromSliderDetails;
   final AreaPrice? areaPrice;
   final Function(bool)? onTap;
+  final bool? comeFromSlider;
 
-  PropertyDetailScreen(
-      {required this.propertyId,
+  const PropertyDetailScreen(
+      {super.key, required this.propertyId,
+      this.comeFromSlider = false,
       this.onCall,
       this.isSuccess = false,
       this.areaPrice,
@@ -186,7 +188,6 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
   //   toast("Yes Inside Back Function!");
   //   if (widget.isSuccess.validate()) {
   //     toast("Success Function!");
-  //
   //     DashboardScreen().launch(context, isNewTask: true);
   //   } else {
   //     toast("Back Function!");
@@ -196,7 +197,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
   //   }
   //   return Future.value(true);
   // }
-  CarouselSliderController _carouselController = CarouselSliderController();
+  final CarouselSliderController _carouselController = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {
@@ -439,6 +440,11 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       children: [
                         Text(mDetail!.data!.name.toString(),
                             style: boldTextStyle(size: 18)),
+                        widget.comeFromSlider == true
+                            ? Text(
+                                "${widget.areaPrice!.type}${widget.areaPrice!.area}",
+                                style: boldTextStyle(size: 18))
+                            : SizedBox.shrink(),
                         Text(
                           'الفئة :- ${mDetail!.data!.category}',
                           style: primaryTextStyle(size: 16),
@@ -481,7 +487,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                               color: primaryColor,
                             ),
                             5.width,
-                            Text("${mDetail!.data!.address.toString() == null ? mDetail!.data!.address.toString() : ""} ${mDetail!.data!.city}",
+                            Text("${""} ${mDetail!.data!.city}",
                                     style: secondaryTextStyle(
                                         size: 16,
                                         color: appStore.isDarkModeOn
@@ -497,38 +503,50 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                         10.height,
                         Row(
                           children: [
-                            mDetail!.data!.propertyFor == 1
-                                ? PriceWidget(
-                                    price: formatNumberString(
-                                        mDetail!.data!.price!),
-                                    textStyle: primaryTextStyle(
-                                        size: 18, color: primaryColor),
-                                  )
-                                : Row(
+                            widget.fromSliderDetails!
+                                ? Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       PriceWidget(
                                           price: formatNumberString(
-                                              widget.fromSliderDetails!
-                                                  ? widget.areaPrice!.price!
-                                                  : mDetail!.data!.price!),
+                                              widget.areaPrice!.price!),
                                           textStyle: primaryTextStyle(
                                               size: 18, color: primaryColor)),
                                       SizedBox(
                                         width: size.width * .5,
                                       ),
-                                      widget.fromSliderDetails!
-                                          ? Text('${widget.areaPrice!.area} M')
-                                          : SizedBox.shrink(),
-                                      // Text(
-                                      //     '/ ' +
-                                      //         durationWidget(
-                                      //             mDetail!.data!.priceDuration),
-                                      //     style: primaryTextStyle(
-                                      //         size: 18, color: primaryColor)),
+                                      Text('${widget.areaPrice!.area} M'),
                                     ],
                                   )
+                                : mDetail!.data!.propertyFor == 1
+                                    ? PriceWidget(
+                                        price: formatNumberString(
+                                            mDetail!.data!.price!),
+                                        textStyle: primaryTextStyle(
+                                            size: 18, color: primaryColor),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          PriceWidget(
+                                              price: formatNumberString(
+                                                  mDetail!.data!.price!),
+                                              textStyle: primaryTextStyle(
+                                                  size: 18,
+                                                  color: primaryColor)),
+                                          SizedBox(
+                                            width: size.width * .5,
+                                          ),
+                                          // Text(
+                                          //     '/ ' +
+                                          //         durationWidget(
+                                          //             mDetail!.data!.priceDuration),
+                                          //     style: primaryTextStyle(
+                                          //         size: 18, color: primaryColor)),
+                                        ],
+                                      )
                           ],
                         ).paddingSymmetric(horizontal: 0),
                         16.height,
@@ -716,7 +734,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                 .paddingSymmetric(horizontal: 16)
                 .paddingBottom(10),
             4.height,
-            Container(
+            SizedBox(
               height: 180, // Adjust height as needed
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -963,7 +981,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                               .replaceAll(':', '')
                               .trim();
 
-                          commonLaunchUrl('https://wa.me/${phone}');
+                          commonLaunchUrl('https://wa.me/$phone');
                         },
                       ),
                       8.width,
@@ -1049,7 +1067,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
       children: [
         commonWrapWidget(
                 image: ic_bed,
-                title: mDetail!.data!.bhk.toString() + " " + language.bhk)
+                title: "${mDetail!.data!.bhk} ${language.bhk}")
             .visible(mDetail!.data!.bhk != null),
         commonWrapWidget(
                 image: ic_max_square, title: mDetail!.data!.sqft.toString())
@@ -1125,7 +1143,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                                     mDetail!.nearByPlace!.results![index]
                                         .photos!.isNotEmpty
                                 ? Image.network(
-                                    'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${mDetail!.nearByPlace!.results![index].photos![0].photoReference}&key=${GOOGLE_API_KEY}',
+                                    'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${mDetail!.nearByPlace!.results![index].photos![0].photoReference}&key=$GOOGLE_API_KEY',
                                     fit: BoxFit.cover,
                                     width:
                                         MediaQuery.of(context).size.width * 0.6,

@@ -1,15 +1,10 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:orex/extensions/system_utils.dart';
 import 'package:orex/network/RestApis.dart';
-import 'package:orex/screens/home_screen.dart';
-import 'package:orex/screens/main_screen.dart';
 import 'package:orex/screens/otp_screen.dart';
 import 'package:orex/screens/signup_screen.dart';
 import 'package:orex/utils/otp_utils.dart';
@@ -25,7 +20,6 @@ import '../extensions/shared_pref.dart';
 import '../extensions/text_styles.dart';
 import '../languageConfiguration/LanguageDataConstant.dart';
 import '../main.dart';
-import '../services/auth_service.dart';
 import '../utils/app_common.dart';
 import '../utils/app_config.dart';
 import '../utils/colors.dart';
@@ -33,7 +27,7 @@ import '../utils/constants.dart';
 import '../utils/images.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -80,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       //String userId = await getStringAsync(USER_ID);
       String token = getStringAsync(TOKEN);
-      if (token != null && token.isNotEmpty) {
+      if (token.isNotEmpty) {
         return token;
       } else {
         print("No user is currently signed in.");
@@ -134,6 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (_) => OTPScreen(
                         phoneNumber: number,
                         isComeFromLogin: true,
+                        
                       )));
           // finish(context);
           // HomeScreen().launch(context);
@@ -209,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       30.height,
                       Align(
                           alignment: Alignment.topLeft,
-                          child: Text(language.mobileNumber + " :",
+                          child: Text("${language.mobileNumber} :",
                               style: primaryTextStyle(
                                   size: 18,
                                   color: primaryColor,

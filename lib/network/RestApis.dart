@@ -45,7 +45,6 @@ import '../models/subscription_model.dart';
 import '../models/subscription_plan_response.dart';
 import '../models/user_response.dart';
 import '../models/view_property_response.dart';
-import '../screens/login_screen.dart';
 import '../utils/constants.dart';
 import 'network_utills.dart';
 
@@ -182,13 +181,14 @@ Future<LogInResponse> updateProfileApi(Map req) async {
 // }
 
 Future<DashboardResponse> getDashBoardData(Map request) async {
-  return DashboardResponse.fromJson(await handleResponse(
-          await buildHttpResponse('dashboard-list',
-              request: request, method: HttpMethod.POST))
-      .then((value) {
-    print("Dashboard Response: $value");
-    return value;
-  }));
+  return DashboardResponse.fromJson(
+    await handleResponse(await buildHttpResponse('dashboard-list',
+            request: request, method: HttpMethod.POST))
+        .then((value) {
+      print("Dashboard Response: $value");
+      return value;
+    }),
+  );
 }
 
 Future<ViewPropertyResponse> getPropertiesView(int id) async {
@@ -374,6 +374,17 @@ Future<MyPropertiesResponseModel> getMyPropertiesApi({int? currentPage}) async {
   return MyPropertiesResponseModel.fromJson(await handleResponse(
       await buildHttpResponse('my-property?page=$currentPage',
           method: HttpMethod.GET)));
+}
+
+//My Sliders
+Future<List<MSlider>> getMySlidersApi() async {
+  final response = await handleResponse(
+      await buildHttpResponse('user-slider', method: HttpMethod.GET));
+  if (response is List) {
+    return response.map((item) => MSlider.fromJson(item)).toList();
+  } else {
+    throw Exception("Unexpected response format");
+  }
 }
 
 ///inquiry for other property

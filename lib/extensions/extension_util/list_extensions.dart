@@ -11,7 +11,7 @@ extension ListExtensions<T> on Iterable<T>? {
   }
 
   /// Generate forEach but gives index for each element
-  void forEachIndexed(void action(T element, int index)) {
+  void forEachIndexed(void Function(T element, int index) action) {
     var index = 0;
     for (var element in this!) {
       action(element!, index++);
@@ -24,7 +24,7 @@ extension ListExtensions<T> on Iterable<T>? {
   /// ['hello', 'world'].sumBy((s) => s.length); // 10
   /// ```
   int sumBy(int Function(T) selector) {
-    return this.validate().map(selector).fold(0, (prev, curr) => prev + curr);
+    return validate().map(selector).fold(0, (prev, curr) => prev + curr);
   }
 
   /// Example:
@@ -32,7 +32,7 @@ extension ListExtensions<T> on Iterable<T>? {
   /// [1.5, 2.5].sumByDouble((d) => 0.5 * d); // 2.0
   /// ```
   double sumByDouble(num Function(T) selector) {
-    return this.validate().map(selector).fold(0.0, (prev, curr) => prev + curr);
+    return validate().map(selector).fold(0.0, (prev, curr) => prev + curr);
   }
 
   /// Example:
@@ -41,7 +41,7 @@ extension ListExtensions<T> on Iterable<T>? {
   /// ['cat', 'horse'].averageBy((s) => s.length); // 4.0
   /// ```
   double? averageBy(num Function(T) selector) {
-    if (this.validate().isEmpty) {
+    if (validate().isEmpty) {
       return null;
     }
 

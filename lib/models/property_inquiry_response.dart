@@ -7,19 +7,19 @@ class PropertyInquiryResponse {
   PropertyInquiryResponse({this.pagination, this.data});
 
   PropertyInquiryResponse.fromJson(Map<String, dynamic> json) {
-    pagination = json['pagination'] != null ? new Pagination.fromJson(json['pagination']) : null;
+    pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
       data = <PropertyInquiryModel>[];
       json['data'].forEach((v) {
-        data!.add(new PropertyInquiryModel.fromJson(v));
+        data!.add(PropertyInquiryModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -52,15 +52,15 @@ class PropertyInquiryModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['property_id'] = this.propertyId;
-    data['property_name'] = this.propertyName;
-    data['property_image'] = this.propertyImage;
-    data['customer_id'] = this.customerId;
-    data['customer_name'] = this.customerName;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['property_id'] = propertyId;
+    data['property_name'] = propertyName;
+    data['property_image'] = propertyImage;
+    data['customer_id'] = customerId;
+    data['customer_name'] = customerName;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

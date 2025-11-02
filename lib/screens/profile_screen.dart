@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:orex/store/AppStore.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -34,7 +32,7 @@ import 'property_contact_info_screen.dart';
 import 'view_property_contact_history_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -417,8 +415,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }).center();
           }),
           10.height,
-          Text("${userStore.fName} ${userStore.lName}",
-                  //"${getStringAsync(FIRSTNAME).toString()} ${getStringAsync(LASTNAME).toString()}",
+          Text(
+                  //"${userStore.fName} ${userStore.lName}",
+                  "${getStringAsync(FIRSTNAME).toString()} ${getStringAsync(LASTNAME).toString()}",
                   style: boldTextStyle(size: 18))
               .center(),
           4.height,
@@ -798,7 +797,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 userStore.subscription == "1"
             ? FittedBox(
                 child: Text(
-                  "+ " + title1,
+                  "+ $title1",
                   style: primaryTextStyle(size: 13, color: primaryColor),
                   textAlign: TextAlign.center,
                 ),

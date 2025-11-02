@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:orex/extensions/colors.dart';
 import 'package:orex/screens/otp_screen.dart';
-import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/app_button.dart';
 import '../extensions/app_text_field.dart';
 import '../extensions/common.dart';
@@ -23,7 +23,7 @@ import '../utils/images.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen({super.key, required this.phoneNumber});
+  const SignUpScreen({super.key, required this.phoneNumber});
 
   final String? phoneNumber;
 
@@ -50,20 +50,55 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void registerApiCall() async {
     if (signUpFormKey.currentState!.validate()) {
-      signUpFormKey.currentState!.save();
-      hideKeyboard(context);
-      appStore.setLoading(true);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => OTPScreen(
-                    firstName: firstNameController.text,
-                    lastName: lastNameController.text,
-                    phoneNumber: phoneController.text,
-                  )));
+      if (selectedGovernorate != null && selectedGovernorate!.isNotEmpty) {
+        signUpFormKey.currentState!.save();
+        hideKeyboard(context);
+        appStore.setLoading(true);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => OTPScreen(
+                      firstName: firstNameController.text,
+                      lastName: lastNameController.text,
+                      phoneNumber: phoneController.text,
+                      gGovernorate: selectedGovernorate,
+                    )));
+      } else if (selectedGovernorate == null || selectedGovernorate!.isEmpty) {
+        toast("من فضلك ادخل محافظتك");
+      }
     }
   }
 
+  final List<String> governorates = [
+    'القاهرة',
+    'الجيزة',
+    'الإسكندرية',
+    'الدقهلية',
+    'الشرقية',
+    'القليوبية',
+    'كفر الشيخ',
+    'الغربية',
+    'المنوفية',
+    'البحيرة',
+    'بورسعيد',
+    'الإسماعيلية',
+    'السويس',
+    'دمياط',
+    'الفيوم',
+    'بني سويف',
+    'المنيا',
+    'أسيوط',
+    'سوهاج',
+    'قنا',
+    'الأقصر',
+    'أسوان',
+    'البحر الأحمر',
+    'الوادي الجديد',
+    'مطروح',
+    'شمال سيناء',
+    'جنوب سيناء',
+  ];
+  String? selectedGovernorate;
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
@@ -95,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fit: BoxFit.cover)
                         .paddingSymmetric(horizontal: 20),
                     40.height,
-                    Text(language.firstName + ":", style: primaryTextStyle()),
+                    Text("${language.firstName}:", style: primaryTextStyle()),
                     10.height,
                     AppTextField(
                       controller: firstNameController,
@@ -107,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           label: language.enterFirstName),
                     ),
                     20.height,
-                    Text(language.lastName + ":", style: primaryTextStyle()),
+                    Text("${language.lastName}:", style: primaryTextStyle()),
                     10.height,
                     AppTextField(
                       controller: lastNameController,
@@ -119,6 +154,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           label: language.enterLastName),
                     ),
                     20.height,
+
+                    Text("اختر المحافظة:", style: primaryTextStyle()),
+                    10.height,
+
+                    DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField<String>(
+                        initialValue: selectedGovernorate,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryExtraLight,
+                          hintText: 'اختر المحافظة',
+                        ),
+                        items: governorates.map((String option) {
+                          return DropdownMenuItem(
+                            value: option,
+                            child: Text(option,
+                                style: TextStyle(fontSize: 14)), // small text
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedGovernorate = value!;
+                          });
+                        },
+                      ),
+                    ),
+
                     // Text(language.email + ":", style: primaryTextStyle()),
                     // 10.height,
                     // AppTextField(

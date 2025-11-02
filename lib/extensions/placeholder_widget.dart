@@ -20,7 +20,7 @@ class PlaceHolderWidget extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
   final Gradient? gradient;
 
-  PlaceHolderWidget({
+  const PlaceHolderWidget({
     this.height,
     this.width,
     this.animationDuration,
@@ -33,8 +33,8 @@ class PlaceHolderWidget extends StatelessWidget {
     this.border,
     this.boxShadow,
     this.gradient,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

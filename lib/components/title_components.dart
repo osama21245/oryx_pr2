@@ -12,7 +12,7 @@ class TitleComponents extends StatefulWidget {
   final String? subTitle;
   final String? trailingTitle;
 
-  TitleComponents({super.key, this.title, this.onTap, this.subTitle, this.trailingTitle});
+  const TitleComponents({super.key, this.title, this.onTap, this.subTitle, this.trailingTitle});
 
   @override
   State<TitleComponents> createState() => _TitleComponentsState();

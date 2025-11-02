@@ -13,7 +13,7 @@ import '../utils/colors.dart';
 class SuccessPropertyScreen extends StatefulWidget {
   final int? propertyId;
 
-  const SuccessPropertyScreen({required this.propertyId});
+  const SuccessPropertyScreen({super.key, required this.propertyId});
 
   @override
   State<SuccessPropertyScreen> createState() => _SuccessPropertyScreenState();

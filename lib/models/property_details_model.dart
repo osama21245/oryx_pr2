@@ -9,33 +9,33 @@ class PropertyDetailsModel {
   PropertyDetailsModel({this.data, this.propertyAmenityValue, this.customer, this.nearByPlace});
 
   PropertyDetailsModel.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new PropertyDetail.fromJson(json['data']) : null;
+    data = json['data'] != null ? PropertyDetail.fromJson(json['data']) : null;
 
     if (json['property_amenity_value'] != null) {
       propertyAmenityValue = <AmenityName>[];
       json['property_amenity_value'].forEach((v) {
-        propertyAmenityValue!.add(new AmenityName.fromJson(v));
+        propertyAmenityValue!.add(AmenityName.fromJson(v));
       });
     }
 
-    customer = json['customer'] != null ? new Customer.fromJson(json['customer']) : null;
+    customer = json['customer'] != null ? Customer.fromJson(json['customer']) : null;
 
     // nearByPlace = json['near_by_place'] != null ? new NearByPlace.fromJson(json['near_by_place']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    if (this.propertyAmenityValue != null) {
-      data['property_amenity_value'] = this.propertyAmenityValue!.map((v) => v.toJson()).toList();
+    if (propertyAmenityValue != null) {
+      data['property_amenity_value'] = propertyAmenityValue!.map((v) => v.toJson()).toList();
     }
-    if (this.customer != null) {
-      data['customer'] = this.customer!.toJson();
+    if (customer != null) {
+      data['customer'] = customer!.toJson();
     }
-    if (this.nearByPlace != null) {
-      data['near_by_place'] = this.nearByPlace!.toJson();
+    if (nearByPlace != null) {
+      data['near_by_place'] = nearByPlace!.toJson();
     }
     return data;
   }
@@ -156,7 +156,7 @@ class PropertyDetail {
     if (json['property_gallary_array'] != null) {
       propertyGallaryArray = <PropertyGallaryArray>[];
       json['property_gallary_array'].forEach((v) {
-        propertyGallaryArray!.add(new PropertyGallaryArray.fromJson(v));
+        propertyGallaryArray!.add(PropertyGallaryArray.fromJson(v));
       });
     }
 
@@ -169,45 +169,45 @@ class PropertyDetail {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['category_id'] = this.categoryId;
-    data['category'] = this.category;
-    data['category_image'] = this.categoryImage;
-    data['price'] = this.price;
-    data['price_format'] = this.priceFormat;
-    data['furnished_type'] = this.furnishedType;
-    data['saller_type'] = this.sallerType;
-    data['property_for'] = this.propertyFor;
-    data['price_duration'] = this.priceDuration;
-    data['age_of_property'] = this.ageOfProperty;
-    data['maintenance'] = this.maintenance;
-    data['security_deposit'] = this.securityDeposit;
-    data['brokerage'] = this.brokerage;
-    data['bhk'] = this.bhk;
-    data['sqft'] = this.sqft;
-    data['description'] = this.description;
-    data['country'] = this.country;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['address'] = this.address;
-    data['video_url'] = this.videoUrl;
-    data['status'] = this.status;
-    data['premium_property'] = this.premiumProperty;
-    data['property_image'] = this.propertyImage;
-    data['property_gallary'] = this.propertyGallary;
-    if (this.propertyGallaryArray != null) {
-      data['property_gallary_array'] = this.propertyGallaryArray!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['category_id'] = categoryId;
+    data['category'] = category;
+    data['category_image'] = categoryImage;
+    data['price'] = price;
+    data['price_format'] = priceFormat;
+    data['furnished_type'] = furnishedType;
+    data['saller_type'] = sallerType;
+    data['property_for'] = propertyFor;
+    data['price_duration'] = priceDuration;
+    data['age_of_property'] = ageOfProperty;
+    data['maintenance'] = maintenance;
+    data['security_deposit'] = securityDeposit;
+    data['brokerage'] = brokerage;
+    data['bhk'] = bhk;
+    data['sqft'] = sqft;
+    data['description'] = description;
+    data['country'] = country;
+    data['state'] = state;
+    data['city'] = city;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['address'] = address;
+    data['video_url'] = videoUrl;
+    data['status'] = status;
+    data['premium_property'] = premiumProperty;
+    data['property_image'] = propertyImage;
+    data['property_gallary'] = propertyGallary;
+    if (propertyGallaryArray != null) {
+      data['property_gallary_array'] = propertyGallaryArray!.map((v) => v.toJson()).toList();
     }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['is_favourite'] = this.isFavourite;
-    data['advertisement_property'] = this.advertisementProperty;
-    data['advertisement_property_date'] = this.advertisementPropertyDate;
-    data['checked_property_inquiry'] = this.checkedPropertyInquiry;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_favourite'] = isFavourite;
+    data['advertisement_property'] = advertisementProperty;
+    data['advertisement_property_date'] = advertisementPropertyDate;
+    data['checked_property_inquiry'] = checkedPropertyInquiry;
     return data;
   }
 }
@@ -224,9 +224,9 @@ class PropertyGallaryArray {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['url'] = this.url;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['url'] = url;
     return data;
   }
 }
@@ -298,16 +298,16 @@ class Customer {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['address'] = this.address;
-    data['contact_number'] = this.contactNumber;
-    data['profile_image'] = this.profileImage;
-    data['is_agent'] = this.isAgent;
-    data['is_builder'] = this.isBuilder;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['address'] = address;
+    data['contact_number'] = contactNumber;
+    data['profile_image'] = profileImage;
+    data['is_agent'] = isAgent;
+    data['is_builder'] = isBuilder;
     return data;
   }
 }
@@ -322,7 +322,7 @@ class NearByPlace {
     if (json['results'] != null) {
       results = <Results>[];
       json['results'].forEach((v) {
-        results!.add(new Results.fromJson(v));
+        results!.add(Results.fromJson(v));
       });
     }
 
@@ -330,11 +330,11 @@ class NearByPlace {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.results != null) {
-      data['results'] = this.results!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (results != null) {
+      data['results'] = results!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
+    data['status'] = status;
     return data;
   }
 }
@@ -378,7 +378,7 @@ class Results {
       this.openingHours});
 
   Results.fromJson(Map<String, dynamic> json) {
-    geometry = json['geometry'] != null ? new Geometry.fromJson(json['geometry']) : null;
+    geometry = json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null;
     icon = json['icon'];
     iconBackgroundColor = json['icon_background_color'];
     iconMaskBaseUri = json['icon_mask_base_uri'];
@@ -386,7 +386,7 @@ class Results {
     if (json['photos'] != null) {
       photos = <Photos>[];
       json['photos'].forEach((v) {
-        photos!.add(new Photos.fromJson(v));
+        photos!.add(Photos.fromJson(v));
       });
     }
     placeId = json['place_id'];
@@ -398,36 +398,36 @@ class Results {
     rating = json['rating'];
     userRatingsTotal = json['user_ratings_total'];
     permanentlyClosed = json['permanently_closed'];
-    plusCode = json['plus_code'] != null ? new PlusCode.fromJson(json['plus_code']) : null;
-    openingHours = json['opening_hours'] != null ? new OpeningHours.fromJson(json['opening_hours']) : null;
+    plusCode = json['plus_code'] != null ? PlusCode.fromJson(json['plus_code']) : null;
+    openingHours = json['opening_hours'] != null ? OpeningHours.fromJson(json['opening_hours']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.geometry != null) {
-      data['geometry'] = this.geometry!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (geometry != null) {
+      data['geometry'] = geometry!.toJson();
     }
-    data['icon'] = this.icon;
-    data['icon_background_color'] = this.iconBackgroundColor;
-    data['icon_mask_base_uri'] = this.iconMaskBaseUri;
-    data['name'] = this.name;
-    if (this.photos != null) {
-      data['photos'] = this.photos!.map((v) => v.toJson()).toList();
+    data['icon'] = icon;
+    data['icon_background_color'] = iconBackgroundColor;
+    data['icon_mask_base_uri'] = iconMaskBaseUri;
+    data['name'] = name;
+    if (photos != null) {
+      data['photos'] = photos!.map((v) => v.toJson()).toList();
     }
-    data['place_id'] = this.placeId;
-    data['reference'] = this.reference;
-    data['scope'] = this.scope;
-    data['types'] = this.types;
-    data['vicinity'] = this.vicinity;
-    data['business_status'] = this.businessStatus;
-    data['rating'] = this.rating;
-    data['user_ratings_total'] = this.userRatingsTotal;
-    data['permanently_closed'] = this.permanentlyClosed;
-    if (this.plusCode != null) {
-      data['plus_code'] = this.plusCode!.toJson();
+    data['place_id'] = placeId;
+    data['reference'] = reference;
+    data['scope'] = scope;
+    data['types'] = types;
+    data['vicinity'] = vicinity;
+    data['business_status'] = businessStatus;
+    data['rating'] = rating;
+    data['user_ratings_total'] = userRatingsTotal;
+    data['permanently_closed'] = permanentlyClosed;
+    if (plusCode != null) {
+      data['plus_code'] = plusCode!.toJson();
     }
-    if (this.openingHours != null) {
-      data['opening_hours'] = this.openingHours!.toJson();
+    if (openingHours != null) {
+      data['opening_hours'] = openingHours!.toJson();
     }
     return data;
   }
@@ -440,17 +440,17 @@ class Geometry {
   Geometry({this.location, this.viewport});
 
   Geometry.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null ? new Location.fromJson(json['location']) : null;
-    viewport = json['viewport'] != null ? new Viewport.fromJson(json['viewport']) : null;
+    location = json['location'] != null ? Location.fromJson(json['location']) : null;
+    viewport = json['viewport'] != null ? Viewport.fromJson(json['viewport']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    if (this.viewport != null) {
-      data['viewport'] = this.viewport!.toJson();
+    if (viewport != null) {
+      data['viewport'] = viewport!.toJson();
     }
     return data;
   }
@@ -468,9 +468,9 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['lat'] = this.lat;
-    data['lng'] = this.lng;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['lat'] = lat;
+    data['lng'] = lng;
     return data;
   }
 }
@@ -482,17 +482,17 @@ class Viewport {
   Viewport({this.northeast, this.southwest});
 
   Viewport.fromJson(Map<String, dynamic> json) {
-    northeast = json['northeast'] != null ? new Location.fromJson(json['northeast']) : null;
-    southwest = json['southwest'] != null ? new Location.fromJson(json['southwest']) : null;
+    northeast = json['northeast'] != null ? Location.fromJson(json['northeast']) : null;
+    southwest = json['southwest'] != null ? Location.fromJson(json['southwest']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.northeast != null) {
-      data['northeast'] = this.northeast!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (northeast != null) {
+      data['northeast'] = northeast!.toJson();
     }
-    if (this.southwest != null) {
-      data['southwest'] = this.southwest!.toJson();
+    if (southwest != null) {
+      data['southwest'] = southwest!.toJson();
     }
     return data;
   }
@@ -514,11 +514,11 @@ class Photos {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['height'] = this.height;
-    data['html_attributions'] = this.htmlAttributions;
-    data['photo_reference'] = this.photoReference;
-    data['width'] = this.width;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['height'] = height;
+    data['html_attributions'] = htmlAttributions;
+    data['photo_reference'] = photoReference;
+    data['width'] = width;
     return data;
   }
 }
@@ -535,9 +535,9 @@ class PlusCode {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['compound_code'] = this.compoundCode;
-    data['global_code'] = this.globalCode;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['compound_code'] = compoundCode;
+    data['global_code'] = globalCode;
     return data;
   }
 }
@@ -552,8 +552,8 @@ class OpeningHours {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['open_now'] = this.openNow;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['open_now'] = openNow;
     return data;
   }
 }

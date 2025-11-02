@@ -18,7 +18,7 @@ class TagsScreen extends StatefulWidget {
   final int? id;
   final String? title;
 
-  TagsScreen({this.id, this.title});
+  const TagsScreen({super.key, this.id, this.title});
 
   @override
   State<TagsScreen> createState() => _TagsScreenState();

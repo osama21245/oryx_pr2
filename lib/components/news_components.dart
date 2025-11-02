@@ -13,7 +13,7 @@ import '../utils/colors.dart';
 class NewsComponents extends StatefulWidget {
   final Article? article;
 
-  NewsComponents({this.article});
+  const NewsComponents({super.key, this.article});
 
   @override
   State<NewsComponents> createState() => _PropertyComponentsState();

@@ -12,7 +12,7 @@ import '../utils/app_common.dart';
 
 class SlidesComponents extends StatefulWidget {
   final List<MSlider>? data;
-  SlidesComponents({required this.data});
+  const SlidesComponents({super.key, required this.data});
   @override
   State<SlidesComponents> createState() => _SlidesComponentsState();
 }

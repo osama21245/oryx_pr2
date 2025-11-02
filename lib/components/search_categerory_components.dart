@@ -12,7 +12,7 @@ import '../utils/images.dart';
 class SearchCategoryComponents extends StatefulWidget {
   final String? title;
 
-  SearchCategoryComponents({super.key, this.title});
+  const SearchCategoryComponents({super.key, this.title});
 
   @override
   State<SearchCategoryComponents> createState() => _SearchCategoryComponentsState();

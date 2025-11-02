@@ -15,7 +15,7 @@ import 'property_detail_screen.dart';
 class AdvertisementSeeAllScreen extends StatefulWidget {
   final Function? onCall;
 
-  const AdvertisementSeeAllScreen({
+  const AdvertisementSeeAllScreen({super.key,
     this.onCall,
   });
 

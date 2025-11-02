@@ -36,7 +36,6 @@ Uri buildBaseUrl(String endPoint) {
   Uri url = Uri.parse(endPoint);
   if (!endPoint.startsWith('http')) url = Uri.parse('$mBaseUrl$endPoint');
   log('URL: ${url.toString()}');
-
   return url;
 }
 
@@ -131,7 +130,7 @@ Future handleResponse(Response response) async {
     return jsonDecode(response.body);
   } else {
     var string = await (isJsonValid(response.body));
-    print("jsonDecode(response.body)" + string.toString());
+    print("jsonDecode(response.body)$string");
     if (string!.isNotEmpty) {
       if (string.toString().contains("Unauthenticated")) {
         await removeKey(IS_LOGIN);
@@ -161,6 +160,7 @@ class TokenException implements Exception {
 
   const TokenException([this.message = ""]);
 
+  @override
   String toString() => "FormatException: $message";
 }
 
@@ -203,9 +203,16 @@ Future<String?> isJsonValid(json) async {
 
 Future<MultipartRequest> getMultiPartRequest(String endPoint,
     {String? baseUrl}) async {
-  String url = '${baseUrl ?? buildBaseUrl(endPoint).toString()}';
+  String url = baseUrl ?? buildBaseUrl(endPoint).toString();
   log(url);
   return MultipartRequest('POST', Uri.parse(url));
+}
+
+Future<MultipartRequest> updateMultiPartRequest(String endPoint,
+    {String? baseUrl}) async {
+  String url = baseUrl ?? buildBaseUrl(endPoint).toString();
+  log(url);
+  return MultipartRequest('post', Uri.parse(url));
 }
 
 Future<void> sendMultiPartRequest(MultipartRequest multiPartRequest,
@@ -213,7 +220,6 @@ Future<void> sendMultiPartRequest(MultipartRequest multiPartRequest,
   http.Response response =
       await http.Response.fromStream(await multiPartRequest.send());
   print("Result:${response.statusCode} ${response.body}");
-
   if (response.statusCode.isSuccessful()) {
     onSuccess?.call(response.body);
   } else {

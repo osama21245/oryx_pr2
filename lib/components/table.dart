@@ -3,15 +3,16 @@ import 'package:orex/extensions/colors.dart';
 import 'package:orex/main.dart';
 import 'package:orex/models/dashBoard_response.dart';
 import 'package:orex/utils/colors.dart';
+
 class CustomAreaPricesTable extends StatelessWidget {
   final List<AreaPrice>? areaPrices;
   final void Function(AreaPrice)? onRowTap;
 
   const CustomAreaPricesTable({
-    Key? key,
+    super.key,
     this.areaPrices,
     this.onRowTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +108,7 @@ class CustomAreaPricesTable extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      '${item.type ?? ''}',
+                      item.type ?? '',
                       style: TextStyle(
                         fontSize: 14,
                         color: appStore.isDarkModeOn
@@ -120,9 +121,8 @@ class CustomAreaPricesTable extends StatelessWidget {
               ),
             ),
           );
-        }).toList(),
+        }),
       ],
     );
   }
 }
-

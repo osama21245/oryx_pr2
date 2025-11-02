@@ -30,6 +30,8 @@ import 'property_detail_screen.dart';
 import 'subscribe_screen.dart';
 
 class MyPropertiesScreen extends StatefulWidget {
+  const MyPropertiesScreen({super.key});
+
   @override
   State<MyPropertiesScreen> createState() => _MyPropertiesScreenState();
 }
@@ -75,7 +77,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
       mPropertyDataSell.clear();
       mPropertyDataPg.clear();
 
-      mMyPropertiesData.forEach((e) {
+      for (var e in mMyPropertiesData) {
         if (e.propertyFor == 0) {
           mPropertyDataRent.add(e);
         } else if (e.propertyFor == 1) {
@@ -83,7 +85,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
         } else {
           mPropertyDataPg.add(e);
         }
-      });
+      }
       isLastPage = true;
       setState(() {});
     }).catchError((e) {
@@ -166,7 +168,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                 mPropertyDataSell.clear();
                 mPropertyDataPg.clear();
 
-                mMyPropertiesData.forEach((e) {
+                for (var e in mMyPropertiesData) {
                   if (e.propertyFor == 0) {
                     mPropertyDataRent.add(e);
                   } else if (e.propertyFor == 1) {
@@ -174,7 +176,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                   } else {
                     mPropertyDataPg.add(e);
                   }
-                });
+                }
                 appStore.setLoading(false);
                 setState(() {});
               },
@@ -183,8 +185,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                 return Tab(
                   child: Container(
                     alignment: Alignment.center,
-                    child: Text(e),
                     decoration: boxDecorationWithRoundedCorners(backgroundColor: primaryColor.withOpacity(0.1)),
+                    child: Text(e),
                   ),
                 );
               }).toList(),

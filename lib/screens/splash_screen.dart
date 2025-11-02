@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,10 +15,11 @@ import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../utils/images.dart';
 import 'dashboard_screen.dart';
-import 'main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static String tag = '/SplashScreen';
+
+  const SplashScreen({super.key});
 
   @override
   SplashScreenState createState() => SplashScreenState();
@@ -37,13 +37,13 @@ class SplashScreenState extends State<SplashScreen>
   void init() async {
     appStore.setLoading(true);
 
-    String versionNo = await getStringAsync(CURRENT_LAN_VERSION,
+    String versionNo = getStringAsync(CURRENT_LAN_VERSION,
         defaultValue: LanguageVersion);
     await getLanguageList(versionNo).then((value) {
       appStore.setLoading(false);
       if (value.status == true) {
         setValue(CURRENT_LAN_VERSION, value.currentVersionNo.toString());
-        if (value.data!.length > 0) {
+        if (value.data!.isNotEmpty) {
           defaultServerLanguageData = value.data;
           performLanguageOperation(defaultServerLanguageData);
           setValue(LanguageJsonDataRes, value.toJson());
@@ -51,7 +51,7 @@ class SplashScreenState extends State<SplashScreen>
           String? savedLangCode = getStringAsync(SELECTED_LANGUAGE_CODE);
           bool isSetLanguage =
               getBoolAsync(IS_SELECTED_LANGUAGE_CHANGE, defaultValue: false);
-          
+
           if (!isSetLanguage && savedLangCode.isEmpty) {
             // ✅ Only set server default if no user selection exists
             for (int i = 0; i < value.data!.length; i++) {
@@ -81,7 +81,7 @@ class SplashScreenState extends State<SplashScreen>
         if (getJsonData.isNotEmpty) {
           ServerLanguageResponse languageSettings =
               ServerLanguageResponse.fromJson(json.decode(getJsonData.trim()));
-          if (languageSettings.data!.length > 0) {
+          if (languageSettings.data!.isNotEmpty) {
             defaultServerLanguageData = languageSettings.data;
             performLanguageOperation(defaultServerLanguageData);
           }

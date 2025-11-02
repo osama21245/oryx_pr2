@@ -15,7 +15,7 @@ import '../utils/images.dart';
 class PaymentSuccessDialog extends StatefulWidget {
   final Function()? onTap;
 
-  PaymentSuccessDialog(this.onTap);
+  const PaymentSuccessDialog(this.onTap, {super.key});
 
   @override
   State<PaymentSuccessDialog> createState() => _PaymentSuccessDialogState();

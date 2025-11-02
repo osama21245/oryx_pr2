@@ -15,7 +15,7 @@ class AmenityTextFiledComponent extends StatefulWidget {
   final String? amenityType;
   final Function(int?, String? id) onUpdate;
 
-  AmenityTextFiledComponent({this.amenityValueData, this.amenityID, this.isUpdate = false, this.updatedValue, this.amenityType, required this.onUpdate});
+  const AmenityTextFiledComponent({super.key, this.amenityValueData, this.amenityID, this.isUpdate = false, this.updatedValue, this.amenityType, required this.onUpdate});
 
   @override
   State<AmenityTextFiledComponent> createState() => _AmenityTextFiledComponentState();
@@ -50,7 +50,7 @@ class _AmenityTextFiledComponentState extends State<AmenityTextFiledComponent> {
                   ? TextFieldType.MULTILINE
                   : TextFieldType.NAME,
           isValidationRequired: false,
-          decoration: defaultInputDecoration(context, fillColor: primaryExtraLight, label: language.enter + " " + widget.amenityValueData!.validate()),
+          decoration: defaultInputDecoration(context, fillColor: primaryExtraLight, label: "${language.enter} ${widget.amenityValueData!.validate()}"),
           onFieldSubmitted: (value) {
             // if (textBoxController.text.isNotEmpty) {
               sendRadioData(widget.amenityID, textBoxController.text);

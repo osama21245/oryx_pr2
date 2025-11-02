@@ -12,7 +12,7 @@ class VideoPlayerScreen extends StatefulWidget {
   final String? url;
   final String? thumbnail;
 
-  VideoPlayerScreen({this.url, this.thumbnail});
+  const VideoPlayerScreen({super.key, this.url, this.thumbnail});
 
   @override
   State<StatefulWidget> createState() {
@@ -74,6 +74,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     await initializePlayer();
   }
 
+  @override
   void setState(VoidCallback fn) {
     super.setState(fn);
   }

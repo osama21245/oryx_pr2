@@ -16,7 +16,6 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../components/adMob_component.dart';
 import '../components/permission.dart';
 import '../extensions/common.dart';
 import '../extensions/decorations.dart';
@@ -92,7 +91,7 @@ Future<void> getUSerDetail(BuildContext context, int? id) async {
 
     appStore.setLoading(false);
   }).catchError((e) {
-    print("ERROR USER DETAIL" + e.toString());
+    print("ERROR USER DETAIL$e");
     appStore.setLoading(false);
   });
 }
@@ -228,23 +227,17 @@ void oneSignalData() async {
 }
 
 Future<void> saveOneSignalPlayerId() async {
-  print("BEFORE saveOneSignalPlayerId Function ===========" +
-      OneSignal.User.pushSubscription.optedIn.toString());
-  print("BEFORE saveOneSignalPlayerId Function =========" +
-      OneSignal.User.pushSubscription.id.toString());
-  print("BEFORE saveOneSignalPlayerId Function =========" +
-      OneSignal.User.pushSubscription.token.toString());
+  print("BEFORE saveOneSignalPlayerId Function ===========${OneSignal.User.pushSubscription.optedIn}");
+  print("BEFORE saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.id}");
+  print("BEFORE saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.token}");
   OneSignal.User.pushSubscription.addObserver((state) async {
     // OneSignal.User.pushSubscription.optIn();
 
-    print("AFTER saveOneSignalPlayerId Function ===========" +
-        OneSignal.User.pushSubscription.optedIn.toString());
-    print("AFTER saveOneSignalPlayerId Function =========" +
-        OneSignal.User.pushSubscription.id.toString());
-    print("AFTER saveOneSignalPlayerId Function =========" +
-        OneSignal.User.pushSubscription.token.toString());
+    print("AFTER saveOneSignalPlayerId Function ===========${OneSignal.User.pushSubscription.optedIn}");
+    print("AFTER saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.id}");
+    print("AFTER saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.token}");
     await setValue(PLAYER_ID, OneSignal.User.pushSubscription.id);
-    print("PLAYER ID IS ++>" + getStringAsync(PLAYER_ID).validate());
+    print("PLAYER ID IS ++>${getStringAsync(PLAYER_ID).validate()}");
     // updatePlayerId();
   });
 }
@@ -338,7 +331,7 @@ Future<void> commonLaunchUrl(String url, {bool forceWebView = false}) async {
   await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)
       .then((value) {})
       .catchError((e) {
-    toast(language.individual + ' $url');
+    toast('${language.individual} $url');
   });
 }
 
@@ -381,7 +374,7 @@ class DateDifferenceWidget extends StatelessWidget {
   final DateTime startDate;
   final DateTime endDate;
 
-  DateDifferenceWidget({required this.startDate, required this.endDate});
+  const DateDifferenceWidget({super.key, required this.startDate, required this.endDate});
 
   @override
   Widget build(BuildContext context) {
@@ -419,7 +412,7 @@ String getYoutubeThumbnail(String url) {
 Widget fevIconWidget(int? isFavourite, BuildContext context,
     {Color? color, double? padding}) {
   if (kDebugMode) {
-    print('isFaavvvvvvv ${isFavourite}');
+    print('isFaavvvvvvv $isFavourite');
   }
   return Container(
     padding: EdgeInsets.all(padding ?? 4),

@@ -6,21 +6,21 @@ class UserResponse {
   UserResponse({this.data, this.subscriptionDetail, this.planLimitCount});
 
   UserResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-    subscriptionDetail = json['subscription_detail'] != null ? new SubscriptionDetail.fromJson(json['subscription_detail']) : null;
-    planLimitCount = json['plan_limit_count'] != null ? new PlanLimitCount.fromJson(json['plan_limit_count']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    subscriptionDetail = json['subscription_detail'] != null ? SubscriptionDetail.fromJson(json['subscription_detail']) : null;
+    planLimitCount = json['plan_limit_count'] != null ? PlanLimitCount.fromJson(json['plan_limit_count']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    if (this.subscriptionDetail != null) {
-      data['subscription_detail'] = this.subscriptionDetail!.toJson();
+    if (subscriptionDetail != null) {
+      data['subscription_detail'] = subscriptionDetail!.toJson();
     }
-    if (this.planLimitCount != null) {
-      data['plan_limit_count'] = this.planLimitCount!.toJson();
+    if (planLimitCount != null) {
+      data['plan_limit_count'] = planLimitCount!.toJson();
     }
     return data;
   }
@@ -112,33 +112,33 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['display_name'] = this.displayName;
-    data['email'] = this.email;
-    data['username'] = this.username;
-    data['status'] = this.status;
-    data['user_type'] = this.userType;
-    data['address'] = this.address;
-    data['contact_number'] = this.contactNumber;
-    data['profile_image'] = this.profileImage;
-    data['login_type'] = this.loginType;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['uid'] = this.uid;
-    data['player_id'] = this.playerId;
-    data['timezone'] = this.timezone;
-    data['is_agent'] = this.isAgent;
-    data['is_builder'] = this.isBuilder;
-    data['last_notification_seen'] = this.lastNotificationSeen;
-    data['is_subscribe'] = this.isSubscribe;
-    data['view_limit_count'] = this.viewLimitCount;
-    data['add_limit_count'] = this.addLimitCount;
-    data['advertisement_limit'] = this.advertisementLimit;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['display_name'] = displayName;
+    data['email'] = email;
+    data['username'] = username;
+    data['status'] = status;
+    data['user_type'] = userType;
+    data['address'] = address;
+    data['contact_number'] = contactNumber;
+    data['profile_image'] = profileImage;
+    data['login_type'] = loginType;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['uid'] = uid;
+    data['player_id'] = playerId;
+    data['timezone'] = timezone;
+    data['is_agent'] = isAgent;
+    data['is_builder'] = isBuilder;
+    data['last_notification_seen'] = lastNotificationSeen;
+    data['is_subscribe'] = isSubscribe;
+    data['view_limit_count'] = viewLimitCount;
+    data['add_limit_count'] = addLimitCount;
+    data['advertisement_limit'] = advertisementLimit;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -151,14 +151,14 @@ class SubscriptionDetail {
 
   SubscriptionDetail.fromJson(Map<String, dynamic> json) {
     isSubscribe = json['is_subscribe'];
-    subscriptionPlan = json['subscription_plan'] != null ? new SubscriptionPlan.fromJson(json['subscription_plan']) : null;
+    subscriptionPlan = json['subscription_plan'] != null ? SubscriptionPlan.fromJson(json['subscription_plan']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['is_subscribe'] = this.isSubscribe;
-    if (this.subscriptionPlan != null) {
-      data['subscription_plan'] = this.subscriptionPlan!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['is_subscribe'] = isSubscribe;
+    if (subscriptionPlan != null) {
+      data['subscription_plan'] = subscriptionPlan!.toJson();
     }
     return data;
   }
@@ -212,7 +212,7 @@ class SubscriptionPlan {
     transactionDetail = json['transaction_detail'];
     paymentStatus = json['payment_status'];
     status = json['status'];
-    packageData = json['package_data'] != null ? new PackageData.fromJson(json['package_data']) : null;
+    packageData = json['package_data'] != null ? PackageData.fromJson(json['package_data']) : null;
     subscriptionStartDate = json['subscription_start_date'];
     subscriptionEndDate = json['subscription_end_date'];
     createdAt = json['created_at'];
@@ -220,25 +220,25 @@ class SubscriptionPlan {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['user_name'] = this.userName;
-    data['package_id'] = this.packageId;
-    data['package_name'] = this.packageName;
-    data['total_amount'] = this.totalAmount;
-    data['payment_type'] = this.paymentType;
-    data['txn_id'] = this.txnId;
-    data['transaction_detail'] = this.transactionDetail;
-    data['payment_status'] = this.paymentStatus;
-    data['status'] = this.status;
-    if (this.packageData != null) {
-      data['package_data'] = this.packageData!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['user_name'] = userName;
+    data['package_id'] = packageId;
+    data['package_name'] = packageName;
+    data['total_amount'] = totalAmount;
+    data['payment_type'] = paymentType;
+    data['txn_id'] = txnId;
+    data['transaction_detail'] = transactionDetail;
+    data['payment_status'] = paymentStatus;
+    data['status'] = status;
+    if (packageData != null) {
+      data['package_data'] = packageData!.toJson();
     }
-    data['subscription_start_date'] = this.subscriptionStartDate;
-    data['subscription_end_date'] = this.subscriptionEndDate;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['subscription_start_date'] = subscriptionStartDate;
+    data['subscription_end_date'] = subscriptionEndDate;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -296,22 +296,22 @@ class PackageData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['price'] = this.price;
-    data['status'] = this.status;
-    data['duration'] = this.duration;
-    data['property'] = this.property;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['description'] = this.description;
-    data['add_property'] = this.addProperty;
-    data['advertisement'] = this.advertisement;
-    data['duration_unit'] = this.durationUnit;
-    data['property_limit'] = this.propertyLimit;
-    data['add_property_limit'] = this.addPropertyLimit;
-    data['advertisement_limit'] = this.advertisementLimit;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['price'] = price;
+    data['status'] = status;
+    data['duration'] = duration;
+    data['property'] = property;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['description'] = description;
+    data['add_property'] = addProperty;
+    data['advertisement'] = advertisement;
+    data['duration_unit'] = durationUnit;
+    data['property_limit'] = propertyLimit;
+    data['add_property_limit'] = addPropertyLimit;
+    data['advertisement_limit'] = advertisementLimit;
     return data;
   }
 }
@@ -355,18 +355,18 @@ class PlanLimitCount {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total_property'] = this.totalProperty;
-    data['total_contact_view'] = this.totalContactView;
-    data['total_advertisement_property'] = this.totalAdvertisementProperty;
-    data['extra_for_all'] = this.extraForAll;
-    data['with_extra_add_property_limit'] = this.withExtraAddPropertyLimit;
-    data['remaining_add_property_limit'] = this.remainingAddPropertyLimit;
-    data['with_extra_advertisement_limit'] = this.withExtraAdvertisementLimit;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['total_property'] = totalProperty;
+    data['total_contact_view'] = totalContactView;
+    data['total_advertisement_property'] = totalAdvertisementProperty;
+    data['extra_for_all'] = extraForAll;
+    data['with_extra_add_property_limit'] = withExtraAddPropertyLimit;
+    data['remaining_add_property_limit'] = remainingAddPropertyLimit;
+    data['with_extra_advertisement_limit'] = withExtraAdvertisementLimit;
     data['remaining_advertisement_property_limit'] =
-        this.remainingAdvertisementPropertyLimit;
-    data['with_extra_property_limit'] = this.withExtraPropertyLimit;
-    data['remaining_view_property_limit'] = this.remainingViewPropertyLimit;
+        remainingAdvertisementPropertyLimit;
+    data['with_extra_property_limit'] = withExtraPropertyLimit;
+    data['remaining_view_property_limit'] = remainingViewPropertyLimit;
     return data;
   }
 }

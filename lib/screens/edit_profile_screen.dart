@@ -6,7 +6,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:orex/extensions/shared_pref.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -30,6 +29,8 @@ import '../utils/constants.dart';
 import '../utils/images.dart';
 
 class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
@@ -88,7 +89,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     multiPartRequest.fields['first_name'] = fNameController.text;
     multiPartRequest.fields['last_name'] = lNameController.text;
     multiPartRequest.fields['display_name'] =
-        fNameController.text + " " + lNameController.text;
+        "${fNameController.text} ${lNameController.text}";
     multiPartRequest.fields['email'] = emailController.text;
     // multiPartRequest.fields['username'] = userStore.phoneNo.replaceAll('+', '');
     multiPartRequest.fields['contact_number'] = userStore.phoneNo;
@@ -352,7 +353,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 }),
               ),
               10.height,
-              Container(
+              SizedBox(
                 width: context.width(),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -374,7 +375,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               10.height,
               Divider(),
               10.height,
-              Container(
+              SizedBox(
                 width: context.width(),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

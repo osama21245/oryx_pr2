@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../components/HtmlWidget.dart';
 import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/extension_util/widget_extensions.dart';
 import '../extensions/price_widget.dart';
 import '../extensions/text_styles.dart';
-import '../screens/payment_screen.dart';
 import '../utils/colors.dart';
 import '../extensions/LiveStream.dart';
 import '../extensions/app_button.dart';

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:orex/components/transaction_type_card.dart';
+import 'package:orex/components/slider_components.dart';
 import 'package:orex/extensions/extension_util/context_extensions.dart';
 import 'package:orex/models/gif_model.dart';
+import 'package:orex/models/dashBoard_response.dart';
 import 'package:orex/utils/images.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:orex/extensions/colors.dart';
@@ -9,28 +11,14 @@ import 'package:orex/extensions/extension_util/widget_extensions.dart';
 import 'package:orex/screens/dashboard_screen.dart';
 import 'package:orex/screens/home_screen.dart';
 import '../main.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:orex/components/transaction_type_card.dart';
-import 'package:orex/extensions/colors.dart';
-import 'package:orex/extensions/extension_util/widget_extensions.dart';
-import 'package:orex/screens/dashboard_screen.dart';
-import 'package:orex/screens/home_screen.dart';
-import 'package:orex/utils/images.dart';
-import '../components/app_bar_components.dart';
-import '../extensions/loader_widget.dart';
 import '../extensions/system_utils.dart';
-import '../main.dart';
 import '../network/RestApis.dart';
-import '../utils/app_config.dart';
-import 'no_data_screen.dart';
 
 class ChooseTransactionTypeDropdown extends StatefulWidget {
-  final int? initialValue;
+ // final int? initialValue;
   final ValueChanged<int?>? onChanged;
   const ChooseTransactionTypeDropdown(
-      {Key? key, this.initialValue, this.onChanged})
-      : super(key: key);
+      {super.key,  this.onChanged});
 
   @override
   State<ChooseTransactionTypeDropdown> createState() =>
@@ -48,7 +36,7 @@ class _ChooseTransactionTypeDropdownState
   @override
   void initState() {
     super.initState();
-    selectedTransactionTypeId = widget.initialValue;
+   // selectedTransactionTypeId = widget.initialValue;
   }
 
   @override
@@ -56,7 +44,7 @@ class _ChooseTransactionTypeDropdownState
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: DropdownButtonFormField<int>(
-        value: selectedTransactionTypeId,
+        initialValue: selectedTransactionTypeId,
         decoration: InputDecoration(
           labelText: language.transactionType,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -123,7 +111,7 @@ class _TransactionType {
 // make easy backup code 😊
 
 class ChooseTransactionTypeScreen extends StatefulWidget {
-  const ChooseTransactionTypeScreen({Key? key}) : super(key: key);
+  const ChooseTransactionTypeScreen({super.key});
 
   @override
   State<ChooseTransactionTypeScreen> createState() =>
@@ -188,122 +176,51 @@ class _ChooseTransactionTypeScreenState
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    print('dataaaaaaaaa:${data!.slider!.length}');
+    // Filter sliders based on selected transaction type
+    // List<MSlider>? filteredSliders;
+    // if (selectedTransactionTypeId != null &&
+    //     data != null &&
+    //     data!.slider != null &&
+    //     data!.property != null) {
+    //   filteredSliders = data!.slider!.where((slider) {
+    //     // Find the property matching the slider's propertyId
+    //     Property? property = data!.property!.firstWhere(
+    //       (prop) => prop.id == slider.propertyId,
+    //       orElse: () => Property(
+    //           id: -1,
+    //           name: '',
+    //           categoryId: 0,
+    //           category: '',
+    //           categoryImage: '',
+    //           price: 0,
+    //           priceFormat: '',
+    //           address: '',
+    //           status: 0,
+    //           premiumProperty: 0,
+    //           propertyImage: '',
+    //           isFavourite: 0,
+    //           propertyTypeId: 0,
+    //           propertyType: '',
+    //           propertyFor: -1,
+    //           advertisementProperty: 0,
+    //           advertisementPropertyDate: ''), // Return empty if not found
+    //     );
+    //     // Check if propertyFor matches selectedTransactionTypeId
+    //     return property.propertyFor == selectedTransactionTypeId;
+    //   }).toList();
+    // }
+
     return Observer(builder: (context) {
       return Scaffold(
         appBar: AppBar(
           leading: Image.asset(
             ic_logo,
             height: 40,
-            width:
-                40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */
+            width: 40,
           ).paddingOnly(left: 16, top: 8, bottom: 8),
           title: Text(language.transactionType),
           centerTitle: true,
         ),
-        // body: appStore.isLoading
-        //     ? Center(
-        //         child: CircularProgressIndicator(
-        //           color: context.primaryColor,
-        //         ),
-        //       )
-        //     : SingleChildScrollView(
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(24.0),
-        //           child: Column(
-        //             crossAxisAlignment: CrossAxisAlignment.center,
-        //             children: [
-        //               TransactionTypeCard(
-        //                 isSelected: false,
-        //                 imagePath: gifUrl,
-        //                 padding: 0,
-        //                 // type: '',
-        //                 isGif: true,
-        //               ),
-        //               const SizedBox(
-        //                 height: 24,
-        //               ),
-        //               GestureDetector(
-        //                 onTap: () {
-        //                   iWantToSale();
-        //                   selectedTransactionTypeId =
-        //                       1; // Assuming 1 is the ID for Sale
-        //                   DashboardScreen(
-        //                     transactionType: selectedTransactionTypeId,
-        //                     isSplash: false,
-        //                   ).launch(context, isNewTask: false);
-        //                 },
-        //                 child: TransactionTypeCard(
-        //                     // height: size.height * .2,
-        //                     isSelected: isSale,
-        //                     imagePath: ic_sale,
-        //                     type: 'بيع'),
-        //               ),
-        //               const SizedBox(
-        //                 height: 24,
-        //               ),
-        //               GestureDetector(
-        //                 onTap: () {
-        //                   iWantToRent();
-        //                   selectedTransactionTypeId =
-        //                       0; // Assuming 0 is the ID for Rent
-        //                   DashboardScreen(
-        //                     transactionType: selectedTransactionTypeId,
-        //                     isSplash: false,
-        //                   ).launch(context, isNewTask: true);
-        //                 },
-        //                 child: TransactionTypeCard(
-        //                     isSelected: isRent,
-        //                     imagePath: ic_rent,
-        //                     type: 'ايجار'),
-        //               ),
-        //               const SizedBox(
-        //                 height: 24,
-        //               ),
-        //               Container(
-        //                 width: size.width * 0.9,
-        //                 padding: EdgeInsets.symmetric(vertical: 16),
-        //                 decoration: BoxDecoration(
-        //                     color: Theme.of(context)
-        //                         .disabledColor
-        //                         .withOpacity(0.1),
-        //                     borderRadius: BorderRadius.circular(23)),
-        //                 child: Text(
-        //                   "مساحة اعلانية",
-        //                   textAlign: TextAlign.center,
-        //                   style: TextStyle(
-        //                     fontWeight: FontWeight.w700,
-        //                     fontSize: 24,
-        //                     fontFamily: 'Cairo',
-        //                     color: appStore.isDarkModeOn
-        //                         ? textOnDarkMode
-        //                         : textOnLightMode,
-        //                   ),
-        //                 ).paddingOnly(top: 16, bottom: 16),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       )
-        // bottomNavigationBar: Padding(
-        //   padding: const EdgeInsets.all(16),
-        //   child: ElevatedButton(
-        //     onPressed: selectedTransactionTypeId != null
-        //         ? () {
-        //             // Navigate to the next screen with the selected transaction type
-        //             log("Selected Transaction Type ID: $selectedTransactionTypeId");
-        //           }
-        //         : null,
-        //     child: Text("Continue"),
-        //     style: ElevatedButton.styleFrom(
-        //       // primary: Theme.of(context).primaryColor,
-        //       // onPrimary: Theme.of(context).cardColor,
-        //       padding: EdgeInsets.symmetric(vertical: 16),
-        //       textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        //     ),
-        //   ),
-        // ),
         body: appStore.isLoading
             ? Center(
                 child: CircularProgressIndicator(
@@ -314,20 +231,25 @@ class _ChooseTransactionTypeScreenState
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center, // وسط الشاشة
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+
+                      if (selectedTransactionTypeId != null)
+                        const SizedBox(height: 20),
                       TransactionTypeCard(
                         isSelected: false,
                         imagePath: gifUrl,
                         padding: 0,
                         isGif: true,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
                           iWantToSale();
                           selectedTransactionTypeId = 1;
+                           // userStore.setTransactionType(1);
+
                           DashboardScreen(
                             transactionType: selectedTransactionTypeId,
                             isSplash: false,
@@ -337,14 +259,15 @@ class _ChooseTransactionTypeScreenState
                           isSelected: isSale,
                           imagePath: ic_sale,
                           type: language.sell,
-                          height: 130,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
                           iWantToRent();
                           selectedTransactionTypeId = 0;
+                           // userStore.setTransactionType(0);
+
                           DashboardScreen(
                             transactionType: selectedTransactionTypeId,
                             isSplash: false,
@@ -354,18 +277,16 @@ class _ChooseTransactionTypeScreenState
                           isSelected: isRent,
                           imagePath: ic_rent,
                           type: language.rent,
-                          height: 130,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
                       Container(
                         alignment: Alignment.center,
                         height: 130,
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).disabledColor.withOpacity(0.1),
+                          color: Theme.of(context).disabledColor.withAlpha(25),
                           borderRadius: BorderRadius.circular(23),
                         ),
                         child: Text(

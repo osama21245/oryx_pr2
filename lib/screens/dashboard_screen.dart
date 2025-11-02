@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:orex/extensions/common.dart';
-import 'package:orex/screens/developer_screen.dart';
+import 'package:orex/screens/developer_sliders_screen.dart';
 import 'package:orex/screens/login_screen.dart';
 import 'package:orex/screens/main_screen.dart';
 // import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
@@ -54,10 +54,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     if (appStore.isLoggedIn) {
       screens.add(FavouriteScreen());
-      screens.add(DeveloperScreen());
+      screens.add(
+        DeveloperSlidersScreen(
+
+        ),
+      );
     }
 
-    // ✳️ إضافة Profile دومًا بدون شرط تسجيل الدخول
     screens.add(ProfileScreen());
 
     return screens;
@@ -179,9 +182,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void didChangeDependencies() {
-    if (getIntAsync(THEME_MODE_INDEX) == ThemeModeSystem)
+    if (getIntAsync(THEME_MODE_INDEX) == ThemeModeSystem) {
       appStore.setDarkMode(
           MediaQuery.of(context).platformBrightness == Brightness.dark);
+    }
     setState(() {});
     super.didChangeDependencies();
   }
@@ -270,11 +274,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               toast('must your role is developer by admins');
               return;
             }
-            if (index == 2) {
-              DeveloperScreen().launch(context, isNewTask: false);
-            }
-
-            currentIndex = index == 2 ? 0 : index;
+            currentIndex = index;
             isSplashActive = true;
             setState(() {});
           },

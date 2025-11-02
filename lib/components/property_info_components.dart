@@ -9,7 +9,7 @@ import '../utils/colors.dart';
 import '../utils/constants.dart';
 
 class PropertyInfoComponents extends StatefulWidget {
-  PropertyInfoComponents({super.key, required this.property});
+  const PropertyInfoComponents({super.key, required this.property});
 
   final PropertyDetail property;
 

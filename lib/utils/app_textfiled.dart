@@ -56,7 +56,7 @@ class AppTextField extends StatefulWidget {
   final String? errorInvalidURL;
   final String? errorInvalidUsername;
 
-  AppTextField({
+  const AppTextField({super.key,
     this.controller,
     required this.textFieldType,
     this.decoration,
@@ -215,9 +215,7 @@ class _AppTextFieldState extends State<AppTextField> {
       decoration: widget.decoration != null
           ? (widget.decoration!.copyWith(
         suffixIcon: widget.textFieldType == TextFieldType.PASSWORD
-            ? widget.suffix != null
-            ? widget.suffix
-            : GestureDetector(
+            ? widget.suffix ?? GestureDetector(
           child: Icon(
             isPasswordVisible ? Icons.visibility : Icons.visibility_off,
             color: widget.suffixIconColor ?? Theme.of(context).iconTheme.color,

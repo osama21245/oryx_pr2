@@ -11,8 +11,8 @@ class WaveAnimation extends StatefulWidget {
     this.size = 80.0,
     this.color =primaryColor,
     required this.centerChild,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   WaveAnimationState createState() => WaveAnimationState();
