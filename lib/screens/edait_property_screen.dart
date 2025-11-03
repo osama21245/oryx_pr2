@@ -40,7 +40,6 @@ import 'package:orex/utils/app_common.dart';
 import 'package:orex/utils/colors.dart';
 import 'package:orex/utils/constants.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:intl/intl.dart';
 
 class EdaitPropertyScreen extends StatefulWidget {
