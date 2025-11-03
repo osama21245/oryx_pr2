@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,6 +30,7 @@ import 'languageConfiguration/BaseLanguage.dart';
 import 'languageConfiguration/LanguageDataConstant.dart';
 import 'languageConfiguration/LanguageDefaultJson.dart';
 import 'languageConfiguration/ServerLanguageResponse.dart';
+import 'package:facebook_app_events/facebook_app_events.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 UserService userService = UserService();
@@ -40,7 +40,6 @@ AppStore appStore = AppStore();
 UserStore userStore = UserStore();
 
 late BaseLanguage language;
-
 // Added by SK
 LanguageJsonData? selectedServerLanguageData;
 List<LanguageJsonData>? defaultServerLanguageData = [];
@@ -56,6 +55,9 @@ get getContext1 => navigatorKey.currentState?.overlay?.context;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final facebookAppEvents = FacebookAppEvents();
+  //facebookAppEvents.logEvent(name: "app_open");
+
   try {
     await Firebase.initializeApp(
             options: DefaultFirebaseOptions.currentPlatform)

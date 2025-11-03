@@ -133,8 +133,8 @@ class _SearchScreenState extends State<SearchScreen> {
     appStore.setLoading(true);
     searchProperty(req).then((value) {
       print(req);
-      log("valueeeeeeeee${value.propertyData?[0]}");
-      log("valueeeeeeeee${value.nearByProperty?[0]}");
+      log("valueeeeeeeee${value.propertyData?.length}");
+      log("valueeeeeeeee${value.nearByProperty?.length}");
       appStore.setLoading(false);
       mergePropertyData.clear();
       Iterable its = value.propertyData!;
