@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +27,6 @@ import '../utils/images.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -128,7 +126,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (_) => OTPScreen(
                         phoneNumber: number,
                         isComeFromLogin: true,
-                        
                       )));
           // finish(context);
           // HomeScreen().launch(context);

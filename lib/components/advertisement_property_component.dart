@@ -146,7 +146,7 @@ class _AdvertisementPropertyComponentState
                   Image.asset(ic_map_point,
                       width: 24, height: 24, color: primaryColor),
                   4.width,
-                  Text('${widget.property!.address.validate()} ',
+                  Text('${widget.property!.address.validate()}',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: secondaryTextStyle(
@@ -155,7 +155,7 @@ class _AdvertisementPropertyComponentState
                               color: appStore.isDarkModeOn
                                   ? lightBackgroundColor
                                   : Colors.black))
-                      .expand(),
+                      .expand()
                 ],
               ),
             ],

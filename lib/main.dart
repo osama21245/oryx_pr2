@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:ui';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,6 @@ import 'languageConfiguration/BaseLanguage.dart';
 import 'languageConfiguration/LanguageDataConstant.dart';
 import 'languageConfiguration/LanguageDefaultJson.dart';
 import 'languageConfiguration/ServerLanguageResponse.dart';
-import 'package:facebook_app_events/facebook_app_events.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 UserService userService = UserService();
@@ -55,8 +56,6 @@ get getContext1 => navigatorKey.currentState?.overlay?.context;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final facebookAppEvents = FacebookAppEvents();
-  //facebookAppEvents.logEvent(name: "app_open");
 
   try {
     await Firebase.initializeApp(
@@ -81,6 +80,9 @@ void main() async {
   } else if (themeModeIndex == AppThemeMode().themeModeDark) {
     appStore.setDarkMode(true);
   }
+
+  //  Initialize Facebook Audience Network
+  await AdFacebookHelper.init();
 
 // ✅ Step: get saved language and check if user has made a language selection
   String? savedLangCode = getStringAsync(SELECTED_LANGUAGE_CODE);
@@ -253,4 +255,64 @@ class _MyAppState extends State<MyApp> {
       );
     });
   }
+}
+
+class AdFacebookHelper {
+  static final AdFacebookHelper _instance = AdFacebookHelper._internal();
+  factory AdFacebookHelper() => _instance;
+  AdFacebookHelper._internal();
+
+  static Future<void> init() async {
+    await FacebookAudienceNetwork.init(
+        testingId: "37b1da9d-b48c-4103-a393-2e095e734bd6", //optional
+        iOSAdvertiserTrackingEnabled: true //default false
+        );
+  }
+
+  Widget banner() {
+    return FacebookBannerAd(
+      placementId: Platform.isAndroid
+          ? "846222354532852|I10g7cTGUdXo8J0SD0P9xp03qS0"
+          : "",
+      bannerSize: BannerSize.STANDARD,
+      listener: (result, value) {
+        print("BANNER: $result --> $value");
+      },
+    );
+  }
+
+  void loadInterstitial() {
+    FacebookInterstitialAd.loadInterstitialAd(
+      placementId: Platform.isAndroid
+          ? "846222354532852|I10g7cTGUdXo8J0SD0P9xp03qS0"
+          : "",
+      listener: (result, value) {
+        print("INTERSTITIAL: $result --> $value");
+
+        if (result == InterstitialAdResult.LOADED) {
+          FacebookInterstitialAd.showInterstitialAd();
+        }
+      },
+    );
+  }
+
+  // void loadRewarded() {
+  //   FacebookRewardedVideoAd.loadRewardedVideoAd(
+  //     placementId: Platform.isAndroid
+  //         ? "846222354532852|I10g7cTGUdXo8J0SD0P9xp03qS0"
+  //         : "",
+  //     listener: (result, value) {
+  //       print("REWARDED: $result --> $value");
+
+  //       if (result == RewardedVideoResult.LOADED) {
+  //         FacebookRewardedVideoAd.showRewardedVideoAd();
+  //       }
+
+  //       if (result == RewardedVideoResult.VIDEO_COMPLETE) {
+  //         print("✅ User earned reward");
+  //         // TODO: Give reward to user
+  //       }
+  //     },
+  //   );
+  // }
 }
