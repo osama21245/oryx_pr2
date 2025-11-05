@@ -91,7 +91,10 @@ class _LimitScreenState extends State<LimitScreen> {
                                   ? primaryVariant
                                   : primaryExtraLight),
                       child: Row(children: [
-                        Image.asset(_selectedIndex == i ? ic_radio_fill : ic_radio, height: 18, width: 18),
+                        Image.asset(
+                            _selectedIndex == i ? ic_radio_fill : ic_radio,
+                            height: 18,
+                            width: 18),
                         10.width,
                         Text("${mLimitPropertyResponse.data![i].limit} ${language.limit}",
                                 style: primaryTextStyle(
@@ -102,7 +105,8 @@ class _LimitScreenState extends State<LimitScreen> {
                                         : Colors.black))
                             .expand(),
                         PriceWidget(
-                            price: formatNumberString(mLimitPropertyResponse.data![i].price!),
+                            price: formatNumberString(
+                                mLimitPropertyResponse.data![i].price!),
                             textStyle: boldTextStyle(
                                 size: 18,
                                 color: appStore.isDarkModeOn

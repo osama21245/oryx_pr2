@@ -14,7 +14,13 @@ class PriceWidget extends StatefulWidget {
   final Color? color;
   final TextStyle? textStyle;
 
-  PriceWidget({super.key, this.price, this.color, this.size = 22.0, this.textStyle});
+  PriceWidget({
+    super.key,
+    this.price,
+    this.color,
+    this.size = 22.0,
+    this.textStyle,
+  });
 
   @override
   PriceWidgetState createState() => PriceWidgetState();

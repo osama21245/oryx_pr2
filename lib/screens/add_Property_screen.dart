@@ -12,12 +12,7 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:orex/components/payment_web_view.dart';
 import 'package:orex/models/filter_category_model.dart';
-
-import '../components/AmenityTextFiledComponent.dart';
 import '../components/app_bar_components.dart';
-import '../components/checkbox_Component.dart';
-import '../components/drop_down_component.dart';
-import '../components/radio_component.dart';
 import '../components/required_validation.dart';
 import '../extensions/animatedList/animated_wrap.dart';
 import '../extensions/app_button.dart';
@@ -30,7 +25,6 @@ import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/extension_util/widget_extensions.dart';
-import '../extensions/horizontal_list.dart';
 import '../extensions/loader_widget.dart';
 import '../extensions/system_utils.dart';
 import '../extensions/text_styles.dart';
@@ -42,7 +36,6 @@ import '../models/dynamic_model.dart';
 import '../models/property_details_model.dart';
 import '../network/RestApis.dart';
 import '../network/network_utills.dart';
-import '../screens/subscribe_screen.dart';
 import '../screens/success_property_add_screen.dart';
 import '../utils/app_common.dart';
 import '../utils/colors.dart';
@@ -51,7 +44,6 @@ import '../utils/images.dart';
 import 'home_screen.dart';
 
 Map<String, String> selectedOptions = {};
-
 class AddPropertyScreen extends StatefulWidget {
   final bool? updateProperty;
   final int? pId;
@@ -59,7 +51,8 @@ class AddPropertyScreen extends StatefulWidget {
   final PropertyDetailsModel? updatePropertyData;
 
   const AddPropertyScreen(
-      {super.key, this.propertyFor,
+      {super.key,
+      this.propertyFor,
       this.updateProperty = false,
       this.pId,
       this.updatePropertyData});
@@ -81,7 +74,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   TextEditingController mChargesController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController stateController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
+  TextEditingController cityController =
+      TextEditingController(text: data!.propertyCity![0].name.validate());
   TextEditingController videoUrlController = TextEditingController();
   TextEditingController ageOfPropertyController = TextEditingController();
   TextEditingController mapLocation = TextEditingController();
@@ -349,19 +343,15 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       for (var element in dynamicAmenityList) {
         if (!element.dynamicAmenityValue.toString().isEmptyOrNull) {
           if (element.dynamicAmenityValue is String) {
-            multiPartRequest
-                    .fields['amenity_${element.dynamicAmenityId}'] =
+            multiPartRequest.fields['amenity_${element.dynamicAmenityId}'] =
                 element.dynamicAmenityValue;
-            log(multiPartRequest
-                .fields['amenity_${element.dynamicAmenityId}']);
+            log(multiPartRequest.fields['amenity_${element.dynamicAmenityId}']);
           } else if (element.dynamicAmenityValue is List) {
             List data = [];
             data.add(element.dynamicAmenityValue);
-            multiPartRequest
-                    .fields['amenity_${element.dynamicAmenityId}'] =
+            multiPartRequest.fields['amenity_${element.dynamicAmenityId}'] =
                 data.toString().replaceAll('[[', '[').replaceAll(']]', ']');
-            log(multiPartRequest
-                .fields['amenity_${element.dynamicAmenityId}']);
+            log(multiPartRequest.fields['amenity_${element.dynamicAmenityId}']);
           }
         } else if (element.dynamicAmenityValue.toString().isEmptyOrNull) {
           isAmenityIsEmpty = true;
@@ -1400,6 +1390,11 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             width: double.infinity,
             height: 60,
             child: DropdownButtonFormField<String>(
+              initialValue: (userStore.cityName.isNotEmpty)
+                  ? userStore.cityName
+                  : (data!.propertyCity!.isNotEmpty
+                      ? data!.propertyCity![0].name.validate()
+                      : null),
               focusColor: Colors.transparent,
               alignment: Alignment.centerLeft,
               isExpanded: true,
@@ -1460,9 +1455,11 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
               dropdownColor: context.cardColor,
               items: data!.propertyCity!.map((dashR.PropertyCity e) {
                 return DropdownMenuItem<String>(
-                  value: data!.propertyCity!.contains(userStore.cityName)
-                      ? userStore.cityName
-                      : e.name.validate(),
+                  value:
+                      //  data!.propertyCity!.contains(userStore.cityName)
+                      //     ? userStore.cityName
+                      //     :
+                      e.name.validate(),
                   child: Text(e.name.validate(),
                       style: primaryTextStyle(color: primaryColor),
                       overflow: TextOverflow.ellipsis,
@@ -1697,7 +1694,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       cityController.text = city.toString();
       stateController.text = state.toString();
       countryController.text = country.toString();
-      print("CITY${cityController.text}${stateController.text}${countryController.text}");
+      print(
+          "CITY${cityController.text}${stateController.text}${countryController.text}");
     }
     setState(() {});
   }

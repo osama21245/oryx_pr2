@@ -1,5 +1,3 @@
-
-
 import 'dashBoard_response.dart';
 
 class SearchResponse {
@@ -58,20 +56,20 @@ class NearByProperty {
 
   NearByProperty(
       {this.id,
-        this.name,
-        this.categoryId,
-        this.category,
-        this.categoryImage,
-        this.price,
-        this.priceFormat,
-        this.address,
-        this.status,
-        this.premiumProperty,
-        this.propertyImage,
-        this.isFavourite,
-        this.propertyTypeId,
-        this.propertyType,
-        this.propertyFor});
+      this.name,
+      this.categoryId,
+      this.category,
+      this.categoryImage,
+      this.price,
+      this.priceFormat,
+      this.address,
+      this.status,
+      this.premiumProperty,
+      this.propertyImage,
+      this.isFavourite,
+      this.propertyTypeId,
+      this.propertyType,
+      this.propertyFor});
 
   NearByProperty.fromJson(Map<String, dynamic> json) {
     id = json['id'];

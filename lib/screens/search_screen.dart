@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -44,7 +43,8 @@ class SearchScreen extends StatefulWidget {
   bool? isFilter;
 
   SearchScreen(
-      {super.key, this.budgetMaxPrice,
+      {super.key,
+      this.budgetMaxPrice,
       this.budgetMinPrice,
       this.bhkSend,
       this.selectCategory,
@@ -133,13 +133,14 @@ class _SearchScreenState extends State<SearchScreen> {
     appStore.setLoading(true);
     searchProperty(req).then((value) {
       print(req);
+      log("valueeeeeeeee${value.propertyData?.length}");
+      log("valueeeeeeeee${value.nearByProperty?.length}");
       appStore.setLoading(false);
       mergePropertyData.clear();
       Iterable its = value.propertyData!;
       Iterable it = value.nearByProperty!;
       its.map((e) => mergePropertyData.add(e)).toList();
       it.map((e) => mergePropertyData.add(e)).toList();
-
       if (!mSearchCont.text.isEmptyOrNull) {
         userStore.addToRecentSearchList(mSearchValue.toString());
       }

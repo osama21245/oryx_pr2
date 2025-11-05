@@ -23,7 +23,8 @@ class AdvertisementPropertyComponent extends StatefulWidget {
   final bool fromFav;
 
   const AdvertisementPropertyComponent(
-      {super.key, this.property,
+      {super.key,
+      this.property,
       this.isFullWidth = false,
       this.onCall,
       this.fromFav = false});
@@ -63,7 +64,7 @@ class _AdvertisementPropertyComponentState
     return Container(
       width:
           widget.isFullWidth == true ? context.width() : context.width() * 0.8,
-      height: 150,
+      height: 160,
       decoration: boxDecorationWithRoundedCorners(
         borderRadius: radius(12),
         backgroundColor:
@@ -86,6 +87,24 @@ class _AdvertisementPropertyComponentState
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(widget.property!.category.validate(),
+                  style: boldTextStyle(
+                      size: 18,
+                      color: appStore.isDarkModeOn
+                          ? lightBackgroundColor
+                          : Colors.black)),
+
+              Text(
+                widget.property!.name.validate(),
+                style: boldTextStyle(
+                    size: 18,
+                    color: appStore.isDarkModeOn
+                        ? lightBackgroundColor
+                        : Colors.black),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+
               Row(
                 children: [
                   PriceWidget(
@@ -112,6 +131,7 @@ class _AdvertisementPropertyComponentState
               //             ? lightBackgroundColor
               //             : Colors.black)),
               8.height,
+
               // Row(
               //   children: [
               //     Image.asset(ic_property, height: 18, width: 18, color: primaryColor),
@@ -126,7 +146,7 @@ class _AdvertisementPropertyComponentState
                   Image.asset(ic_map_point,
                       width: 24, height: 24, color: primaryColor),
                   4.width,
-                  Text('${widget.property!.address.validate()} ',
+                  Text('${widget.property!.address.validate()}',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: secondaryTextStyle(
@@ -135,7 +155,7 @@ class _AdvertisementPropertyComponentState
                               color: appStore.isDarkModeOn
                                   ? lightBackgroundColor
                                   : Colors.black))
-                      .expand(),
+                      .expand()
                 ],
               ),
             ],
