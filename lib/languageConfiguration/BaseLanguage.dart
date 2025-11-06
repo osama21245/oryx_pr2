@@ -568,4 +568,7 @@ class BaseLanguage {
   String get login => getContentValueFromKey(345);
   String get continueAsGuest => getContentValueFromKey(346);
   String get transactionType => getContentValueFromKey(347);
+  String get home => getContentValueFromKey(349);
+  String get profile => getContentValueFromKey(350);
+  String get developer => getContentValueFromKey(351	);
 }

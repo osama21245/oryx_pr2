@@ -284,7 +284,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   height: 24, width: 24, color: primaryColor),
               selectedIcon: Image.asset(ic_home_fill,
                   height: 24, width: 24, color: primaryColor),
-              title: SizedBox(),
+              title:Text(language.home,style: TextStyle(color: primaryColor ),),
             ),
             // BottomBarItem(
             //   icon: Image.asset(ic_category,
@@ -298,7 +298,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   height: 24, width: 24, color: primaryColor),
               selectedIcon: Image.asset(ic_favorite_fill,
                   height: 24, width: 24, color: primaryColor),
-              title: SizedBox(),
+              title:Text(language.favourite,style: TextStyle(color: primaryColor ),),
             ),
             // if (userStore.userType == 'developer')
             BottomBarItem(
@@ -306,14 +306,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   height: 24, width: 24, color: primaryColor),
               selectedIcon: Image.asset(ic_category_fill,
                   height: 24, width: 24, color: primaryColor),
-              title: SizedBox(),
+              title:Text(language.developer,style: TextStyle(color: primaryColor ),),
             ),
             BottomBarItem(
               icon: Image.asset(ic_profile,
                   height: 24, width: 24, color: primaryColor),
               selectedIcon: Image.asset(ic_profile_fill,
                   height: 24, width: 24, color: primaryColor),
-              title: SizedBox(),
+              title:Text(language.profile,style: TextStyle(color: primaryColor ),),
             ),
           ],
         ),

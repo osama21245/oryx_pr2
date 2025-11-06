@@ -119,8 +119,8 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
         }
         preporty = response;
       }
-    } catch (e) {
-      print("Error: $e");
+    } catch (e,trace) {
+      print("Error: $e $trace");
     } finally {
       appStore.setLoading(false);
       setState(() {});

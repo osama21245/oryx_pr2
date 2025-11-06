@@ -3,10 +3,11 @@ import 'dart:io' show Platform;
 import 'dart:ui';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:facebook_audience_network/facebook_audience_network.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -82,7 +83,7 @@ void main() async {
   }
 
   //  Initialize Facebook Audience Network
-  await AdFacebookHelper.init();
+  // await AdFacebookHelper.init();
 
 // ✅ Step: get saved language and check if user has made a language selection
   String? savedLangCode = getStringAsync(SELECTED_LANGUAGE_CODE);
@@ -257,62 +258,97 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class AdFacebookHelper {
-  static final AdFacebookHelper _instance = AdFacebookHelper._internal();
-  factory AdFacebookHelper() => _instance;
-  AdFacebookHelper._internal();
+// class AdFacebookHelper {
+//   static final AdFacebookHelper _instance = AdFacebookHelper._internal();
+//   factory AdFacebookHelper() => _instance;
+//   AdFacebookHelper._internal();
 
-  static Future<void> init() async {
-    await FacebookAudienceNetwork.init(
-        testingId: "37b1da9d-b48c-4103-a393-2e095e734bd6", //optional
-        iOSAdvertiserTrackingEnabled: true //default false
-        );
-  }
+//   static Future<void> init() async {
+//     try {
+//       await EasyAudienceNetwork.init(
+//         testingId: kReleaseMode ? null : "37b1da9d-b48c-4103-a393-2e095e734bd6",
+//         iOSAdvertiserTrackingEnabled: true,
+//       );
+//       _initialized = true;
+//     } catch (e) {
+//       _initialized = false;
+//       debugPrint('Audience Network init failed: $e');
+//     }
+//   }
 
-  Widget banner() {
-    return FacebookBannerAd(
-      placementId: Platform.isAndroid
-          ? "846222354532852|I10g7cTGUdXo8J0SD0P9xp03qS0"
-          : "",
-      bannerSize: BannerSize.STANDARD,
-      listener: (result, value) {
-        print("BANNER: $result --> $value");
-      },
-    );
-  }
+//   static bool _initialized = false;
 
-  void loadInterstitial() {
-    FacebookInterstitialAd.loadInterstitialAd(
-      placementId: Platform.isAndroid
-          ? "846222354532852|I10g7cTGUdXo8J0SD0P9xp03qS0"
-          : "",
-      listener: (result, value) {
-        print("INTERSTITIAL: $result --> $value");
+//   Widget banner() {
+//     if (!_initialized) return const SizedBox.shrink();
+//     final placementId = Platform.isAndroid
+//         ? kFacebookBannerPlacementIdAndroid
+//         : kFacebookBannerPlacementIdIOS;
+//     if (placementId.isEmpty) return const SizedBox.shrink();
 
-        if (result == InterstitialAdResult.LOADED) {
-          FacebookInterstitialAd.showInterstitialAd();
-        }
-      },
-    );
-  }
+//     try {
+//       return BannerAd(
+//         placementId: placementId,
+//         bannerSize: BannerSize.STANDARD,
+//         listener: BannerAdListener(
+//           onError: (code, message) => debugPrint('BANNER error: [$code] $message'),
+//           onLoaded: () => debugPrint('BANNER loaded'),
+//           onClicked: () => debugPrint('BANNER clicked'),
+//           onLoggingImpression: () => debugPrint('BANNER impression'),
+//         ),
+//       );
+//     } catch (e) {
+//       debugPrint('Banner Ad error: $e');
+//       return const SizedBox.shrink();
+//     }
+//   }
 
-  // void loadRewarded() {
-  //   FacebookRewardedVideoAd.loadRewardedVideoAd(
-  //     placementId: Platform.isAndroid
-  //         ? "846222354532852|I10g7cTGUdXo8J0SD0P9xp03qS0"
-  //         : "",
-  //     listener: (result, value) {
-  //       print("REWARDED: $result --> $value");
+//   void loadInterstitial() {
+//     if (!_initialized) return;
+//     final placementId = Platform.isAndroid
+//         ? kFacebookInterstitialPlacementIdAndroid
+//         : kFacebookInterstitialPlacementIdIOS;
+//     if (placementId.isEmpty) return;
 
-  //       if (result == RewardedVideoResult.LOADED) {
-  //         FacebookRewardedVideoAd.showRewardedVideoAd();
-  //       }
+//     try {
+//       final interstitialAd = InterstitialAd(placementId);
+//       interstitialAd.listener = InterstitialAdListener(
+//         onLoaded: () {
+//           debugPrint('INTERSTITIAL loaded');
+//           interstitialAd.show();
+//         },
+//         onDismissed: () {
+//           debugPrint('INTERSTITIAL dismissed');
+//           interstitialAd.destroy();
+//         },
+//         onError: (code, message) {
+//           debugPrint('INTERSTITIAL error: [$code] $message');
+//         },
+//         onClicked: () => debugPrint('INTERSTITIAL clicked'),
+//         onLoggingImpression: () => debugPrint('INTERSTITIAL impression'),
+//       );
+//       interstitialAd.load();
+//     } catch (e) {
+//       debugPrint('Interstitial Ad error: $e');
+//     }
+//   }
 
-  //       if (result == RewardedVideoResult.VIDEO_COMPLETE) {
-  //         print("✅ User earned reward");
-  //         // TODO: Give reward to user
-  //       }
-  //     },
-  //   );
-  // }
-}
+//   // void loadRewarded() {
+//   //   FacebookRewardedVideoAd.loadRewardedVideoAd(
+//   //     placementId: Platform.isAndroid
+//   //         ? "846222354532852|I10g7cTGUdXo8J0SD0P9xp03qS0"
+//   //         : "",
+//   //     listener: (result, value) {
+//   //       print("REWARDED: $result --> $value");
+
+//   //       if (result == RewardedVideoResult.LOADED) {
+//   //         FacebookRewardedVideoAd.showRewardedVideoAd();
+//   //       }
+
+//   //       if (result == RewardedVideoResult.VIDEO_COMPLETE) {
+//   //         print("✅ User earned reward");
+//   //         // TODO: Give reward to user
+//   //       }
+//   //     },
+//   //   );
+//   // }
+// }

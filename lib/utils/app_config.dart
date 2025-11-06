@@ -49,6 +49,13 @@ const showBannerAdOnPhotoGallerySelected = false;
 
 //endregion
 
+//region Audience Network placement IDs
+const kFacebookBannerPlacementIdAndroid = '';
+const kFacebookBannerPlacementIdIOS = '';
+const kFacebookInterstitialPlacementIdAndroid = '';
+const kFacebookInterstitialPlacementIdIOS = '';
+//endregion
+
 //region payment description and identifier
 const mRazorDescription = 'Mighty eProperty';
 const mStripeIdentifier = 'IN';

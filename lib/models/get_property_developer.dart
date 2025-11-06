@@ -107,8 +107,8 @@ class Property {
       propertyImage: json['property_image'],
       isFavourite: json['is_favourite'],
       propertyFor: json['property_for'],
-      advertisementProperty: json['advertisement_property'],
-      advertisementPropertyDate: json['advertisement_property_date'],
+      advertisementProperty: json['advertisement_property'].toString(),
+      advertisementPropertyDate: json['advertisement_property_date'].toString(),
     );
   }
 

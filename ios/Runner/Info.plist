@@ -45,5 +45,8 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+    <!-- App Tracking Transparency description for Facebook Audience Network -->
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This identifier is used to deliver relevant ads.</string>
 </dict>
 </plist>
