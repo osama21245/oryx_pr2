@@ -27,6 +27,7 @@ Map<String, String> buildHeaderTokens() {
   if (appStore.isLoggedIn) {
     header.putIfAbsent(
         HttpHeaders.authorizationHeader, () => 'Bearer ${userStore.token}');
+    print("userStore.token: ${userStore.token}");
   }
   log(jsonEncode(header));
   return header;

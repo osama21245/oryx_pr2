@@ -1,4 +1,5 @@
 const ic_logo = 'assets/ic_logo.png';
+const app_logo = 'assets/logo_app.png';
 const ic_placeholder = "assets/splash.png";
 const ic_filter = 'assets/ic_Filter.png';
 const ic_home = "assets/ic_home.png";
@@ -78,6 +79,7 @@ const ic_edit_property = "assets/ic_edit_property.png";
 const ic_marks_all_read = "assets/ic_marks_all_read.png";
 const payment_failed = "assets/payment_failed.png";
 const payment_success = "assets/payment_success.json";
+const searching_animation = "assets/Searching.json";
 const ic_cancel_subscription = "assets/ic_cancle_subscription.png";
 const ic_rent = "assets/rent.png";
 const ic_sale = "assets/sale.png";

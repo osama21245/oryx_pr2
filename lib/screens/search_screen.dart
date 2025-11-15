@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/horizontal_list.dart';
 import '../screens/property_detail_screen.dart';
 import '../../components/app_bar_components.dart';
+import '../../components/robot_voice_search_dialog.dart';
 import '../../main.dart';
 import '../components/advertisement_property_component.dart';
 import '../components/premium_btn_component.dart';
@@ -22,6 +26,7 @@ import '../extensions/price_widget.dart';
 import '../extensions/system_utils.dart';
 import '../extensions/text_styles.dart';
 import '../models/dashBoard_response.dart';
+import '../models/ai_search_response_model.dart';
 import '../network/RestApis.dart';
 import '../utils/app_common.dart';
 import '../utils/colors.dart';
@@ -80,11 +85,32 @@ class _SearchScreenState extends State<SearchScreen> {
 
   bool isLastPage = false;
 
+  // STT variables
+  stt.SpeechToText _speech = stt.SpeechToText();
+  bool _isAiSearchLoading = false;
+  String? _aiMessage;
+  bool _useAiSearch = false; // Toggle between regular and AI search
+
   @override
   void initState() {
     _debouncer = Debouncer(milliseconds: 500);
     super.initState();
     init();
+    _initializeSpeech();
+  }
+
+  Future<void> _initializeSpeech() async {
+    bool available = await _speech.initialize(
+      onStatus: (status) {
+        // Status handling moved to dialog
+      },
+      onError: (error) {
+        toast(error.errorMsg);
+      },
+    );
+    if (!available && mounted) {
+      // Speech not available
+    }
   }
 
   init() async {
@@ -152,6 +178,100 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  Future<void> _showRobotVoiceSearchDialog() async {
+    // Request microphone permission first
+    var status = await Permission.microphone.request();
+    if (status.isDenied) {
+      toast('Microphone permission is required for voice search');
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => RobotVoiceSearchDialog(
+        onTextRecognized: (text) {
+          if (text.isNotEmpty) {
+            setState(() {
+              mSearchCont.text = text;
+              mSearchValue = text;
+            });
+            // Perform AI search with the recognized text
+            _performAiSearch(text);
+          }
+        },
+        onCancel: () {
+          _stopListening();
+        },
+      ),
+    );
+  }
+
+  Future<void> _stopListening() async {
+    await _speech.stop();
+  }
+
+  Future<void> _performAiSearch(String searchText) async {
+    if (searchText.isEmpty) {
+      return;
+    }
+
+    if (mounted) {
+      setState(() {
+        _isAiSearchLoading = true;
+        _aiMessage = null;
+        mergePropertyData.clear();
+      });
+    }
+
+    try {
+      Map req = {
+        "search": searchText,
+      };
+
+      aiSearchProperty(req).then((value) {
+        if (mounted) {
+          setState(() {
+            _isAiSearchLoading = false;
+            _aiMessage = value.message;
+
+            // Merge property data
+            mergePropertyData.clear();
+            if (value.data?.propertyData != null) {
+              Iterable its = value.data!.propertyData!;
+              its.map((e) => mergePropertyData.add(e)).toList();
+            }
+            if (value.data?.nearByProperty != null) {
+              Iterable it = value.data!.nearByProperty!;
+              it.map((e) => mergePropertyData.add(e)).toList();
+            }
+
+            // Save to recent searches
+            if (searchText.isNotEmpty) {
+              userStore.addToRecentSearchList(searchText);
+            }
+          });
+        }
+      }).catchError((error) {
+        if (mounted) {
+          setState(() {
+            _isAiSearchLoading = false;
+          });
+        }
+        log(error);
+        toast(error.toString());
+      });
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isAiSearchLoading = false;
+        });
+      }
+      log(e.toString());
+      toast(e.toString());
+    }
+  }
+
   setFavouriteApi(int? id, int? isFavourite) async {
     appStore.setLoading(true);
     Map req = {
@@ -216,80 +336,348 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: boxDecorationWithRoundedCorners(
-                        borderRadius: radius(10),
-                        backgroundColor: appStore.isDarkModeOn
-                            ? cardDarkColor
-                            : primaryExtraLight),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(ic_magnifier, height: 30, width: 20),
-                        10.width,
-                        AppTextField(
-                          focus: search,
-                          controller: mSearchCont,
-                          textStyle: primaryTextStyle(),
-                          textFieldType: TextFieldType.OTHER,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(0),
-                              border: InputBorder.none,
-                              hintText: language.searchLocation,
-                              hintStyle: primaryTextStyle(color: grey)),
-                          onChanged: (v) {
-                            _debouncer.run(() {
-                              mSearchValue = v;
-                              latitude = 0.0;
-                              longitude = 0.0;
-                              searchAndUpdateList(v.trim());
-                              searchPropertyApi();
-                              widget.isFilter = false;
-                              if (mounted) setState(() {});
+                  // Enhanced Search Container with better spacing
+                  Column(
+                    children: [
+                      // Search Bar Row
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        decoration: boxDecorationWithRoundedCorners(
+                            borderRadius: radius(12),
+                            backgroundColor: appStore.isDarkModeOn
+                                ? cardDarkColor
+                                : primaryExtraLight,
+                            border: Border.all(
+                              color: _useAiSearch
+                                  ? primaryColor.withOpacity(0.3)
+                                  : Colors.transparent,
+                              width: 2,
+                            )),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: _useAiSearch
+                                    ? primaryColor.withOpacity(0.15)
+                                    : Colors.transparent,
+                                borderRadius: radius(8),
+                              ),
+                              child: Image.asset(
+                                ic_magnifier,
+                                height: 22,
+                                width: 22,
+                                color: _useAiSearch ? primaryColor : grey,
+                              ),
+                            ),
+                            12.width,
+                            Expanded(
+                              child: AppTextField(
+                                focus: search,
+                                controller: mSearchCont,
+                                textStyle: primaryTextStyle(),
+                                textFieldType: TextFieldType.OTHER,
+                                decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 8),
+                                    border: InputBorder.none,
+                                    hintText: _useAiSearch
+                                        ? 'Ask me anything about properties...'
+                                        : language.searchLocation,
+                                    hintStyle: primaryTextStyle(color: grey)),
+                                onChanged: (v) {
+                                  if (!_useAiSearch) {
+                                    _debouncer.run(() {
+                                      mSearchValue = v;
+                                      latitude = 0.0;
+                                      longitude = 0.0;
+                                      searchAndUpdateList(v.trim());
+                                      searchPropertyApi();
+                                      widget.isFilter = false;
+                                      if (mounted) setState(() {});
+                                    });
+                                  } else {
+                                    setState(
+                                        () {}); // Update UI to show/hide AI button
+                                  }
+                                },
+                                onFieldSubmitted: (v) {
+                                  mSearchValue = v;
+                                  if (_useAiSearch) {
+                                    // Use AI search when submitted
+                                    if (v.trim().isNotEmpty) {
+                                      _performAiSearch(v.trim());
+                                    }
+                                  } else {
+                                    latitude = 0.0;
+                                    longitude = 0.0;
+                                    searchAndUpdateList(v.trim());
+                                    searchPropertyApi();
+                                    widget.isFilter = false;
+                                    setState(() {});
+                                  }
+                                },
+                              ),
+                            ),
+                            8.width,
+                            // Voice Search Button
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: primaryColor.withOpacity(0.1),
+                              ),
+                              child: Icon(
+                                Icons.mic,
+                                color: primaryColor,
+                                size: 20,
+                              ),
+                            ).onTap(() {
+                              _showRobotVoiceSearchDialog();
+                            }),
+                            8.width,
+                            // Filter Button
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: primaryColor.withOpacity(0.1),
+                              ),
+                              child: Image.asset(
+                                ic_filter,
+                                height: 18,
+                                width: 18,
+                                color: primaryColor,
+                              ),
+                            ).onTap(() {
+                              FilterScreen(isSelect: false).launch(context);
+                            }),
+                          ],
+                        ),
+                      ),
+                      // AI Toggle and Search Button Row (outside search container)
+                      12.height,
+                      Row(
+                        children: [
+                          // AI Toggle Button
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: _useAiSearch
+                                  ? primaryColor
+                                  : Colors.transparent,
+                              borderRadius: radius(10),
+                              border: Border.all(
+                                color: _useAiSearch
+                                    ? primaryColor
+                                    : primaryColor.withOpacity(0.3),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.auto_awesome,
+                                  color: _useAiSearch
+                                      ? Colors.white
+                                      : primaryColor,
+                                  size: 18,
+                                ),
+                                8.width,
+                                Text(
+                                  'AI Search',
+                                  style: primaryTextStyle(
+                                    size: 13,
+                                    color: _useAiSearch
+                                        ? Colors.white
+                                        : primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ).onTap(() {
+                            setState(() {
+                              _useAiSearch = !_useAiSearch;
+                              if (!_useAiSearch) {
+                                _aiMessage = null;
+                              }
                             });
-                          },
-                          onFieldSubmitted: (v) {
-                            mSearchValue = v;
-                            latitude = 0.0;
-                            longitude = 0.0;
-
-                            searchAndUpdateList(v.trim());
-
-                            searchPropertyApi();
-
-                            widget.isFilter = false;
-                            setState(() {});
-                          },
-                        ).expand(),
-                        Image.asset(ic_filter, height: 20, width: 20).onTap(() {
-                          FilterScreen(isSelect: false).launch(context);
-                        })
-                      ],
-                    ),
+                          }),
+                          // AI Search Action Button (only shown when AI mode is on and has text)
+                          if (_useAiSearch && mSearchCont.text.isNotEmpty) ...[
+                            12.width,
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 12),
+                                decoration: boxDecorationWithRoundedCorners(
+                                  backgroundColor: primaryColor,
+                                  borderRadius: radius(10),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                    8.width,
+                                    Text(
+                                      'Search with AI',
+                                      style: boldTextStyle(
+                                        color: Colors.white,
+                                        size: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ).onTap(() {
+                                if (mSearchCont.text.trim().isNotEmpty) {
+                                  _performAiSearch(mSearchCont.text.trim());
+                                }
+                              }),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
                   ),
                   20.height,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        Icon(Icons.my_location_sharp, color: primaryColor),
-                        10.width,
-                        Text(language.useMyCurrentLocation,
-                            style: boldTextStyle(color: primaryColor)),
-                      ]).onTap(() {
+                      // Enhanced Location Button
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        decoration: boxDecorationWithRoundedCorners(
+                          backgroundColor: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryExtraLight,
+                          borderRadius: radius(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: primaryColor.withOpacity(0.1),
+                                borderRadius: radius(8),
+                              ),
+                              child: Icon(
+                                Icons.my_location_sharp,
+                                color: primaryColor,
+                                size: 20,
+                              ),
+                            ),
+                            12.width,
+                            Expanded(
+                              child: Text(
+                                language.useMyCurrentLocation,
+                                style: boldTextStyle(
+                                  color: primaryColor,
+                                  size: 14,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: primaryColor,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                      ).onTap(() {
                         mSearchValue = '';
-
                         _getCurrentLocation();
                         widget.isFilter = false;
                         setState(() {});
                       }),
                       18.height,
+                      // Enhanced AI Message Display
+                      if (_aiMessage != null && _aiMessage!.isNotEmpty)
+                        Container(
+                          padding: EdgeInsets.all(18),
+                          margin: EdgeInsets.only(bottom: 16),
+                          decoration: boxDecorationWithRoundedCorners(
+                            borderRadius: radius(16),
+                            backgroundColor: appStore.isDarkModeOn
+                                ? cardDarkColor
+                                : primaryExtraLight,
+                            border: Border.all(
+                              color: primaryColor.withOpacity(0.2),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: primaryColor.withOpacity(0.15),
+                                      borderRadius: radius(8),
+                                    ),
+                                    child: Icon(
+                                      Icons.auto_awesome,
+                                      color: primaryColor,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  12.width,
+                                  Text(
+                                    'AI Assistant',
+                                    style: boldTextStyle(
+                                      color: primaryColor,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              12.height,
+                              Container(
+                                padding: EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: appStore.isDarkModeOn
+                                      ? Colors.black.withOpacity(0.3)
+                                      : Colors.white,
+                                  borderRadius: radius(10),
+                                ),
+                                child: Text(
+                                  _aiMessage!,
+                                  style: primaryTextStyle(
+                                    size: 15,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      // Lottie Loading Animation for AI Search
+                      if (_isAiSearchLoading)
+                        Container(
+                          height: 200,
+                          alignment: Alignment.center,
+                          child: Lottie.asset(
+                            searching_animation,
+                            height: 200,
+                            width: 200,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       Stack(
                         children: [
                           mSearchCont.text.isEmpty &&
                                   latitude == null &&
-                                  longitude == null
+                                  longitude == null &&
+                                  !_isAiSearchLoading
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -351,7 +739,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             );
                                           }),
                                     ])
-                              : mergePropertyData.isNotEmpty
+                              : mergePropertyData.isNotEmpty &&
+                                      !_isAiSearchLoading
                                   ? ListView.builder(
                                       physics: ScrollPhysics(),
                                       shrinkWrap: true,
@@ -606,11 +995,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
               ).paddingSymmetric(horizontal: 16),
             ),
-            Loader().center().visible(appStore.isLoading)
+            Loader().center().visible(appStore.isLoading && !_isAiSearchLoading)
           ],
         ),
       );
     }));
+  }
+
+  @override
+  void dispose() {
+    _speech.stop();
+    super.dispose();
   }
 }
 

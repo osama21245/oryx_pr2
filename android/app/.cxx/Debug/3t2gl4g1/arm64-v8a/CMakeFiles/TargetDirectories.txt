@@ -1,0 +1,2 @@
+/Users/osamagamil/Documents/flutter_apps/oryx/android/app/.cxx/Debug/3t2gl4g1/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/osamagamil/Documents/flutter_apps/oryx/android/app/.cxx/Debug/3t2gl4g1/arm64-v8a/CMakeFiles/rebuild_cache.dir

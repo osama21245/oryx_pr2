@@ -15,10 +15,9 @@ import '../extensions/system_utils.dart';
 import '../network/RestApis.dart';
 
 class ChooseTransactionTypeDropdown extends StatefulWidget {
- // final int? initialValue;
+  // final int? initialValue;
   final ValueChanged<int?>? onChanged;
-  const ChooseTransactionTypeDropdown(
-      {super.key,  this.onChanged});
+  const ChooseTransactionTypeDropdown({super.key, this.onChanged});
 
   @override
   State<ChooseTransactionTypeDropdown> createState() =>
@@ -36,7 +35,7 @@ class _ChooseTransactionTypeDropdownState
   @override
   void initState() {
     super.initState();
-   // selectedTransactionTypeId = widget.initialValue;
+    // selectedTransactionTypeId = widget.initialValue;
   }
 
   @override
@@ -44,7 +43,7 @@ class _ChooseTransactionTypeDropdownState
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: DropdownButtonFormField<int>(
-        initialValue: selectedTransactionTypeId,
+        value: selectedTransactionTypeId,
         decoration: InputDecoration(
           labelText: language.transactionType,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -234,7 +233,6 @@ class _ChooseTransactionTypeScreenState
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-
                       if (selectedTransactionTypeId != null)
                         const SizedBox(height: 20),
                       TransactionTypeCard(
@@ -248,7 +246,7 @@ class _ChooseTransactionTypeScreenState
                         onTap: () {
                           iWantToSale();
                           selectedTransactionTypeId = 1;
-                           // userStore.setTransactionType(1);
+                          // userStore.setTransactionType(1);
 
                           DashboardScreen(
                             transactionType: selectedTransactionTypeId,
@@ -266,7 +264,7 @@ class _ChooseTransactionTypeScreenState
                         onTap: () {
                           iWantToRent();
                           selectedTransactionTypeId = 0;
-                           // userStore.setTransactionType(0);
+                          // userStore.setTransactionType(0);
 
                           DashboardScreen(
                             transactionType: selectedTransactionTypeId,

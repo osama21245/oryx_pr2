@@ -39,6 +39,7 @@ import '../models/property_list_model.dart';
 import '../models/property_type_model.dart';
 import '../models/purchase_extra_limit_response.dart';
 import '../models/search_response_model.dart';
+import '../models/ai_search_response_model.dart';
 import '../models/signUp_resonse.dart';
 import '../models/subscribe_package_reponse.dart';
 import '../models/subscription_model.dart';
@@ -268,6 +269,15 @@ Future<PropertyDetailsModel> propertyDetails(Map request) async {
 Future<SearchResponse> searchProperty(Map request, {int page = 100}) async {
   return SearchResponse.fromJson(await handleResponse(await buildHttpResponse(
           'search-location?per_page=$page',
+          request: request,
+          method: HttpMethod.POST))
+      .then((value) => value));
+}
+
+///AI Search Api
+Future<AiSearchResponse> aiSearchProperty(Map request) async {
+  return AiSearchResponse.fromJson(await handleResponse(await buildHttpResponse(
+          'https://oryxinvestmentsegypt.com/api/ai-search',
           request: request,
           method: HttpMethod.POST))
       .then((value) => value));

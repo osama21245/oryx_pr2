@@ -341,7 +341,7 @@ class _MainScreenState extends State<MainScreen> {
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: DropdownButtonFormField<String>(
-          initialValue: selectedCityId,
+          value: selectedCityId,
           decoration: InputDecoration(
             labelText: language.selectCity,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -427,7 +427,7 @@ class _MainScreenState extends State<MainScreen> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: DropdownButtonFormField<String>(
-        initialValue: selectedCategoryId,
+        value: selectedCategoryId,
         decoration: InputDecoration(
           labelText: language.category,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),

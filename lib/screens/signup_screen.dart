@@ -160,7 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     DropdownButtonHideUnderline(
                       child: DropdownButtonFormField<String>(
-                        initialValue: selectedGovernorate,
+                        value: selectedGovernorate,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),

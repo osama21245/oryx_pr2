@@ -11,7 +11,13 @@ class DropDownComponent extends StatefulWidget {
   final bool? isUpdateProperty;
   final dynamic selectedDropDownValue;
 
-  const DropDownComponent({super.key, this.dropdownValues, this.amenityId, required this.onUpdate, this.selectedDropDownValue, this.isUpdateProperty});
+  const DropDownComponent(
+      {super.key,
+      this.dropdownValues,
+      this.amenityId,
+      required this.onUpdate,
+      this.selectedDropDownValue,
+      this.isUpdateProperty});
 
   @override
   State<DropDownComponent> createState() => _DropDownComponentState();
@@ -32,7 +38,10 @@ class _DropDownComponentState extends State<DropDownComponent> {
 
     widget.dropdownValues!.map((e) => print(e)).toList();
     if (widget.isUpdateProperty.validate()) {
-      finalDropDownValue = !widget.selectedDropDownValue.toString().isEmptyOrNull ? widget.selectedDropDownValue : widget.dropdownValues!.first;
+      finalDropDownValue =
+          !widget.selectedDropDownValue.toString().isEmptyOrNull
+              ? widget.selectedDropDownValue
+              : widget.dropdownValues!.first;
     }
   }
 
@@ -53,18 +62,22 @@ class _DropDownComponentState extends State<DropDownComponent> {
       mainAxisSize: MainAxisSize.max,
       children: [
         DropdownButtonFormField<String>(
-            decoration: InputDecoration(enabledBorder: InputBorder.none, focusedBorder: InputBorder.none),
-            initialValue: finalDropDownValue ?? widget.dropdownValues!.first,
+            decoration: InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none),
+            value: finalDropDownValue ?? widget.dropdownValues!.first,
             onChanged: (value) {
               finalDropDownId = widget.amenityId;
               finalDropDownValue = value;
               sendRadioData();
               setState(() {});
             },
-            items: widget.dropdownValues!.map<DropdownMenuItem<String>>((value) {
+            items:
+                widget.dropdownValues!.map<DropdownMenuItem<String>>((value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value, style: primaryTextStyle()).paddingSymmetric(horizontal: 10),
+                child: Text(value, style: primaryTextStyle())
+                    .paddingSymmetric(horizontal: 10),
               );
             }).toList()),
       ],

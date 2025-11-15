@@ -476,7 +476,7 @@ class _EdaitPropertyScreenState extends State<EdaitPropertyScreen> {
   Widget filterItem(PropertyResponseModel? model) {
     print('model!.toJson(): ${model?.toJson()}');
     return DropdownButtonFormField<Property>(
-      initialValue: preporty?.data?.firstWhere(
+      value: preporty?.data?.firstWhere(
         (option) => option.id.toString() == selectedProperty,
       ),
       icon: Icon(Icons.keyboard_arrow_down_rounded, color: black),

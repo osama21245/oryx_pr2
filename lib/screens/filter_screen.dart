@@ -32,7 +32,7 @@ import '../utils/images.dart';
 import 'home_screen.dart';
 
 class FilterScreen extends StatefulWidget {
- final bool isSelect;
+  final bool isSelect;
 
   const FilterScreen({super.key, this.isSelect = false});
 
@@ -40,7 +40,8 @@ class FilterScreen extends StatefulWidget {
   State<FilterScreen> createState() => _FilterScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderStateMixin {
+class _FilterScreenState extends State<FilterScreen>
+    with SingleTickerProviderStateMixin {
   TextEditingController mapLocation = TextEditingController();
 
   int selectPosted = 0;
@@ -88,7 +89,8 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
   void init() async {
     getList();
     getPropertyList();
-    _values = RangeValues(userStore.minPrice.toDouble(), userStore.maxPrice.toDouble());
+    _values = RangeValues(
+        userStore.minPrice.toDouble(), userStore.maxPrice.toDouble());
     setState(() {});
   }
 
@@ -155,7 +157,13 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
           titleSpace: 0,
           context1: context,
           actions: [
-            Text(language.clearFilter, style: secondaryTextStyle(color: appStore.isDarkModeOn ? Colors.white : primaryColor)).paddingSymmetric(horizontal: 16, vertical: 16).onTap(() {
+            Text(language.clearFilter,
+                    style: secondaryTextStyle(
+                        color: appStore.isDarkModeOn
+                            ? Colors.white
+                            : primaryColor))
+                .paddingSymmetric(horizontal: 16, vertical: 16)
+                .onTap(() {
               propertyForList.clear();
               propertyList.clear();
               list.clear();
@@ -165,10 +173,17 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
             })
           ],
           showBack: true,
-          backWidget: Icon(appStore.selectedLanguage == 'ar' ?
-          MaterialIcons.arrow_forward_ios : Octicons.chevron_left, color: primaryColor, size: 28).onTap(() {
+          backWidget: Icon(
+                  appStore.selectedLanguage == 'ar'
+                      ? MaterialIcons.arrow_forward_ios
+                      : Octicons.chevron_left,
+                  color: primaryColor,
+                  size: 28)
+              .onTap(() {
             if (widget.isSelect == false) {
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => DashboardScreen()), (route) => true);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => DashboardScreen()),
+                  (route) => true);
             } else {
               finish(context);
             }
@@ -205,7 +220,10 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
                                 : primaryExtraLight),
                     child: Text(
                       propertyList[index].title.validate(),
-                      style: primaryTextStyle(color: propertyList[index].select! ? Colors.white : grayColor),
+                      style: primaryTextStyle(
+                          color: propertyList[index].select!
+                              ? Colors.white
+                              : grayColor),
                     ).center(),
                   ).onTap(() {
                     setState(() {
@@ -220,25 +238,38 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
             Text(language.priceRange, style: boldTextStyle()),
             20.height,
             SliderTheme(
-              data: SliderThemeData(showValueIndicator: ShowValueIndicator.onDrag),
+              data: SliderThemeData(
+                  showValueIndicator: ShowValueIndicator.always),
               child: RangeSlider(
                 values: RangeValues(_values.start, _values.end),
                 min: getStringAsync(MIN_PRICE).toDouble(),
-                max: getStringAsync(MAX_PRICE).toDouble()==0?10000: getStringAsync(MAX_PRICE).toDouble(),
+                max: getStringAsync(MAX_PRICE).toDouble() == 0
+                    ? 10000
+                    : getStringAsync(MAX_PRICE).toDouble(),
                 onChanged: (RangeValues newValues) {
                   setState(() {
                     _values = RangeValues(newValues.start, newValues.end);
                     _apiSendValues = _values;
                   });
                 },
-                labels: RangeLabels(formatFilterNumberString(_values.start.toStringAsFixed(2).toDouble()), formatFilterNumberString(_values.end.toStringAsFixed(2).toDouble())),
+                labels: RangeLabels(
+                    formatFilterNumberString(
+                        _values.start.toStringAsFixed(2).toDouble()),
+                    formatFilterNumberString(
+                        _values.end.toStringAsFixed(2).toDouble())),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                PriceWidget(price: formatFilterNumberString(_values.start.toStringAsFixed(2).toDouble()), textStyle: primaryTextStyle(size: 14)),
-                PriceWidget(price: formatFilterNumberString(_values.end.toStringAsFixed(2).toDouble()), textStyle: primaryTextStyle(size: 14))
+                PriceWidget(
+                    price: formatFilterNumberString(
+                        _values.start.toStringAsFixed(2).toDouble()),
+                    textStyle: primaryTextStyle(size: 14)),
+                PriceWidget(
+                    price: formatFilterNumberString(
+                        _values.end.toStringAsFixed(2).toDouble()),
+                    textStyle: primaryTextStyle(size: 14))
               ],
             ),
             20.height,
@@ -262,7 +293,10 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
                                 : primaryExtraLight),
                     child: Text(
                       propertyForList[index].title.validate(),
-                      style: primaryTextStyle(color: propertyForList[index].select! ? Colors.white : grayColor),
+                      style: primaryTextStyle(
+                          color: propertyForList[index].select!
+                              ? Colors.white
+                              : grayColor),
                     ).center(),
                   ).onTap(() {
                     setState(() {
@@ -288,7 +322,7 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
                 ),
               ).visible(mapLocation.text.isNotEmpty),
             20.height.visible(mapLocation.text.isNotEmpty),
-             citySelectionWidget(),
+            citySelectionWidget(),
             // Container(
             //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             //   decoration: boxDecorationWithRoundedCorners(
@@ -321,7 +355,7 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
     );
   }
 
-   Widget citySelectionWidget() {
+  Widget citySelectionWidget() {
     return data != null
         ? SizedBox(
             width: double.infinity,
@@ -332,20 +366,40 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
               isExpanded: true,
               padding: EdgeInsets.zero,
               elevation: 0,
-              icon: Icon(Icons.keyboard_arrow_down_rounded, color: primaryColor),
+              icon:
+                  Icon(Icons.keyboard_arrow_down_rounded, color: primaryColor),
               borderRadius: radius(),
               decoration: InputDecoration(
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   prefixIconConstraints: BoxConstraints(minWidth: 1),
-                  prefixIcon: Image.asset(ic_map_point, color: primaryColor, width: 18, height: 18).paddingOnly(left: 14, top: 10, bottom: 10, right: 10),
+                  prefixIcon: Image.asset(ic_map_point,
+                          color: primaryColor, width: 18, height: 18)
+                      .paddingOnly(left: 14, top: 10, bottom: 10, right: 10),
                   alignLabelWithHint: true,
-                  enabledBorder: OutlineInputBorder(borderRadius: radius(24), borderSide: BorderSide(color: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight, width: 1)),
-                  border: OutlineInputBorder(borderRadius: radius(24), borderSide: BorderSide(color: appStore.isDarkModeOn ? cardDarkColor : primaryColor, width: 1)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: radius(24),
+                      borderSide: BorderSide(
+                          color: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryExtraLight,
+                          width: 1)),
+                  border: OutlineInputBorder(
+                      borderRadius: radius(24),
+                      borderSide: BorderSide(
+                          color: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryColor,
+                          width: 1)),
                   filled: true,
-                  focusedBorder: OutlineInputBorder(borderRadius: radius(24), borderSide: BorderSide(color: Colors.transparent, width: 0)),
-                  fillColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
-                  contentPadding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: radius(24),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0)),
+                  fillColor:
+                      appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
+                  contentPadding:
+                      EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
                   enabled: true),
               isDense: true,
               hint: Row(
@@ -353,22 +407,32 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
                 children: [
                   data!.propertyCity!.isNotEmpty
                       ? userStore.cityName.isEmpty
-                          ? Text(data!.propertyCity![0].name.toString(), style: primaryTextStyle(color: primaryColor))
-                          : Text(userStore.cityName, style: primaryTextStyle(color: primaryColor), maxLines: 1, overflow: TextOverflow.ellipsis).expand()
-                      : Text(language.selectCity, style: primaryTextStyle(color: primaryColor)),
+                          ? Text(data!.propertyCity![0].name.toString(),
+                              style: primaryTextStyle(color: primaryColor))
+                          : Text(userStore.cityName,
+                                  style: primaryTextStyle(color: primaryColor),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis)
+                              .expand()
+                      : Text(language.selectCity,
+                          style: primaryTextStyle(color: primaryColor)),
                 ],
               ),
               dropdownColor: context.cardColor,
               items: data!.propertyCity!.map((PropertyCity e) {
                 return DropdownMenuItem<String>(
-                  value: data!.propertyCity!.contains(userStore.cityName) ? userStore.cityName : e.name.validate(),
-                  child: Text(e.name.validate(), style: primaryTextStyle(color: primaryColor), overflow: TextOverflow.ellipsis, softWrap: true, textAlign: TextAlign.end),
+                  value: data!.propertyCity!.contains(userStore.cityName)
+                      ? userStore.cityName
+                      : e.name.validate(),
+                  child: Text(e.name.validate(),
+                      style: primaryTextStyle(color: primaryColor),
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      textAlign: TextAlign.end),
                 );
               }).toList(),
               onChanged: (String? value) async {
-                cityName = value??'';
-
-
+                cityName = value ?? '';
 
                 setState(() {});
               },
@@ -376,5 +440,4 @@ class _FilterScreenState extends State<FilterScreen> with SingleTickerProviderSt
           ).paddingSymmetric(vertical: 8)
         : SizedBox();
   }
-
 }

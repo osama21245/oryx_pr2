@@ -44,6 +44,7 @@ import '../utils/images.dart';
 import 'home_screen.dart';
 
 Map<String, String> selectedOptions = {};
+
 class AddPropertyScreen extends StatefulWidget {
   final bool? updateProperty;
   final int? pId;
@@ -760,7 +761,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 isDense: true,
                 borderRadius: radius(),
                 decoration: defaultInputDecoration(context),
-                initialValue: sellerType == 0
+                value: sellerType == 0
                     ? OWNER
                     : sellerType == 1
                         ? BROKER
@@ -1390,7 +1391,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             width: double.infinity,
             height: 60,
             child: DropdownButtonFormField<String>(
-              initialValue: (userStore.cityName.isNotEmpty)
+              value: (userStore.cityName.isNotEmpty)
                   ? userStore.cityName
                   : (data!.propertyCity!.isNotEmpty
                       ? data!.propertyCity![0].name.validate()
