@@ -9,9 +9,13 @@ import '../extensions/system_utils.dart';
 import '../main.dart';
 import '../network/RestApis.dart';
 import '../utils/app_config.dart';
+import '../utils/colors.dart';
+import '../utils/images.dart';
+import '../extensions/text_styles.dart';
 import 'no_data_screen.dart';
 import 'property_detail_screen.dart';
 import 'subscribe_screen.dart';
+import 'search_screen.dart';
 
 class CategorySelectedScreen extends StatefulWidget {
   final String? categoryName;
@@ -106,52 +110,41 @@ class _CategorySelectedScreenState extends State<CategorySelectedScreen> {
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
       return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.categoryName ?? 'Filter Category'),
-            centerTitle: true,
-          ),
-          bottomNavigationBar:
-              showBannerAdOnCategorySelected && userStore.isSubscribe == 0
-                  ? /*  showBannerAds(context) */ SizedBox()
-                  : SizedBox(),
-          body: Stack(
-            children: [
-              mPropertyDataSelected.isNotEmpty
-                  ? ListView.builder(
-                      controller: scrollController,
-                      physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      shrinkWrap: true,
-                      itemCount: mPropertyDataSelected.length,
-                      itemBuilder: (context, i) {
-                        return widget.categoryId ==
-                                mPropertyDataSelected[i].categoryId
-                            ? AdvertisementPropertyComponent(
-                                property: mPropertyDataSelected[i],
-                                onCall: () {
-                                  getPropertyApiCall();
-                                },
-                                isFullWidth: true,
-                              )
-                                .paddingOnly(bottom: 16)
-                                .visible(widget.categoryId ==
-                                    mPropertyDataSelected[i].categoryId)
-                                .onTap(() async {
-                                if (mPropertyDataSelected[i].premiumProperty ==
-                                    1) {
-                                  if (userStore.subscription == "1") {
-                                    if (userStore.isSubscribe != 0) {
-                                      bool? res = await PropertyDetailScreen(
-                                              propertyId:
-                                                  mPropertyDataSelected[i].id)
-                                          .launch(context);
-                                      if (res == true) {
-                                        init();
-                                      }
-                                    } else {
-                                      SubscribeScreen().launch(context);
-                                    }
-                                  } else {
+        appBar: AppBar(
+          title: Text(widget.categoryName ?? 'Filter Category'),
+          centerTitle: true,
+        ),
+        bottomNavigationBar:
+            showBannerAdOnCategorySelected && userStore.isSubscribe == 0
+                ? /*  showBannerAds(context) */ SizedBox()
+                : SizedBox(),
+        body: Stack(
+          children: [
+            mPropertyDataSelected.isNotEmpty
+                ? ListView.builder(
+                    controller: scrollController,
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    shrinkWrap: true,
+                    itemCount: mPropertyDataSelected.length,
+                    itemBuilder: (context, i) {
+                      return widget.categoryId ==
+                              mPropertyDataSelected[i].categoryId
+                          ? AdvertisementPropertyComponent(
+                              property: mPropertyDataSelected[i],
+                              onCall: () {
+                                getPropertyApiCall();
+                              },
+                              isFullWidth: true,
+                            )
+                              .paddingOnly(bottom: 16)
+                              .visible(widget.categoryId ==
+                                  mPropertyDataSelected[i].categoryId)
+                              .onTap(() async {
+                              if (mPropertyDataSelected[i].premiumProperty ==
+                                  1) {
+                                if (userStore.subscription == "1") {
+                                  if (userStore.isSubscribe != 0) {
                                     bool? res = await PropertyDetailScreen(
                                             propertyId:
                                                 mPropertyDataSelected[i].id)
@@ -159,6 +152,8 @@ class _CategorySelectedScreenState extends State<CategorySelectedScreen> {
                                     if (res == true) {
                                       init();
                                     }
+                                  } else {
+                                    SubscribeScreen().launch(context);
                                   }
                                 } else {
                                   bool? res = await PropertyDetailScreen(
@@ -169,14 +164,57 @@ class _CategorySelectedScreenState extends State<CategorySelectedScreen> {
                                     init();
                                   }
                                 }
-                              })
-                            : SizedBox.shrink();
-                      })
-                  : NoDataScreen(mTitle: language.resultNotFound)
-                      .visible(!appStore.isLoading),
-              Loader().center().visible(appStore.isLoading)
-            ],
-          ));
+                              } else {
+                                bool? res = await PropertyDetailScreen(
+                                        propertyId: mPropertyDataSelected[i].id)
+                                    .launch(context);
+                                if (res == true) {
+                                  init();
+                                }
+                              }
+                            })
+                          : SizedBox.shrink();
+                    })
+                : NoDataScreen(mTitle: language.resultNotFound)
+                    .visible(!appStore.isLoading),
+            Loader().center().visible(appStore.isLoading)
+          ],
+        ),
+        floatingActionButton: _buildOryxAIFloatingButton(),
+      );
     });
+  }
+
+  Widget _buildOryxAIFloatingButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16, right: 16),
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          SearchScreen(
+            isBack: true,
+            openVoiceDialog: true,
+          ).launch(context);
+        },
+        backgroundColor: primaryColor,
+        elevation: 8,
+        icon: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.all(6),
+          child: Image.asset(
+            app_logo,
+            fit: BoxFit.contain,
+          ),
+        ),
+        label: Text(
+          appStore.selectedLanguage == 'ar' ? 'Oryx AI' : 'Oryx AI',
+          style: boldTextStyle(color: Colors.white, size: 16),
+        ),
+      ),
+    );
   }
 }

@@ -14,6 +14,7 @@ import 'package:orex/components/payment_web_view.dart';
 import 'package:orex/models/filter_category_model.dart';
 import '../components/app_bar_components.dart';
 import '../components/required_validation.dart';
+import '../components/enhance_description_dialog.dart';
 import '../extensions/animatedList/animated_wrap.dart';
 import '../extensions/app_button.dart';
 import '../extensions/app_text_field.dart';
@@ -947,8 +948,37 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             //   decoration: defaultInputDecoration(context, label: language.enterAgeOfProperty),
             // ),
             // 20.height,
-            RequiredValidationText(
-                required: true, titleText: language.description),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RequiredValidationText(
+                    required: true, titleText: language.description),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    if (descriptionController.text.trim().isEmpty) {
+                      toast('Please enter a description first');
+                      return;
+                    }
+                    _showEnhanceDescriptionDialog();
+                  },
+                  icon:
+                      Icon(Icons.auto_fix_high, size: 18, color: Colors.white),
+                  label: Text(
+                    appStore.selectedLanguage == 'ar'
+                        ? 'تحسين الوصف'
+                        : 'Enhance Description',
+                    style: boldTextStyle(color: Colors.white, size: 12),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             10.height,
             AppTextField(
               isValidationRequired: true,
@@ -1682,6 +1712,20 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
     }
 
     setState(() {});
+  }
+
+  void _showEnhanceDescriptionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => EnhanceDescriptionDialog(
+        originalDescription: descriptionController.text,
+        onSelect: (enhancedDescription) {
+          setState(() {
+            descriptionController.text = enhancedDescription;
+          });
+        },
+      ),
+    );
   }
 
   address(String? finalMapAddress) {

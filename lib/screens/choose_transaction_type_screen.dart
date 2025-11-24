@@ -10,9 +10,13 @@ import 'package:orex/extensions/colors.dart';
 import 'package:orex/extensions/extension_util/widget_extensions.dart';
 import 'package:orex/screens/dashboard_screen.dart';
 import 'package:orex/screens/home_screen.dart';
+import 'package:orex/screens/search_screen.dart';
 import '../main.dart';
 import '../extensions/system_utils.dart';
 import '../network/RestApis.dart';
+import '../utils/colors.dart';
+import '../extensions/text_styles.dart';
+import '../extensions/extension_util/int_extensions.dart';
 
 class ChooseTransactionTypeDropdown extends StatefulWidget {
   // final int? initialValue;
@@ -304,7 +308,41 @@ class _ChooseTransactionTypeScreenState
                   ),
                 ),
               ),
+        floatingActionButton: _buildOryxAIFloatingButton(),
       );
     });
+  }
+
+  Widget _buildOryxAIFloatingButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16, right: 16),
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          SearchScreen(
+            isBack: true,
+            openVoiceDialog: true,
+          ).launch(context);
+        },
+        backgroundColor: primaryColor,
+        elevation: 8,
+        icon: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.all(6),
+          child: Image.asset(
+            app_logo,
+            fit: BoxFit.contain,
+          ),
+        ),
+        label: Text(
+          appStore.selectedLanguage == 'ar' ? 'Oryx AI' : 'Oryx AI',
+          style: boldTextStyle(color: Colors.white, size: 16),
+        ),
+      ),
+    );
   }
 }

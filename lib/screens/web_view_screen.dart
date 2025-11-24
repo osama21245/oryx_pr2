@@ -6,10 +6,14 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/extension_util/context_extensions.dart';
+import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/widget_extensions.dart';
 import '../extensions/loader_widget.dart';
 import '../extensions/system_utils.dart';
+import '../extensions/text_styles.dart';
+import '../main.dart';
 import '../utils/colors.dart';
+import '../utils/images.dart';
 
 class WebViewScreen extends StatefulWidget {
   static String tag = '/WebViewScreen';
@@ -35,7 +39,8 @@ class WebViewScreenState extends State<WebViewScreen> {
         useOnDownloadStart: true,
         javaScriptEnabled: true,
         allowUniversalAccessFromFileURLs: true,
-        userAgent: "Mozilla/5.0 (Linux; Android 4.2.2; GT-I9505 Build/JDQ39) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.59 Mobile Safari/537.36",
+        userAgent:
+            "Mozilla/5.0 (Linux; Android 4.2.2; GT-I9505 Build/JDQ39) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.59 Mobile Safari/537.36",
         javaScriptCanOpenWindowsAutomatically: true,
       ),
       android: AndroidInAppWebViewOptions(
@@ -56,7 +61,10 @@ class WebViewScreenState extends State<WebViewScreen> {
         children: [
           InAppWebView(
             key: webViewKey,
-            initialUrlRequest: URLRequest(url: WebUri(widget.mInitialUrl == null ? 'https://www.google.com' : widget.mInitialUrl!)),
+            initialUrlRequest: URLRequest(
+                url: WebUri(widget.mInitialUrl == null
+                    ? 'https://www.google.com'
+                    : widget.mInitialUrl!)),
             initialOptions: options,
             onWebViewCreated: (controller) {
               webViewController = controller;
@@ -95,9 +103,11 @@ class WebViewScreenState extends State<WebViewScreen> {
                   url.contains("share=telegram") ||
                   url.contains("messenger.com")) {
                 if (url.contains("https://api.whatsapp.com/send?phone=+")) {
-                  url = url.replaceAll("https://api.whatsapp.com/send?phone=+", "https://api.whatsapp.com/send?phone=");
+                  url = url.replaceAll("https://api.whatsapp.com/send?phone=+",
+                      "https://api.whatsapp.com/send?phone=");
                 } else if (url.contains("whatsapp://send/?phone=%20")) {
-                  url = url.replaceAll("whatsapp://send/?phone=%20", "whatsapp://send/?phone=");
+                  url = url.replaceAll(
+                      "whatsapp://send/?phone=%20", "whatsapp://send/?phone=");
                 }
                 if (!url.contains("whatsapp://")) {
                   url = Uri.encodeFull(url);
@@ -113,7 +123,14 @@ class WebViewScreenState extends State<WebViewScreen> {
                   launchUrlString(url);
                   return NavigationActionPolicy.CANCEL;
                 }
-              } else if (!["http", "https", "chrome", "data", "javascript", "about"].contains(uri!.scheme)) {
+              } else if (![
+                "http",
+                "https",
+                "chrome",
+                "data",
+                "javascript",
+                "about"
+              ].contains(uri!.scheme)) {
                 if (await canLaunchUrlString(url)) {
                   await launchUrlString(
                     url,
@@ -135,8 +152,33 @@ class WebViewScreenState extends State<WebViewScreen> {
                 isLoading = false;
               });
             },
+            onPermissionRequest: (controller, request) async {
+              // Grant all permission requests for microphone/camera
+              // This is needed for voice conversation features
+              var resources = request.resources;
+              log("onPermissionRequest: ${resources.toString()}");
+
+              // Check if the permission request is for microphone
+              if (resources.contains(PermissionResourceType.MICROPHONE)) {
+                // Grant the permission
+                log("Granted microphone permission");
+                return PermissionResponse(
+                  resources: resources,
+                  action: PermissionResponseAction.GRANT,
+                );
+              } else {
+                // For other permissions, grant by default
+                return PermissionResponse(
+                  resources: resources,
+                  action: PermissionResponseAction.GRANT,
+                );
+              }
+            },
           ),
-          Container(height: context.height(), color: Colors.white, child: Loader().center().visible(isLoading == true))
+          Container(
+              height: context.height(),
+              color: Colors.white,
+              child: Loader().center().visible(isLoading == true))
         ],
       );
     });
@@ -150,6 +192,24 @@ class WebViewScreenState extends State<WebViewScreen> {
           context1: context,
           showBack: true,
           color: primaryColor,
+          titleWidget: Row(
+            children: [
+              Image.asset(
+                app_logo,
+                height: 32,
+                width: 32,
+                fit: BoxFit.contain,
+              ),
+              8.width,
+              Text(
+                "Oryx",
+                style: boldTextStyle(
+                  color: appStore.isDarkModeOn ? Colors.white : primaryColor,
+                  size: 18,
+                ),
+              ),
+            ],
+          ),
           backWidget: IconButton(
               onPressed: () async {
                 Navigator.pop(context);

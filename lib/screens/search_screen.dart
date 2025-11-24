@@ -46,6 +46,7 @@ class SearchScreen extends StatefulWidget {
   final num? latitude;
   final num? longitude;
   bool? isFilter;
+  final bool? openVoiceDialog;
 
   SearchScreen(
       {super.key,
@@ -59,7 +60,8 @@ class SearchScreen extends StatefulWidget {
       this.propertySince,
       this.isFilter,
       this.mPropertyData,
-      this.isBack = false});
+      this.isBack = false,
+      this.openVoiceDialog = false});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -97,6 +99,17 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
     init();
     _initializeSpeech();
+    
+    // Auto-open voice dialog if requested
+    if (widget.openVoiceDialog == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(Duration(milliseconds: 300), () {
+          if (mounted) {
+            _showRobotVoiceSearchDialog();
+          }
+        });
+      });
+    }
   }
 
   Future<void> _initializeSpeech() async {

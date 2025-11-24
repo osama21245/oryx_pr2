@@ -46,7 +46,9 @@ import 'property_detail_screen.dart';
 import 'search_result_screen.dart';
 import 'search_screen.dart';
 import 'see_all_screen.dart';
+
 DashboardResponse? data;
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -68,7 +70,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   List<String> myList = [];
   List<String> bhkList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-
 
   String? selectedCity;
   String? selectCityName;
@@ -99,8 +100,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     await getData();
     // await updateUserLatLong();
     // }
-    if (
-      await checkPermission()) {
+    if (await checkPermission()) {
       await checkLocationPermissionOnLaunch(context);
     }
     setState(() {});
@@ -109,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initLocationStream() async {
     positionStream?.cancel();
 
-    positionStream = Geolocator.getPositionStream().listen((Position event) async {
+    positionStream =
+        Geolocator.getPositionStream().listen((Position event) async {
       List<Placemark> placeMarks = await placemarkFromCoordinates(
         event.latitude,
         event.longitude,
@@ -119,7 +120,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         // userStore.setUserLongitude(event.longitude.toString());
         // userStore.setUserCity(placeMarks.first.locality!);
 
-        if (userStore.latitude.isNotEmpty && userStore.longitude.isNotEmpty && userStore.cityName.isNotEmpty && cityReceived == false) await getData();
+        if (userStore.latitude.isNotEmpty &&
+            userStore.longitude.isNotEmpty &&
+            userStore.cityName.isNotEmpty &&
+            cityReceived == false) await getData();
         cityReceived = true;
 
         setState(() {});
@@ -161,9 +165,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Future<void> getData() async {
     appStore.setLoading(true);
     print("city   ${userStore.cityName}");
-    await getDashBoardData({"latitude": userStore.latitude,
-    "longitude": userStore.longitude, "city": userStore.cityName,
-     "player_id": getStringAsync(PLAYER_ID)}).then((value) {
+    await getDashBoardData({
+      "latitude": userStore.latitude,
+      "longitude": userStore.longitude,
+      "city": userStore.cityName,
+      "player_id": getStringAsync(PLAYER_ID)
+    }).then((value) {
       data = value;
       userStore.setMinPrice(data!.filterConfiguration!.minPrice.toString());
       userStore.setMaxPrice(data!.filterConfiguration!.maxPrice.toString());
@@ -215,18 +222,32 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: appStore.isDarkModeOn ? scaffoldColorDark : selectIconColor,
+        backgroundColor:
+            appStore.isDarkModeOn ? scaffoldColorDark : selectIconColor,
         elevation: 0,
         leadingWidth: 60,
-        leading: Image.asset(ic_logo, height: 40, width: 40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */).paddingOnly(left: 16, top: 8, bottom: 8),
+        leading: Image.asset(
+          ic_logo,
+          height: 40,
+          width:
+              40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */
+        ).paddingOnly(left: 16, top: 8, bottom: 8),
         actions: [
           citySelectionWidget(),
           6.width,
           Container(
             margin: EdgeInsets.only(left: 8, right: 16),
             padding: EdgeInsets.all(6),
-            decoration: boxDecorationWithRoundedCorners(boxShape: BoxShape.circle, border: Border.all(color: appStore.isDarkModeOn ? cardDarkColor : lightBackgroundColor)),
-            child: Image.asset(ic_notification, width: 24, height: 24, color: appStore.isDarkModeOn ? Colors.white : primaryColor),
+            decoration: boxDecorationWithRoundedCorners(
+                boxShape: BoxShape.circle,
+                border: Border.all(
+                    color: appStore.isDarkModeOn
+                        ? cardDarkColor
+                        : lightBackgroundColor)),
+            child: Image.asset(ic_notification,
+                width: 24,
+                height: 24,
+                color: appStore.isDarkModeOn ? Colors.white : primaryColor),
           ).onTap(() {
             NotificationScreen().launch(context);
           })
@@ -241,24 +262,33 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     children: [
                       searchWidget(),
                       categoryList(),
-                      if (data!.slider!.isNotEmpty) SlidesComponents(data: data!.slider),
+                      if (data!.slider!.isNotEmpty)
+                        SlidesComponents(data: data!.slider),
                       // if (data!.property!.isNotEmpty)  CarouserSliderComponents(data: data!),
-                      if (userStore.mRecentSearchList.isNotEmpty) userSearchList(),
+                      if (userStore.mRecentSearchList.isNotEmpty)
+                        userSearchList(),
                       if (data!.property!.isNotEmpty) propertiesList(),
-                     if (data!.advertisementProperty!.isNotEmpty) advertiseListWidget(),
+                      if (data!.advertisementProperty!.isNotEmpty)
+                        advertiseListWidget(),
                       selectBHK(),
-                      if (data!.nearByProperty!.isNotEmpty) nearByPropertyList(),
+                      if (data!.nearByProperty!.isNotEmpty)
+                        nearByPropertyList(),
                       if (myList.isNotEmpty) myListWidget(),
-                      ownerPropertyWidget().visible(data!.ownerProperty!.isNotEmpty),
-                      if (data!.fullyFurnishedProperty!.isNotEmpty) fullyFurnisedWidget(),
+                      ownerPropertyWidget()
+                          .visible(data!.ownerProperty!.isNotEmpty),
+                      if (data!.fullyFurnishedProperty!.isNotEmpty)
+                        fullyFurnisedWidget(),
                       if (data!.article!.isNotEmpty) articleWidget(),
                       20.height,
                     ],
                   ).paddingOnly(bottom: 30),
                 )
-              : NoDataScreen(mTitle: language.resultNotFound).visible(data != null && !appStore.isLoading),
-
-          Loader().center().visible(appStore.isLoading && (userStore.latitude.isNotEmpty && userStore.longitude.isNotEmpty && userStore.cityName.isNotEmpty))
+              : NoDataScreen(mTitle: language.resultNotFound)
+                  .visible(data != null && !appStore.isLoading),
+          Loader().center().visible(appStore.isLoading &&
+              (userStore.latitude.isNotEmpty &&
+                  userStore.longitude.isNotEmpty &&
+                  userStore.cityName.isNotEmpty))
         ],
       ),
       // floatingActionButton: FloatingActionButton(
@@ -284,37 +314,69 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               isExpanded: true,
               padding: EdgeInsets.zero,
               elevation: 0,
-              icon: Icon(Icons.keyboard_arrow_down_rounded, color: primaryColor),
+              icon:
+                  Icon(Icons.keyboard_arrow_down_rounded, color: primaryColor),
               borderRadius: radius(),
               decoration: InputDecoration(
                   focusColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   prefixIconConstraints: BoxConstraints(minWidth: 1),
-                  prefixIcon: Image.asset(ic_map_point, color: primaryColor, width: 18, height: 18).paddingOnly(left: 14, top: 10, bottom: 10, right: 10),
+                  prefixIcon: Image.asset(ic_map_point,
+                          color: primaryColor, width: 18, height: 18)
+                      .paddingOnly(left: 14, top: 10, bottom: 10, right: 10),
                   alignLabelWithHint: true,
-                  enabledBorder: OutlineInputBorder(borderRadius: radius(24), borderSide: BorderSide(color: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight, width: 1)),
-                  border: OutlineInputBorder(borderRadius: radius(24), borderSide: BorderSide(color: appStore.isDarkModeOn ? cardDarkColor : primaryColor, width: 1)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: radius(24),
+                      borderSide: BorderSide(
+                          color: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryExtraLight,
+                          width: 1)),
+                  border: OutlineInputBorder(
+                      borderRadius: radius(24),
+                      borderSide: BorderSide(
+                          color: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryColor,
+                          width: 1)),
                   filled: true,
-                  focusedBorder: OutlineInputBorder(borderRadius: radius(24), borderSide: BorderSide(color: Colors.transparent, width: 0)),
-                  fillColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
-                  contentPadding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: radius(24),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0)),
+                  fillColor:
+                      appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
+                  contentPadding:
+                      EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
                   enabled: true),
               isDense: true,
               hint: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  data!.propertyCity!.isNotEmpty?
-                       userStore.cityName.isEmpty
-                          ? Text(data!.propertyCity![0].name.toString(), style: primaryTextStyle(color: primaryColor))
-                          : Text(userStore.cityName, style: primaryTextStyle(color: primaryColor), maxLines: 1, overflow: TextOverflow.ellipsis).expand()
-                      : Text(language.selectCity, style: primaryTextStyle(color: primaryColor)),
+                  data!.propertyCity!.isNotEmpty
+                      ? userStore.cityName.isEmpty
+                          ? Text(data!.propertyCity![0].name.toString(),
+                              style: primaryTextStyle(color: primaryColor))
+                          : Text(userStore.cityName,
+                                  style: primaryTextStyle(color: primaryColor),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis)
+                              .expand()
+                      : Text(language.selectCity,
+                          style: primaryTextStyle(color: primaryColor)),
                 ],
               ),
               dropdownColor: context.cardColor,
               items: data!.propertyCity!.map((PropertyCity e) {
                 return DropdownMenuItem<String>(
-                  value: data!.propertyCity!.contains(userStore.cityName) ? userStore.cityName : e.name.validate(),
-                  child: Text(e.name.validate(), style: primaryTextStyle(color: primaryColor), overflow: TextOverflow.ellipsis, softWrap: true, textAlign: TextAlign.end),
+                  value: data!.propertyCity!.contains(userStore.cityName)
+                      ? userStore.cityName
+                      : e.name.validate(),
+                  child: Text(e.name.validate(),
+                      style: primaryTextStyle(color: primaryColor),
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      textAlign: TextAlign.end),
                 );
               }).toList(),
               onChanged: (String? value) async {
@@ -325,8 +387,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 setState(() {});
                 await getData();
 
-                userStore.setMinPrice(data!.filterConfiguration!.minPrice.toString());
-                userStore.setMaxPrice(data!.filterConfiguration!.maxPrice.toString());
+                userStore.setMinPrice(
+                    data!.filterConfiguration!.minPrice.toString());
+                userStore.setMaxPrice(
+                    data!.filterConfiguration!.maxPrice.toString());
                 generateList();
 
                 setState(() {});
@@ -343,7 +407,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Container(
       margin: EdgeInsets.fromLTRB(16, 6, 16, 0),
       padding: EdgeInsets.symmetric(horizontal: 16),
-      decoration: boxDecorationWithRoundedCorners(borderRadius: radius(10), backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight),
+      decoration: boxDecorationWithRoundedCorners(
+          borderRadius: radius(10),
+          backgroundColor:
+              appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -355,7 +422,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   textStyle: primaryTextStyle(),
                   textFieldType: TextFieldType.NAME,
                   onTap: () async {
-                    bool? res = await SearchScreen(isBack: true).launch(context);
+                    bool? res =
+                        await SearchScreen(isBack: true).launch(context);
                     if (res == true) {
                       init();
                       setState(() {});
@@ -367,7 +435,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       border: InputBorder.none,
                       hintText: language.search,
                       hintStyle: primaryTextStyle(color: grey),
-                      fillColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight))
+                      fillColor: appStore.isDarkModeOn
+                          ? cardDarkColor
+                          : primaryExtraLight))
               .expand(),
           Image.asset(ic_filter, height: 20, width: 20).onTap(() {
             FilterScreen(isSelect: true).launch(context);
@@ -403,7 +473,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             itemCount: data!.advertisementProperty!.length,
             itemBuilder: (context, i) {
-              return AdvertisementPropertyComponent(property: data!.advertisementProperty![i]).onTap(() async {
+              return AdvertisementPropertyComponent(
+                      property: data!.advertisementProperty![i])
+                  .onTap(() async {
                 bool? res = await PropertyDetailScreen(
                     propertyId: data!.advertisementProperty![i].id,
                     onCall: () {
@@ -451,7 +523,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             itemCount: data!.property!.length,
             spacing: 12,
             itemBuilder: (context, i) {
-              return PropertyComponents(property: data!.property![i]).onTap(() async {
+              return PropertyComponents(property: data!.property![i])
+                  .onTap(() async {
                 bool? res = await PropertyDetailScreen(
                     propertyId: data!.property![i].id,
                     onTap: (bool? result) {
@@ -482,15 +555,28 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           itemBuilder: (BuildContext context, int i) {
             return Container(
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              decoration: boxDecorationWithRoundedCorners(borderRadius: BorderRadius.circular(8.0), backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight),
-              child: Text(data!.category![i].name.validate(), style: primaryTextStyle(color: grey)).center(),
+              decoration: boxDecorationWithRoundedCorners(
+                  borderRadius: BorderRadius.circular(8.0),
+                  backgroundColor: appStore.isDarkModeOn
+                      ? cardDarkColor
+                      : primaryExtraLight),
+              child: Text(data!.category![i].name.validate(),
+                      style: primaryTextStyle(color: grey))
+                  .center(),
             ).onTap(() async {
               selectCategory = data!.category![i].id!;
               budgetMinPrice = 0.0;
               budgetMaxPrice = 0.0;
               bhkSend = int.tryParse('');
               setState(() {});
-              SearchResultScreen(title1: false, title: false, bhkSend: bhkSend, bhk: selectCategory, budgetMaxPrice: budgetMaxPrice, budgetMinPrice: budgetMinPrice, selectCategory: selectCategory)
+              SearchResultScreen(
+                      title1: false,
+                      title: false,
+                      bhkSend: bhkSend,
+                      bhk: selectCategory,
+                      budgetMaxPrice: budgetMaxPrice,
+                      budgetMinPrice: budgetMinPrice,
+                      selectCategory: selectCategory)
                   .launch(context);
             });
           },
@@ -506,7 +592,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(language.lastSearch, style: boldTextStyle(color: appStore.isDarkModeOn ? lightBackgroundColor : Colors.black, size: 18))
+        Text(language.lastSearch,
+                style: boldTextStyle(
+                    color: appStore.isDarkModeOn
+                        ? lightBackgroundColor
+                        : Colors.black,
+                    size: 18))
             .paddingSymmetric(horizontal: 16)
             .visible(userStore.mRecentSearchList.isNotEmpty),
         8.height.visible(userStore.mRecentSearchList.isNotEmpty),
@@ -528,7 +619,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Widget selectBHK() {
     return Column(
       children: [
-        TitleComponents(title: language.selectBHK, subTitle: language.explorePropertiesBasedOnBHKType, trailingTitle: ""),
+        TitleComponents(
+            title: language.selectBHK,
+            subTitle: language.explorePropertiesBasedOnBHKType,
+            trailingTitle: ""),
         HorizontalList(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           itemCount: bhkList.length,
@@ -537,8 +631,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             return Container(
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-              decoration: boxDecorationWithRoundedCorners(borderRadius: radius(8.0), backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight),
-              child: Text("${bhkList[i]} ${language.bhk}", style: primaryTextStyle(color: grey)),
+              decoration: boxDecorationWithRoundedCorners(
+                  borderRadius: radius(8.0),
+                  backgroundColor: appStore.isDarkModeOn
+                      ? cardDarkColor
+                      : primaryExtraLight),
+              child: Text("${bhkList[i]} ${language.bhk}",
+                  style: primaryTextStyle(color: grey)),
             ).onTap(() async {
               setState(() {
                 if (selectedBhkIndex == i) {
@@ -639,7 +738,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleComponents(title: language.selectBudget, subTitle: language.explorePropertiesBasedOnBudget, trailingTitle: ""),
+        TitleComponents(
+            title: language.selectBudget,
+            subTitle: language.explorePropertiesBasedOnBudget,
+            trailingTitle: ""),
         HorizontalList(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           itemCount: myList.length,
@@ -648,10 +750,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: boxDecorationWithRoundedCorners(
-                backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
+                backgroundColor:
+                    appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: Text("${language.upTo} ${formatNumberString(myList[index].toInt())}", style: secondaryTextStyle(size: 16)),
+              child: Text(
+                  "${language.upTo} ${formatNumberString(myList[index].toInt())}",
+                  style: secondaryTextStyle(size: 16)),
             ).onTap(() async {
               if (index == 0) {
                 budgetMinPrice = 0.0;
@@ -689,7 +794,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           title: language.ownerProperties,
           trailingTitle: language.seeAll,
           onTap: () async {
-            bool? res = await OwnerFurnishedSeeAllScreen(seller: true).launch(context);
+            bool? res =
+                await OwnerFurnishedSeeAllScreen(seller: true).launch(context);
             if (res == true) {
               init();
               setState(() {});
@@ -701,7 +807,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           runSpacing: 16,
           spacing: 16,
           children: List.generate(min(6, data!.ownerProperty!.length), (i) {
-            return OtherPropertyComponents(ownerProperty: data!.ownerProperty![i]
+            return OtherPropertyComponents(
+                    ownerProperty: data!.ownerProperty![i]
                     // name: data!.ownerProperty![i].name,
                     // img: data!.ownerProperty![i].propertyImage,
                     // property: data!.ownerProperty![i].category,
@@ -716,7 +823,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               setState(() {});
             });
           }),
-        ).paddingSymmetric(horizontal: 16).visible(data!.ownerProperty!.isNotEmpty),
+        )
+            .paddingSymmetric(horizontal: 16)
+            .visible(data!.ownerProperty!.isNotEmpty),
       ],
     );
   }
@@ -732,7 +841,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           title: language.fullyFurnishedProperties,
           trailingTitle: language.seeAll,
           onTap: () async {
-            bool? res = await OwnerFurnishedSeeAllScreen(seller: false).launch(context);
+            bool? res =
+                await OwnerFurnishedSeeAllScreen(seller: false).launch(context);
             if (res == true) {
               init();
               setState(() {});
@@ -743,7 +853,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             itemCount: data!.fullyFurnishedProperty!.length,
             itemBuilder: (context, i) {
-              return PropertyComponents(property: data!.fullyFurnishedProperty![i]).onTap(() async {
+              return PropertyComponents(
+                      property: data!.fullyFurnishedProperty![i])
+                  .onTap(() async {
                 PropertyDetailScreen(
                     propertyId: data!.fullyFurnishedProperty![i].id,
                     onTap: (bool? result) {
@@ -778,7 +890,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               return NewsComponents(
                 article: data!.article![articleIndex],
               ).onTap(() {
-                NewsDetailsScreen(articles: data!.article![articleIndex]).launch(context);
+                NewsDetailsScreen(articles: data!.article![articleIndex])
+                    .launch(context);
               });
             }),
       ],

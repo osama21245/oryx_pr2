@@ -8,8 +8,10 @@ import 'package:orex/screens/main_screen.dart';
 // import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
 import '../components/add_property_dialouge.dart';
 import '../extensions/extension_util/context_extensions.dart';
+import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/extension_util/widget_extensions.dart';
+import '../extensions/text_styles.dart';
 import '../screens/profile_screen.dart';
 import '../screens/subscribe_screen.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -26,9 +28,11 @@ import '../utils/app_common.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../utils/images.dart';
+import '../languageConfiguration/LanguageDataConstant.dart';
 import 'category_screen.dart';
 import 'favourite_screen.dart';
 import 'limit_screen.dart';
+import 'web_view_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   int? transactionType;
@@ -195,17 +199,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return true;
       },
       child: Scaffold(
-        body: DoublePressBackWidget(
-          child: AnimatedContainer(
-              color: context.cardColor,
-              duration: const Duration(seconds: 1),
-              child: getTabs()[appStore.isLoggedIn
-                  ? currentIndex
-                  : currentIndex == 3
-                      ? 1
-                      : 0]
-              // IndexedStack(index: currentIndex, children: tabs
+        body: Stack(
+          children: [
+            DoublePressBackWidget(
+              child: AnimatedContainer(
+                  color: context.cardColor,
+                  duration: const Duration(seconds: 1),
+                  child: getTabs()[appStore.isLoggedIn
+                      ? currentIndex
+                      : currentIndex == 3
+                          ? 1
+                          : 0]
+                  // IndexedStack(index: currentIndex, children: tabs
+                  ),
+            ),
+            // Invest with Oryx Floating Button - only show on home screen (MainScreen, not CategoryScreen)
+            if (currentIndex == 0 && isSplashActive)
+              Positioned(
+                bottom: 80,
+                right: 16,
+                child: _buildInvestWithOryxButton(),
               ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           heroTag: language.addProperties,
@@ -330,4 +345,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  //region Invest with Oryx Button Helper
+  String getInvestWithOryxText() {
+    // Get language code from appStore (which comes from dashboard/controller)
+    String currentLangCode = appStore.selectedLanguage.isNotEmpty
+        ? appStore.selectedLanguage
+        : getStringAsync(SELECTED_LANGUAGE_CODE, defaultValue: 'en');
+
+    // Check if Arabic language (ar)
+    if (currentLangCode == 'ar') {
+      return 'استثمر مع Oryx';
+    }
+
+    // Default to English or other languages
+    // This will be replaced by dashboard translations later when they add the translation key
+    return 'Invest with Oryx';
+  }
+  //endregion
+
+  //region Invest with Oryx Floating Button
+  Widget _buildInvestWithOryxButton() {
+    return Container(
+      child: Material(
+        elevation: 8,
+        borderRadius: BorderRadius.circular(32),
+        shadowColor: primaryColor.withOpacity(0.5),
+        child: InkWell(
+          onTap: () {
+            WebViewScreen(
+              mInitialUrl:
+                  'https://elevenlabs.io/app/talk-to?agent_id=agent_4801ka9ktbbdeamajcyn20tgw7hx',
+            ).launch(context);
+          },
+          borderRadius: BorderRadius.circular(32),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(32),
+              gradient: LinearGradient(
+                colors: [
+                  primaryColor,
+                  primaryColor.withOpacity(0.9),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: primaryColor.withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  padding: EdgeInsets.all(6),
+                  child: Image.asset(
+                    app_logo,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                12.width,
+                Text(
+                  getInvestWithOryxText(),
+                  style: boldTextStyle(
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  //endregion
 }

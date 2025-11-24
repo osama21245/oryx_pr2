@@ -43,6 +43,7 @@ import '../utils/images.dart';
 import 'YoutubePlayerScreen.dart';
 import 'amenity_screen.dart';
 import 'subscribe_screen.dart';
+import 'search_screen.dart';
 
 class PropertyDetailScreen extends StatefulWidget {
   final int? propertyId;
@@ -55,7 +56,8 @@ class PropertyDetailScreen extends StatefulWidget {
   final bool? comeFromSlider;
 
   const PropertyDetailScreen(
-      {super.key, required this.propertyId,
+      {super.key,
+      required this.propertyId,
       this.comeFromSlider = false,
       this.onCall,
       this.isSuccess = false,
@@ -197,7 +199,8 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
   //   }
   //   return Future.value(true);
   // }
-  final CarouselSliderController _carouselController = CarouselSliderController();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {
@@ -662,6 +665,40 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
               ),
             )
           : SizedBox(),
+      floatingActionButton: _buildOryxAIFloatingButton(),
+    );
+  }
+
+  Widget _buildOryxAIFloatingButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16, right: 16),
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          SearchScreen(
+            isBack: true,
+            openVoiceDialog: true,
+          ).launch(context);
+        },
+        backgroundColor: primaryColor,
+        elevation: 8,
+        icon: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: EdgeInsets.all(6),
+          child: Image.asset(
+            app_logo,
+            fit: BoxFit.contain,
+          ),
+        ),
+        label: Text(
+          appStore.selectedLanguage == 'ar' ? 'Oryx AI' : 'Oryx AI',
+          style: boldTextStyle(color: Colors.white, size: 16),
+        ),
+      ),
     );
   }
 
@@ -1066,8 +1103,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
       spacing: 8,
       children: [
         commonWrapWidget(
-                image: ic_bed,
-                title: "${mDetail!.data!.bhk} ${language.bhk}")
+                image: ic_bed, title: "${mDetail!.data!.bhk} ${language.bhk}")
             .visible(mDetail!.data!.bhk != null),
         commonWrapWidget(
                 image: ic_max_square, title: mDetail!.data!.sqft.toString())

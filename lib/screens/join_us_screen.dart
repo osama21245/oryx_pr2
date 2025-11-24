@@ -27,7 +27,7 @@ class JoinUsScreen extends StatelessWidget {
             ),
             15.height,
             Text(
-             language.registerNow,
+              language.registerNow,
               style: TextStyle(
                   color: appStore.isDarkModeOn ? Colors.white : Colors.black,
                   fontSize: 32,
@@ -43,17 +43,17 @@ class JoinUsScreen extends StatelessWidget {
                 LoginScreen().launch(context, isNewTask: false);
               },
             ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
-            AppButton(
-              text: language.continueAsGuest,
-              width: context.width(),
-              color: Color(0xffE9E9E9),
-              textColor: primaryColor,
-              onTap: () {
-                DashboardScreen(
-                  isSplash: true,
-                ).launch(context, isNewTask: false);
-              },
-            ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
+            // AppButton(
+            //   text: language.continueAsGuest,
+            //   width: context.width(),
+            //   color: Color(0xffE9E9E9),
+            //   textColor: primaryColor,
+            //   onTap: () {
+            //     DashboardScreen(
+            //       isSplash: true,
+            //     ).launch(context, isNewTask: false);
+            //   },
+            // ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
           ],
         ),
       ),
