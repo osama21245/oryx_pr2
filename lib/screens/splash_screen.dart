@@ -37,8 +37,8 @@ class SplashScreenState extends State<SplashScreen>
   void init() async {
     appStore.setLoading(true);
 
-    String versionNo = getStringAsync(CURRENT_LAN_VERSION,
-        defaultValue: LanguageVersion);
+    String versionNo =
+        getStringAsync(CURRENT_LAN_VERSION, defaultValue: LanguageVersion);
     await getLanguageList(versionNo).then((value) {
       appStore.setLoading(false);
       if (value.status == true) {
@@ -125,10 +125,13 @@ class SplashScreenState extends State<SplashScreen>
       ),
       child: Scaffold(
         backgroundColor: primaryColor,
-        body: Stack(
-          children: [
-            Image.asset(splash, fit: BoxFit.fill).center(),
-          ],
+        body: SizedBox(
+          child: Image.asset(
+            splash,
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
         ),
       ),
     );
