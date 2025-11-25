@@ -231,81 +231,87 @@ class _ChooseTransactionTypeScreenState
                 ),
               )
             : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (selectedTransactionTypeId != null)
-                        const SizedBox(height: 20),
-                      TransactionTypeCard(
-                        isSelected: false,
-                        imagePath: gifUrl,
-                        padding: 0,
-                        isGif: true,
-                      ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (selectedTransactionTypeId != null)
                       const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {
-                          iWantToSale();
-                          selectedTransactionTypeId = 1;
-                          // userStore.setTransactionType(1);
+                    TransactionTypeCard(
+                      width: MediaQuery.of(context).size.width,
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      isSelected: false,
+                      imagePath: gifUrl,
+                      padding: 0,
+                      isGif: true,
+                    ),
+                    const SizedBox(height: 20),
+                   Padding(
+                     padding: const EdgeInsets.all(24.0),
+                     child: Column(
+                       children: [
+                         GestureDetector(
+                           onTap: () {
+                             iWantToSale();
+                             selectedTransactionTypeId = 1;
+                             // userStore.setTransactionType(1);
 
-                          DashboardScreen(
-                            transactionType: selectedTransactionTypeId,
-                            isSplash: false,
-                          ).launch(context, isNewTask: false);
-                        },
-                        child: TransactionTypeCard(
-                          isSelected: isSale,
-                          imagePath: ic_sale,
-                          type: language.sell,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () {
-                          iWantToRent();
-                          selectedTransactionTypeId = 0;
-                          // userStore.setTransactionType(0);
+                             DashboardScreen(
+                               transactionType: selectedTransactionTypeId,
+                               isSplash: false,
+                             ).launch(context, isNewTask: false);
+                           },
+                           child: TransactionTypeCard(
+                             isSelected: isSale,
+                             imagePath: ic_sale,
+                             type: language.sell,
+                           ),
+                         ),
+                         const SizedBox(height: 20),
+                         GestureDetector(
+                           onTap: () {
+                             iWantToRent();
+                             selectedTransactionTypeId = 0;
+                             // userStore.setTransactionType(0);
 
-                          DashboardScreen(
-                            transactionType: selectedTransactionTypeId,
-                            isSplash: false,
-                          ).launch(context, isNewTask: true);
-                        },
-                        child: TransactionTypeCard(
-                          isSelected: isRent,
-                          imagePath: ic_rent,
-                          type: language.rent,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 130,
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).disabledColor.withAlpha(25),
-                          borderRadius: BorderRadius.circular(23),
-                        ),
-                        child: Text(
-                          language.advertisement,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 24,
-                            fontFamily: 'Cairo',
-                            color: appStore.isDarkModeOn
-                                ? textOnDarkMode
-                                : textOnLightMode,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                             DashboardScreen(
+                               transactionType: selectedTransactionTypeId,
+                               isSplash: false,
+                             ).launch(context, isNewTask: true);
+                           },
+                           child: TransactionTypeCard(
+                             isSelected: isRent,
+                             imagePath: ic_rent,
+                             type: language.rent,
+                           ),
+                         ),
+                         const SizedBox(height: 20),
+                         Container(
+                           alignment: Alignment.center,
+                           height: 130,
+                           width: double.infinity,
+                           padding: EdgeInsets.symmetric(vertical: 16),
+                           decoration: BoxDecoration(
+                             color: Theme.of(context).disabledColor.withAlpha(25),
+                             borderRadius: BorderRadius.circular(23),
+                           ),
+                           child: Text(
+                             language.advertisement,
+                             textAlign: TextAlign.center,
+                             style: TextStyle(
+                               fontWeight: FontWeight.w700,
+                               fontSize: 24,
+                               fontFamily: 'Cairo',
+                               color: appStore.isDarkModeOn
+                                   ? textOnDarkMode
+                                   : textOnLightMode,
+                             ),
+                           ),
+                         ),
+                       ],
+                     ),
+                   )
+                  ],
                 ),
               ),
         floatingActionButton: _buildOryxAIFloatingButton(),

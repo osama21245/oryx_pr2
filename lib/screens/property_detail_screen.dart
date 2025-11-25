@@ -1,12 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:orex/models/dashBoard_response.dart';
-import 'package:orex/screens/home_screen.dart';
-import '../components/premium_btn_component.dart';
+import '../components/full_screen_image_viewer.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/bool_extensions.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -261,12 +259,25 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                             carouselController: _carouselController,
                             items:
                                 mDetail!.data!.propertyGallary!.map((imageUrl) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: DecorationImage(
-                                    image: NetworkImage(imageUrl),
-                                    fit: BoxFit.cover,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FullScreenImageViewer(imageUrl: imageUrl),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: DecorationImage(
+                                        image: NetworkImage(imageUrl),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               );
