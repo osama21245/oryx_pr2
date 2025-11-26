@@ -47,9 +47,10 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                     height: context.height() * 0.3,
                     width: context.width(),
                     fit: BoxFit.fill)
-                .cornerRadiusWithClipRRect(12)
+                // .cornerRadiusWithClipRRect(12)
                 .paddingSymmetric(horizontal: 16),
-            20.height,
+                20.height
+                ,
             Container(
                 padding: EdgeInsets.all(16),
                 decoration: boxDecorationWithRoundedCorners(

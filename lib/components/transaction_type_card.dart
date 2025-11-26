@@ -8,19 +8,22 @@ class TransactionTypeCard extends StatelessWidget {
   bool isSelected;
   bool isGif;
   double? width, height, padding;
+  BorderRadiusGeometry? borderRadius;
   TransactionTypeCard(
       {super.key,
       required this.isSelected,
       required this.imagePath,
       this.type,
+        this.borderRadius,
       this.height,
       this.width,
       this.padding = 0,
-      this.isGif = false});
+      this.isGif = false,});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(23);
     return Container(
       width: width ?? size.width * 0.9,
       height: height,
@@ -33,7 +36,7 @@ class TransactionTypeCard extends StatelessWidget {
             width: 4,
           ),
           color: Theme.of(context).disabledColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(23)),
+          borderRadius: effectiveBorderRadius),
       child: Column(
         children: [
           // Align(
@@ -48,12 +51,12 @@ class TransactionTypeCard extends StatelessWidget {
           isGif
               ? ClipRRect(
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  borderRadius: BorderRadius.circular(23),
+                  borderRadius: effectiveBorderRadius,
                   child: Image.network(
                     imagePath,
-                    width: size.width * 0.9,
+                    width: width ?? size.width * 0.9,
                     height: size.height * 0.3,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 )
               : Image.asset(

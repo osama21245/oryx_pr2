@@ -73,8 +73,8 @@ class _FilterScreenState extends State<FilterScreen>
   }
 
   getPropertyList() {
-    propertyList.add(PropertyTypeList(0.toInt(), language.forRent, false));
-    propertyList.add(PropertyTypeList(1.toInt(), language.forSell, false));
+    propertyList.add(PropertyTypeList(0.toInt(), language.rent, false));
+    propertyList.add(PropertyTypeList(1.toInt(), language.sell, false));
   }
 
   late RangeValues _values;
