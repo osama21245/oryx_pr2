@@ -24,10 +24,13 @@ Map<String, String> buildHeaderTokens() {
     'Access-Control-Allow-Origin': '*',
   };
 
-  if (appStore.isLoggedIn) {
-    header.putIfAbsent(
-        HttpHeaders.authorizationHeader, () => 'Bearer ${userStore.token}');
-    print("userStore.token: ${userStore.token}");
+  // Check if we have a token (either from logged in user or guest user)
+  String? token =
+      userStore.token.isNotEmpty ? userStore.token : getStringAsync(TOKEN);
+
+  if (token.isNotEmpty) {
+    header.putIfAbsent(HttpHeaders.authorizationHeader, () => 'Bearer $token');
+    print("Token being sent: $token");
   }
   log(jsonEncode(header));
   return header;
@@ -134,6 +137,10 @@ Future handleResponse(Response response) async {
     print("jsonDecode(response.body)$string");
     if (string!.isNotEmpty) {
       if (string.toString().contains("Unauthenticated")) {
+        // Only clear data and redirect if user was previously logged in
+        // If already not logged in (guest mode), just throw the error
+        bool wasLoggedIn = appStore.isLoggedIn;
+
         await removeKey(IS_LOGIN);
         await removeKey(USER_ID);
         await removeKey(FIRSTNAME);
@@ -144,7 +151,15 @@ Future handleResponse(Response response) async {
 
         userStore.clearUserData();
         userStore.setLogin(false);
-        push(LoginScreen());
+
+        // Only redirect to login if user was previously logged in
+        // Guest users should not be redirected
+        if (wasLoggedIn) {
+          push(LoginScreen());
+        } else {
+          // For guest users, just throw the error so calling code can handle it
+          throw string;
+        }
       } else {
         throw string;
       }

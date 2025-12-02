@@ -305,6 +305,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       }
       multiPartRequest.fields['name'] = propertyNameController.text;
       multiPartRequest.fields['category_id'] = selectedCategoryId.toString();
+      // price_duration is required for Rent (0) and PG/Co-Living (2), but not for Sell (1) or Wanted (3)
       if (widget.propertyFor == 0 || widget.propertyFor == 2) {
         multiPartRequest.fields['price_duration'] =
             priceDurationValue!.toLowerCase();
@@ -668,6 +669,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 } else if (appStore.addPropertyIndex == 1) {
                                   if (mSecondComponentFormKey.currentState!
                                       .validate()) {
+                                    // Rent (0) or PG/Co-Living (2) - requires price_duration
                                     if (widget.propertyFor == 0 ||
                                         widget.propertyFor == 2) {
                                       if (priceDurationValue != null &&
@@ -698,7 +700,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                         }
                                         // if (mapLocation.text.isEmpty) toast(language.pleaseSelectAddress);
                                       }
-                                    } else {
+                                    }
+                                    // Sell (1) or Wanted (3) - no price_duration required
+                                    else {
                                       print('dddddddddddddddddddddddddd');
                                       if (mainImagePath != null &&
                                           selectedBhkIndex != null) {

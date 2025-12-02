@@ -34,6 +34,7 @@ class _ChooseTransactionTypeDropdownState
   final List<_TransactionType> transactionTypes = const [
     _TransactionType(id: 1, label: 'بيع', imagePath: ic_sale),
     _TransactionType(id: 0, label: 'ايجار', imagePath: ic_rent),
+    _TransactionType(id: 3, label: 'مطلوب', imagePath: ic_wanted),
   ];
 
   @override
@@ -125,11 +126,12 @@ class _ChooseTransactionTypeScreenState
     extends State<ChooseTransactionTypeScreen> {
   // List<TransactionType> transactionTypes = [];
   int? selectedTransactionTypeId;
-  bool isSale = false, isRent = false;
+  bool isSale = false, isRent = false, isWanted = false;
   late String gifUrl;
   iWantToSale() {
     setState(() {
       isRent = false;
+      isWanted = false;
       isSale = true;
     });
   }
@@ -137,7 +139,16 @@ class _ChooseTransactionTypeScreenState
   iWantToRent() {
     setState(() {
       isSale = false;
+      isWanted = false;
       isRent = true;
+    });
+  }
+
+  iWantToWanted() {
+    setState(() {
+      isSale = false;
+      isRent = false;
+      isWanted = true;
     });
   }
 
@@ -246,71 +257,90 @@ class _ChooseTransactionTypeScreenState
                       isGif: true,
                     ),
                     const SizedBox(height: 20),
-                   Padding(
-                     padding: const EdgeInsets.all(24.0),
-                     child: Column(
-                       children: [
-                         GestureDetector(
-                           onTap: () {
-                             iWantToSale();
-                             selectedTransactionTypeId = 1;
-                             // userStore.setTransactionType(1);
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              iWantToSale();
+                              selectedTransactionTypeId = 1;
+                              // userStore.setTransactionType(1);
 
-                             DashboardScreen(
-                               transactionType: selectedTransactionTypeId,
-                               isSplash: false,
-                             ).launch(context, isNewTask: false);
-                           },
-                           child: TransactionTypeCard(
-                             isSelected: isSale,
-                             imagePath: ic_sale,
-                             type: language.sell,
-                           ),
-                         ),
-                         const SizedBox(height: 20),
-                         GestureDetector(
-                           onTap: () {
-                             iWantToRent();
-                             selectedTransactionTypeId = 0;
-                             // userStore.setTransactionType(0);
+                              DashboardScreen(
+                                transactionType: selectedTransactionTypeId,
+                                isSplash: false,
+                              ).launch(context, isNewTask: false);
+                            },
+                            child: TransactionTypeCard(
+                              isSelected: isSale,
+                              imagePath: ic_sale,
+                              type: language.sell,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          GestureDetector(
+                            onTap: () {
+                              iWantToRent();
+                              selectedTransactionTypeId = 0;
+                              // userStore.setTransactionType(0);
 
-                             DashboardScreen(
-                               transactionType: selectedTransactionTypeId,
-                               isSplash: false,
-                             ).launch(context, isNewTask: true);
-                           },
-                           child: TransactionTypeCard(
-                             isSelected: isRent,
-                             imagePath: ic_rent,
-                             type: language.rent,
-                           ),
-                         ),
-                         const SizedBox(height: 20),
-                         Container(
-                           alignment: Alignment.center,
-                           height: 130,
-                           width: double.infinity,
-                           padding: EdgeInsets.symmetric(vertical: 16),
-                           decoration: BoxDecoration(
-                             color: Theme.of(context).disabledColor.withAlpha(25),
-                             borderRadius: BorderRadius.circular(23),
-                           ),
-                           child: Text(
-                             language.advertisement,
-                             textAlign: TextAlign.center,
-                             style: TextStyle(
-                               fontWeight: FontWeight.w700,
-                               fontSize: 24,
-                               fontFamily: 'Cairo',
-                               color: appStore.isDarkModeOn
-                                   ? textOnDarkMode
-                                   : textOnLightMode,
-                             ),
-                           ),
-                         ),
-                       ],
-                     ),
-                   )
+                              DashboardScreen(
+                                transactionType: selectedTransactionTypeId,
+                                isSplash: false,
+                              ).launch(context, isNewTask: true);
+                            },
+                            child: TransactionTypeCard(
+                              isSelected: isRent,
+                              imagePath: ic_rent,
+                              type: language.rent,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          GestureDetector(
+                            onTap: () {
+                              iWantToWanted();
+                              selectedTransactionTypeId = 3;
+                              // userStore.setTransactionType(3);
+
+                              DashboardScreen(
+                                transactionType: selectedTransactionTypeId,
+                                isSplash: false,
+                              ).launch(context, isNewTask: false);
+                            },
+                            child: TransactionTypeCard(
+                              isSelected: isWanted,
+                              imagePath: ic_wanted,
+                              type: language.wantedProperty,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            alignment: Alignment.center,
+                            height: 130,
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            decoration: BoxDecoration(
+                              color:
+                                  Theme.of(context).disabledColor.withAlpha(25),
+                              borderRadius: BorderRadius.circular(23),
+                            ),
+                            child: Text(
+                              language.advertisement,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 24,
+                                fontFamily: 'Cairo',
+                                color: appStore.isDarkModeOn
+                                    ? textOnDarkMode
+                                    : textOnLightMode,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

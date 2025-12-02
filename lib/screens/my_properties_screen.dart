@@ -37,9 +37,14 @@ class MyPropertiesScreen extends StatefulWidget {
 }
 
 class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
-  List<String> propertyForList = [language.rent, language.sell, language.pg];
+  List<String> propertyForList = [
+    language.rent,
+    language.sell,
+    language.wantedProperty,
+  ];
   List<Property> mPropertyDataRent = [];
   List<Property> mPropertyDataSell = [];
+  List<Property> mPropertyDataWanted = [];
   List<Property> mPropertyDataPg = [];
   List<Property> mMyPropertiesData = [];
 
@@ -75,6 +80,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
       mMyPropertiesData = value.data!;
       mPropertyDataRent.clear();
       mPropertyDataSell.clear();
+      mPropertyDataWanted.clear();
       mPropertyDataPg.clear();
 
       for (var e in mMyPropertiesData) {
@@ -82,6 +88,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
           mPropertyDataRent.add(e);
         } else if (e.propertyFor == 1) {
           mPropertyDataSell.add(e);
+        } else if (e.propertyFor == 3) {
+          mPropertyDataWanted.add(e);
         } else {
           mPropertyDataPg.add(e);
         }
@@ -153,7 +161,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
             context1: context,
             bottom: TabBar(
               padding: EdgeInsets.only(left: 10, right: 10),
-              indicator: BoxDecoration(borderRadius: radius(), color: primaryColor),
+              indicator:
+                  BoxDecoration(borderRadius: radius(), color: primaryColor),
               labelColor: Colors.white,
               indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
               labelPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -166,6 +175,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
 
                 mPropertyDataRent.clear();
                 mPropertyDataSell.clear();
+                mPropertyDataWanted.clear();
                 mPropertyDataPg.clear();
 
                 for (var e in mMyPropertiesData) {
@@ -173,6 +183,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                     mPropertyDataRent.add(e);
                   } else if (e.propertyFor == 1) {
                     mPropertyDataSell.add(e);
+                  } else if (e.propertyFor == 3) {
+                    mPropertyDataWanted.add(e);
                   } else {
                     mPropertyDataPg.add(e);
                   }
@@ -185,7 +197,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                 return Tab(
                   child: Container(
                     alignment: Alignment.center,
-                    decoration: boxDecorationWithRoundedCorners(backgroundColor: primaryColor.withOpacity(0.1)),
+                    decoration: boxDecorationWithRoundedCorners(
+                        backgroundColor: primaryColor.withOpacity(0.1)),
                     child: Text(e),
                   ),
                 );
@@ -194,13 +207,20 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
           ),
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
-            children: propertyForList.map((e) {
-              if (currentIndex == 0) {
-                return propertyList(mPropertyData: mPropertyDataRent).paddingOnly(top: 16);
-              } else if (currentIndex == 1) {
-                return propertyList(mPropertyData: mPropertyDataSell).paddingOnly(top: 16);
+            children: propertyForList.asMap().entries.map((entry) {
+              int index = entry.key;
+              if (index == 0) {
+                return propertyList(mPropertyData: mPropertyDataRent)
+                    .paddingOnly(top: 16);
+              } else if (index == 1) {
+                return propertyList(mPropertyData: mPropertyDataSell)
+                    .paddingOnly(top: 16);
+              } else if (index == 2) {
+                return propertyList(mPropertyData: mPropertyDataWanted)
+                    .paddingOnly(top: 16);
               } else {
-                return propertyList(mPropertyData: mPropertyDataPg).paddingOnly(top: 16);
+                return propertyList(mPropertyData: mPropertyDataPg)
+                    .paddingOnly(top: 16);
               }
             }).toList(),
           ),
@@ -215,14 +235,17 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
             onTap: () {
               userStore.subscription == "1"
                   ? userStore.isSubscribe != 0
-                      ? userStore.subscriptionDetail!.subscriptionPlan!.packageData!.addProperty == 0
+                      ? userStore.subscriptionDetail!.subscriptionPlan!
+                                  .packageData!.addProperty ==
+                              0
                           ? showDialog(
                               context: context,
                               builder: (context) {
                                 return userStore.addLimitCount == 0
                                     ? LimitExceedDialog(
                                         onTap: () {
-                                          LimitScreen(limit: "add_property").launch(context);
+                                          LimitScreen(limit: "add_property")
+                                              .launch(context);
                                         },
                                       )
                                     : AddPropertyDialog();
@@ -269,7 +292,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                 margin: EdgeInsets.only(bottom: 16),
                 decoration: boxDecorationWithRoundedCorners(
                   borderRadius: radiusOnly(topLeft: 12, topRight: 12),
-                  backgroundColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
+                  backgroundColor:
+                      appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
                 ),
                 child: Column(
                   children: [
@@ -278,8 +302,15 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                       children: [
                         Stack(
                           children: [
-                            cachedImage(data.propertyImage.validate(), height: 145, fit: BoxFit.cover, width: 130).cornerRadiusWithClipRRectOnly(topLeft: 12),
-                            if (userStore.subscription == "1" && data.premiumProperty == 1) Positioned(top: 0, left: 0, child: PremiumBtn(pDetail: true)),
+                            cachedImage(data.propertyImage.validate(),
+                                    height: 145, fit: BoxFit.cover, width: 130)
+                                .cornerRadiusWithClipRRectOnly(topLeft: 12),
+                            if (userStore.subscription == "1" &&
+                                data.premiumProperty == 1)
+                              Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  child: PremiumBtn(pDetail: true)),
                           ],
                         ),
                         Column(
@@ -287,43 +318,72 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                           children: [
                             Row(
                               children: [
-                                PriceWidget(price: formatNumberString(data.price.validate()), textStyle: boldTextStyle(size: 18, color: primaryColor)).expand(),
-                                fevIconWidget(data.isFavourite,context).onTap(() {
+                                PriceWidget(
+                                        price: formatNumberString(
+                                            data.price.validate()),
+                                        textStyle: boldTextStyle(
+                                            size: 18, color: primaryColor))
+                                    .expand(),
+                                fevIconWidget(data.isFavourite, context)
+                                    .onTap(() {
                                   setState(() {
                                     setFavouriteApi(data.id, data.isFavourite);
                                   });
                                 }),
                               ],
                             ),
-                            Text(data.name.validate().capitalizeFirstLetter(), style: primaryTextStyle(size: 16, color: appStore.isDarkModeOn ? lightBackgroundColor : Colors.black)),
+                            Text(data.name.validate().capitalizeFirstLetter(),
+                                style: primaryTextStyle(
+                                    size: 16,
+                                    color: appStore.isDarkModeOn
+                                        ? lightBackgroundColor
+                                        : Colors.black)),
                             8.height,
                             Row(
                               children: [
-                                Image.asset(ic_property, height: 18, width: 18,color: primaryColor),
+                                Image.asset(ic_property,
+                                    height: 18, width: 18, color: primaryColor),
                                 4.width,
-                                Text(data.category.validate(), style: secondaryTextStyle()),
+                                Text(data.category.validate(),
+                                    style: secondaryTextStyle()),
                               ],
                             ),
                             8.height,
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Image.asset(ic_map_point, width: 16, height: 16, color: grey),
+                                Image.asset(ic_map_point,
+                                    width: 16, height: 16, color: grey),
                                 4.width,
-                                Text(data.address.validate(), maxLines: 3, overflow: TextOverflow.ellipsis, style: secondaryTextStyle()).expand(),
+                                Text(data.address.validate(),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: secondaryTextStyle())
+                                    .expand(),
                               ],
                             ),
                           ],
-                        ).paddingSymmetric(horizontal: 14, vertical: 10).expand(),
+                        )
+                            .paddingSymmetric(horizontal: 14, vertical: 10)
+                            .expand(),
                       ],
                     ),
                     Container(
                       width: context.width(),
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      decoration:
-                          boxDecorationWithRoundedCorners(backgroundColor: data.advertisementProperty == 1 ? boostBgColor : primaryColor, borderRadius: radiusOnly(bottomLeft: 12, bottomRight: 12)),
-                      child: Text(data.advertisementProperty == 1 ? language.alreadyBoostedYourProperty : language.boostYourProperty,
-                              style: primaryTextStyle(color: Colors.white), textAlign: TextAlign.end)
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: boxDecorationWithRoundedCorners(
+                          backgroundColor: data.advertisementProperty == 1
+                              ? boostBgColor
+                              : primaryColor,
+                          borderRadius:
+                              radiusOnly(bottomLeft: 12, bottomRight: 12)),
+                      child: Text(
+                              data.advertisementProperty == 1
+                                  ? language.alreadyBoostedYourProperty
+                                  : language.boostYourProperty,
+                              style: primaryTextStyle(color: Colors.white),
+                              textAlign: TextAlign.end)
                           .center(),
                     ).onTap(() {
                       paymentId = data.id;
@@ -331,7 +391,11 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                       setState(() {
                         if (userStore.subscription == "1") {
                           if (userStore.isSubscribe != 0) {
-                            if (data.advertisementProperty == null && userStore.subscriptionDetail!.subscriptionPlan!.packageData!.advertisement.validate() == 0) {
+                            if (data.advertisementProperty == null &&
+                                userStore.subscriptionDetail!.subscriptionPlan!
+                                        .packageData!.advertisement
+                                        .validate() ==
+                                    0) {
                               if (userStore.advertisement == 0) {
                                 showDialog(
                                     context: context,
@@ -339,7 +403,10 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                                       return LimitExceedDialog(
                                         onTap: () {
                                           finish(context);
-                                          LimitScreen(limit: "advertisement_property").launch(context);
+                                          LimitScreen(
+                                                  limit:
+                                                      "advertisement_property")
+                                              .launch(context);
                                         },
                                       );
                                     });
@@ -349,7 +416,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                                     builder: (context) {
                                       return BoostDialog(onAccept: () {
                                         setState(() {
-                                          setAdvertisement(data.id, data.advertisementProperty);
+                                          setAdvertisement(data.id,
+                                              data.advertisementProperty);
                                           finish(context);
                                         });
                                       });
@@ -365,7 +433,8 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                               builder: (context) {
                                 return BoostDialog(onAccept: () {
                                   setState(() {
-                                    setAdvertisement(data.id, data.advertisementProperty);
+                                    setAdvertisement(
+                                        data.id, data.advertisementProperty);
                                     finish(context);
                                   });
                                 });
@@ -377,7 +446,11 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                 ),
               ).paddingSymmetric(horizontal: 16).onTap(() async {
                 {
-                  bool? res = await PropertyDetailScreen(propertyId: data.id, update: true, onTap: (bool? result) {}).launch(context);
+                  bool? res = await PropertyDetailScreen(
+                          propertyId: data.id,
+                          update: true,
+                          onTap: (bool? result) {})
+                      .launch(context);
                   if (res.validate()) {
                     getMyProperty();
                   }

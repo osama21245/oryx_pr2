@@ -30,6 +30,8 @@
 	<string>This identifier is used to deliver relevant ads.</string> -->
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app needs access to your microphone for voice search functionality.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech recognition access allows voice search and voice command features to work.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

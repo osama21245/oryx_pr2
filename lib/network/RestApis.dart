@@ -155,6 +155,34 @@ Future<SocialLoginResponse> otpLogInApi(Map request) async {
   });
 }
 
+/// Guest Login API - Returns a token for guest users
+/// Endpoint: POST /api/guest-login
+/// This endpoint should be created on the backend to return a guest token
+Future<SignUpResponse> guestLoginApi() async {
+  Response response = await buildHttpResponse('guest-login',
+      request: {"user_type": "guest", "login_type": "guest"},
+      method: HttpMethod.POST);
+
+  return await handleResponse(response).then((json) async {
+    SignUpResponse guestResponse = SignUpResponse.fromJson(json);
+
+    // Save guest token and user data
+    if (guestResponse.data != null && guestResponse.data!.apiToken != null) {
+      await setValue(TOKEN, guestResponse.data!.apiToken.validate());
+      await setValue(USER_ID, guestResponse.data!.id);
+      await setValue(USER_TYPE, guestResponse.data!.userType.validate());
+      await setValue(IS_LOGIN, false); // Mark as guest (not fully logged in)
+      await userStore.setToken(guestResponse.data!.apiToken.validate());
+      await userStore.setUserID(guestResponse.data!.id!);
+    }
+
+    return guestResponse;
+  }).catchError((e) {
+    log('Guest login error: $e');
+    throw e.toString();
+  });
+}
+
 ///property type list
 Future<PropertyTypeResponse> getPropertyTypeList() async {
   return PropertyTypeResponse.fromJson(await handleResponse(

@@ -9,16 +9,17 @@ class TransactionTypeCard extends StatelessWidget {
   bool isGif;
   double? width, height, padding;
   BorderRadiusGeometry? borderRadius;
-  TransactionTypeCard(
-      {super.key,
-      required this.isSelected,
-      required this.imagePath,
-      this.type,
-        this.borderRadius,
-      this.height,
-      this.width,
-      this.padding = 0,
-      this.isGif = false,});
+  TransactionTypeCard({
+    super.key,
+    required this.isSelected,
+    required this.imagePath,
+    this.type,
+    this.borderRadius,
+    this.height,
+    this.width,
+    this.padding = 0,
+    this.isGif = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,47 +38,50 @@ class TransactionTypeCard extends StatelessWidget {
           ),
           color: Theme.of(context).disabledColor.withOpacity(0.1),
           borderRadius: effectiveBorderRadius),
-      child: Column(
-        children: [
-          // Align(
-          //   alignment: AlignmentDirectional.topEnd,
-          //   child: CustomImageView(
-          //     svgPath:
-          //         isSelected ? Images.svgSelectedIcon : Images.svgSelectIcon,
-          //     width: 40,
-          //     height: 40,
-          //   ),
-          // ),
-          isGif
-              ? ClipRRect(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  borderRadius: effectiveBorderRadius,
-                  child: Image.network(
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            // Align(
+            //   alignment: AlignmentDirectional.topEnd,
+            //   child: CustomImageView(
+            //     svgPath:
+            //         isSelected ? Images.svgSelectedIcon : Images.svgSelectIcon,
+            //     width: 40,
+            //     height: 40,
+            //   ),
+            // ),
+            isGif
+                ? ClipRRect(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    borderRadius: effectiveBorderRadius,
+                    child: Image.network(
+                      imagePath,
+                      width: width ?? size.width * 0.9,
+                      height: size.height * 0.3,
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                : Image.asset(
                     imagePath,
-                    width: width ?? size.width * 0.9,
-                    height: size.height * 0.3,
-                    fit: BoxFit.fill,
+                    width: size.width * 0.3,
+                    height: size.height * 0.09,
                   ),
-                )
-              : Image.asset(
-                  imagePath,
-                  width: size.width * 0.3,
-                  height: size.height * 0.09,
-                ),
-          type != null
-              ? Text(
-                  type!,
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      color: isSelected
-                          ? Theme.of(context).primaryColor
-                          : appStore.isDarkModeOn
-                              ? textOnDarkMode
-                              : textOnLightMode),
-                )
-              : SizedBox.shrink(),
-        ],
+            type != null
+                ? Text(
+                    type!,
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700,
+                        color: isSelected
+                            ? Theme.of(context).primaryColor
+                            : appStore.isDarkModeOn
+                                ? textOnDarkMode
+                                : textOnLightMode),
+                  )
+                : SizedBox.shrink(),
+          ],
+        ),
       ),
     );
   }

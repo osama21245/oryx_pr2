@@ -122,6 +122,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> getSettingList() async {
+    // Try to get settings if we have a token (either logged in user or guest with token)
+    String? token = getStringAsync(TOKEN);
+    if (token.isEmpty) {
+      // No token at all, skip settings
+      return;
+    }
+
     await getSettingApi().then((value) {
       userStore.setCurrencyCodeID(value.currencySetting!.symbol.validate());
       userStore
@@ -174,6 +181,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
       }
       getSettingData();
+    }).catchError((e) {
+      // Handle errors gracefully for guest users
+      print("Error getting settings: $e");
     });
   }
 

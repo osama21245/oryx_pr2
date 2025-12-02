@@ -279,6 +279,7 @@ enum PropertyForIndex {
   RENT,
   SELL,
   PG_CO_LIVING,
+  WANTED,
 }
 
 extension PropertyForExtension on PropertyForIndex {
@@ -290,6 +291,8 @@ extension PropertyForExtension on PropertyForIndex {
         return 1;
       case PropertyForIndex.PG_CO_LIVING:
         return 2;
+      case PropertyForIndex.WANTED:
+        return 3;
       default:
         return null;
     }

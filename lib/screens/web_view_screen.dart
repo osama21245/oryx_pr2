@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -153,19 +154,56 @@ class WebViewScreenState extends State<WebViewScreen> {
               });
             },
             onPermissionRequest: (controller, request) async {
-              // Grant all permission requests for microphone/camera
+              // Handle permission requests for microphone/camera
               // This is needed for voice conversation features
               var resources = request.resources;
               log("onPermissionRequest: ${resources.toString()}");
 
               // Check if the permission request is for microphone
               if (resources.contains(PermissionResourceType.MICROPHONE)) {
-                // Grant the permission
-                log("Granted microphone permission");
-                return PermissionResponse(
-                  resources: resources,
-                  action: PermissionResponseAction.GRANT,
-                );
+                // Request runtime permission from the user first (works for both Android and iOS)
+                PermissionStatus status = await Permission.microphone.status;
+
+                // Request permission if not already granted
+                if (status.isDenied || status.isLimited) {
+                  status = await Permission.microphone.request();
+                }
+
+                if (status.isGranted) {
+                  log("Granted microphone permission (${Platform.isAndroid ? 'Android' : 'iOS'})");
+                  return PermissionResponse(
+                    resources: resources,
+                    action: PermissionResponseAction.GRANT,
+                  );
+                } else {
+                  log("Microphone permission denied by user (${Platform.isAndroid ? 'Android' : 'iOS'})");
+                  return PermissionResponse(
+                    resources: resources,
+                    action: PermissionResponseAction.DENY,
+                  );
+                }
+              } else if (resources.contains(PermissionResourceType.CAMERA)) {
+                // Handle camera permission similarly (works for both Android and iOS)
+                PermissionStatus status = await Permission.camera.status;
+
+                // Request permission if not already granted
+                if (status.isDenied || status.isLimited) {
+                  status = await Permission.camera.request();
+                }
+
+                if (status.isGranted) {
+                  log("Granted camera permission (${Platform.isAndroid ? 'Android' : 'iOS'})");
+                  return PermissionResponse(
+                    resources: resources,
+                    action: PermissionResponseAction.GRANT,
+                  );
+                } else {
+                  log("Camera permission denied by user (${Platform.isAndroid ? 'Android' : 'iOS'})");
+                  return PermissionResponse(
+                    resources: resources,
+                    action: PermissionResponseAction.DENY,
+                  );
+                }
               } else {
                 // For other permissions, grant by default
                 return PermissionResponse(

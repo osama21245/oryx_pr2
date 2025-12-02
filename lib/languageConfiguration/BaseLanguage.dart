@@ -479,6 +479,9 @@ class BaseLanguage {
 
   String get sellProperty => getContentValueFromKey(303);
 
+  String get wantedProperty =>
+      getContentValueFromKey(400); // مطلوب - Wanted Property
+
   String get pgColivingProperty => getContentValueFromKey(304);
 
   String get chatbotQue1 => getContentValueFromKey(305);
@@ -570,5 +573,5 @@ class BaseLanguage {
   String get transactionType => getContentValueFromKey(347);
   String get home => getContentValueFromKey(349);
   String get profile => getContentValueFromKey(350);
-  String get developer => getContentValueFromKey(351	);
+  String get developer => getContentValueFromKey(351);
 }

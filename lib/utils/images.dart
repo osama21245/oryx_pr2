@@ -83,6 +83,7 @@ const searching_animation = "assets/Searching.json";
 const ic_cancel_subscription = "assets/ic_cancle_subscription.png";
 const ic_rent = "assets/rent.png";
 const ic_sale = "assets/sale.png";
+const ic_wanted = "assets/apartment.png"; // Icon for "مطلوب" (Wanted)
 
 ///TODO remove this image
 // const ic_logo_dark = 'assets/ic_dark_logo.png';

@@ -43,6 +43,8 @@ class _AddPropertyDialogState extends State<AddPropertyDialog> {
         .add(AddPropertyModel(language.rentProperty, ic_rate, false));
     propertyForList
         .add(AddPropertyModel(language.sellProperty, ic_sell, false));
+    propertyForList
+        .add(AddPropertyModel(language.wantedProperty, ic_wanted, false));
     // propertyForList.add(AddPropertyModel(language.pgColivingProperty, ic_bed, false));
   }
 
@@ -70,7 +72,7 @@ class _AddPropertyDialogState extends State<AddPropertyDialog> {
           ),
           20.height,
           SizedBox(
-            height: context.height() * 0.3,
+            height: context.height() * 0.4, // Increased height for 3 options
             width: double.maxFinite,
             child: ListView.builder(
                 itemCount: propertyForList.length,
@@ -124,11 +126,13 @@ class _AddPropertyDialogState extends State<AddPropertyDialog> {
                   ).paddingBottom(20).onTap(() {
                     selectedIndex = i;
                     if (selectedIndex == 0) {
-                      propertyFor = 0;
+                      propertyFor = 0; // Rent
                     } else if (selectedIndex == 1) {
-                      propertyFor = 1;
+                      propertyFor = 1; // Sell
+                    } else if (selectedIndex == 2) {
+                      propertyFor = 3; // Wanted (مطلوب)
                     } else {
-                      propertyFor = 2;
+                      propertyFor = 2; // PG/Co-Living
                     }
                     setState(() {});
                   });
