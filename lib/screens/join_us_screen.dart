@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:orex/extensions/app_button.dart';
 import 'package:orex/extensions/extension_util/context_extensions.dart';
@@ -10,12 +11,73 @@ import 'package:orex/screens/dashboard_screen.dart';
 import 'package:orex/screens/login_screen.dart';
 import 'package:orex/utils/colors.dart';
 
-class JoinUsScreen extends StatelessWidget {
+class JoinUsScreen extends StatefulWidget {
   const JoinUsScreen({super.key});
 
   @override
+  State<JoinUsScreen> createState() => _JoinUsScreenState();
+}
+
+class _JoinUsScreenState extends State<JoinUsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Use WidgetsBinding to ensure context is available
+    // Only run guest login on iOS platform
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Platform.isIOS) {
+        _performGuestLogin();
+      }
+    });
+  }
+
+  Future<void> _performGuestLogin() async {
+    try {
+      await appStore.setLoading(true);
+      await guestLoginApi().then((response) {
+        if (response.data != null && response.data!.apiToken != null) {
+          // Guest login successful, navigate to dashboard
+          if (mounted) {
+            DashboardScreen(
+              isSplash: true,
+            ).launch(context, isNewTask: true);
+          }
+        } else {
+          // If guest login fails, still allow guest mode without token
+          if (mounted) {
+            DashboardScreen(
+              isSplash: true,
+            ).launch(context, isNewTask: true);
+          }
+        }
+      }).catchError((e) {
+        // If guest login endpoint doesn't exist or fails,
+        // still allow guest mode (will handle errors gracefully)
+        print("Guest login error in initState: $e");
+        if (mounted) {
+          DashboardScreen(
+            isSplash: true,
+          ).launch(context, isNewTask: true);
+        }
+      }).whenComplete(() {
+        if (mounted) {
+          appStore.setLoading(false);
+        }
+      });
+    } catch (e) {
+      print("Guest login exception in initState: $e");
+      if (mounted) {
+        appStore.setLoading(false);
+        // Still navigate to dashboard even if guest login fails
+        DashboardScreen(
+          isSplash: true,
+        ).launch(context, isNewTask: true);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: appStore.isDarkModeOn ? Colors.black : Colors.white,
       body: SafeArea(
@@ -49,40 +111,8 @@ class JoinUsScreen extends StatelessWidget {
               width: context.width(),
               color: Color(0xffE9E9E9),
               textColor: primaryColor,
-              onTap: () async {
-                // Call guest login API to get a token
-                try {
-                  await appStore.setLoading(true);
-                  await guestLoginApi().then((response) {
-                    if (response.data != null &&
-                        response.data!.apiToken != null) {
-                      // Guest login successful, navigate to dashboard
-                      DashboardScreen(
-                        isSplash: true,
-                      ).launch(context, isNewTask: true);
-                    } else {
-                      // If guest login fails, still allow guest mode without token
-                      DashboardScreen(
-                        isSplash: true,
-                      ).launch(context, isNewTask: true);
-                    }
-                  }).catchError((e) {
-                    // If guest login endpoint doesn't exist or fails,
-                    // still allow guest mode (will handle errors gracefully)
-                    print("Guest login error: $e");
-                    DashboardScreen(
-                      isSplash: true,
-                    ).launch(context, isNewTask: true);
-                  }).whenComplete(() {
-                    appStore.setLoading(false);
-                  });
-                } catch (e) {
-                  appStore.setLoading(false);
-                  // Still navigate to dashboard even if guest login fails
-                  DashboardScreen(
-                    isSplash: true,
-                  ).launch(context, isNewTask: true);
-                }
+              onTap: () {
+                _performGuestLogin();
               },
             ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
           ],
