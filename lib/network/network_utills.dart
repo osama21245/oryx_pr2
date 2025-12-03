@@ -59,7 +59,7 @@ Future<Response> buildHttpResponse(String endPoint,
 
         response = await http
             .post(url, body: req ?? jsonEncode(request), headers: headers)
-            .timeout(Duration(seconds: 20), onTimeout: () => throw 'Timeout');
+            .timeout(Duration(seconds: 120), onTimeout: () => throw 'Timeout');
       } else if (method == HttpMethod.DELETE) {
         response = await delete(url, headers: headers)
             .timeout(Duration(seconds: 20), onTimeout: () => throw 'Timeout');

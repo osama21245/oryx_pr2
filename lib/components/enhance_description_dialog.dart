@@ -65,7 +65,7 @@ class _EnhanceDescriptionDialogState extends State<EnhanceDescriptionDialog> {
     });
 
     try {
-      final currentLangCode = _getCurrentLanguageCode();
+      //  final currentLangCode = _getCurrentLanguageCode();
       final openAIService = OpenAIService();
       final results = await openAIService.getAllOptions(
         widget.originalDescription,
@@ -75,13 +75,21 @@ class _EnhanceDescriptionDialogState extends State<EnhanceDescriptionDialog> {
       setState(() {
         options = results;
         isLoading = false;
+        error = null;
       });
     } catch (e) {
+      // Extract error message from exception
+      String errorMessage = e.toString();
+
+      // Remove "Exception: " prefix if present
+      if (errorMessage.startsWith('Exception: ')) {
+        errorMessage = errorMessage.substring(11);
+      }
+
       setState(() {
-        error = e.toString();
+        error = errorMessage;
         isLoading = false;
       });
-      // Error will be shown in the dialog UI
     }
   }
 
@@ -130,21 +138,64 @@ class _EnhanceDescriptionDialogState extends State<EnhanceDescriptionDialog> {
                 ),
               )
             else if (error != null)
-              Column(
-                children: [
-                  Icon(Icons.error_outline, color: Colors.red, size: 48),
-                  16.height,
-                  Text('${_getLocalizedText("Error", "خطأ")}: $error',
-                      style: secondaryTextStyle(color: Colors.red)),
-                  16.height,
-                  ElevatedButton(
-                    onPressed: _loadOptions,
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: primaryColor),
-                    child: Text(_getLocalizedText('Retry', 'إعادة المحاولة'),
-                        style: boldTextStyle(color: Colors.white)),
-                  ),
-                ],
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.red, size: 48),
+                    16.height,
+                    Text(
+                      _getLocalizedText("Error", "خطأ"),
+                      style: boldTextStyle(size: 18, color: Colors.red),
+                    ),
+                    12.height,
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.red.withOpacity(0.3)),
+                      ),
+                      child: Text(
+                        error!,
+                        style: secondaryTextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    20.height,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                          ),
+                          child: Text(
+                            _getLocalizedText('Close', 'إغلاق'),
+                            style: boldTextStyle(color: Colors.white),
+                          ),
+                        ),
+                        12.width,
+                        ElevatedButton(
+                          onPressed: _loadOptions,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                          ),
+                          child: Text(
+                            _getLocalizedText('Retry', 'إعادة المحاولة'),
+                            style: boldTextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               )
             else if (options != null)
               Expanded(

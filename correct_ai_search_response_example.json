@@ -1,0 +1,67 @@
+{
+  "message": "تم العثور على 3 محلات في محافظة قنا",
+  "data": {
+    "status": true,
+    "data": [
+      {
+        "id": 142,
+        "name": "محل 12 متر",
+        "category_id": 6,
+        "category": "محل",
+        "category_image": "https://oryxinvestmentsegypt.com/storage/categories/shop.png",
+        "price": 6000,
+        "city": "محافظة قنا",
+        "price_format": "EGP 6,000",
+        "address": "محافظة قنا",
+        "status": 1,
+        "premium_property": 0,
+        "price_duration": null,
+        "property_image": "https://oryxinvestmentsegypt.com/storage/199/1000323162.jpg",
+        "is_favourite": 0,
+        "property_for": 5,
+        "advertisement_property": null,
+        "advertisement_property_date": null
+      },
+      {
+        "id": 143,
+        "name": "محل 85 متر",
+        "category_id": 6,
+        "category": "محل",
+        "category_image": "https://oryxinvestmentsegypt.com/storage/categories/shop.png",
+        "price": 25000,
+        "city": "محافظة قنا",
+        "price_format": "EGP 25,000",
+        "address": "محافظة قنا",
+        "status": 1,
+        "premium_property": 0,
+        "price_duration": null,
+        "property_image": "https://oryxinvestmentsegypt.com/storage/200/image0.jpg",
+        "is_favourite": 0,
+        "property_for": 5,
+        "advertisement_property": null,
+        "advertisement_property_date": null
+      },
+      {
+        "id": 164,
+        "name": "محل 15 متر",
+        "category_id": 6,
+        "category": "محل",
+        "category_image": "https://oryxinvestmentsegypt.com/storage/categories/shop.png",
+        "price": 8000,
+        "city": "محافظة قنا",
+        "price_format": "EGP 8,000",
+        "address": "محافظة قنا",
+        "status": 1,
+        "premium_property": 0,
+        "price_duration": null,
+        "property_image": "https://oryxinvestmentsegypt.com/storage/201/image1.jpg",
+        "is_favourite": 0,
+        "property_for": 5,
+        "advertisement_property": null,
+        "advertisement_property_date": null
+      }
+    ],
+    "near_by_property": []
+  }
+}
+

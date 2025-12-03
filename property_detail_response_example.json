@@ -1,0 +1,142 @@
+{
+  "status": true,
+  "message": "Property details retrieved successfully",
+  "data": {
+    "id": 109,
+    "name": "أرض شرطة 250متر",
+    "category_id": 1,
+    "category": "أرض",
+    "category_image": "https://oryxinvestmentsegypt.com/storage/165/free-icon-maps-location-11094.png",
+    "price": 850,
+    "price_format": "850.00EGP",
+    "furnished_type": 0,
+    "saller_type": 1,
+    "property_for": 1,
+    "price_duration": null,
+    "age_of_property": 0,
+    "maintenance": 0,
+    "security_deposit": 0,
+    "brokerage": 0,
+    "bhk": 1,
+    "sqft": null,
+    "description": "متاح للبيع قطعة أرض تابعة لجمعية ضباط الشرطة مساحة 250م مدفوع أربع أقساط 30ألف تخصيص توكيل أول من عميد بوزارة الداخليه مباشر مطلوب 850 لسرعة البيع",
+    "country": null,
+    "state": null,
+    "city": "قنا الجديدة",
+    "latitude": null,
+    "longitude": null,
+    "address": null,
+    "video_url": null,
+    "status": 1,
+    "premium_property": 0,
+    "property_image": "https://oryxinvestmentsegypt.com/storage/199/1000323162.jpg",
+    "property_gallary": [
+      "https://oryxinvestmentsegypt.com/storage/200/image0.jpg"
+    ],
+    "property_gallary_array": [
+      {
+        "id": 200,
+        "url": "https://oryxinvestmentsegypt.com/storage/200/image0.jpg"
+      }
+    ],
+    "created_at": "2025-10-13T15:11:26.000000Z",
+    "updated_at": "2025-12-02T13:50:28.000000Z",
+    "is_favourite": 0,
+    "advertisement_property": null,
+    "advertisement_property_date": null,
+    "checked_property_inquiry": 0
+  },
+  "property_amenity_value": [
+    {
+      "id": 1,
+      "property_id": 109,
+      "amenity_id": 5,
+      "name": "Swimming Pool",
+      "status": 1,
+      "type": "checkbox",
+      "value": ["Indoor Pool", "Outdoor Pool"],
+      "created_at": "2025-10-13T15:11:26.000000Z",
+      "updated_at": "2025-12-02T13:50:28.000000Z",
+      "amenity_image": "https://oryxinvestmentsegypt.com/storage/amenities/pool.png"
+    },
+    {
+      "id": 2,
+      "property_id": 109,
+      "amenity_id": 8,
+      "name": "Parking",
+      "status": 1,
+      "type": "radio",
+      "value": "Covered Parking",
+      "created_at": "2025-10-13T15:11:26.000000Z",
+      "updated_at": "2025-12-02T13:50:28.000000Z",
+      "amenity_image": null
+    }
+  ],
+  "customer": {
+    "id": 33,
+    "first_name": "ابو",
+    "last_name": "كريم",
+    "email": "amrbdac@gmail.com",
+    "address": null,
+    "contact_number": "201068080829",
+    "profile_image": "https://oryxinvestmentsegypt.com/storage/842/1000359770.jpg",
+    "is_agent": null,
+    "is_builder": null,
+    "display_name": "ابو كريم"
+  },
+  "near_by_place": {
+    "results": [
+      {
+        "geometry": {
+          "location": {
+            "lat": 26.1794,
+            "lng": 32.7286
+          },
+          "viewport": {
+            "northeast": {
+              "lat": 26.1807,
+              "lng": 32.7299
+            },
+            "southwest": {
+              "lat": 26.1781,
+              "lng": 32.7273
+            }
+          }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/school-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/school_pinlet",
+        "name": "Nearby School",
+        "photos": [
+          {
+            "height": 3024,
+            "html_attributions": [
+              "<a href=\"https://maps.google.com/maps/contrib/123456789\">School Name</a>"
+            ],
+            "photo_reference": "Aap_uEA7vb0WDYVMJIMQoi4sYx3ewm8XOD5t5wCN8g2KDNue",
+            "width": 4032
+          }
+        ],
+        "place_id": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+        "reference": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+        "scope": "GOOGLE",
+        "types": ["school", "establishment"],
+        "vicinity": "123 Main Street, Qena",
+        "business_status": "OPERATIONAL",
+        "rating": 4.5,
+        "user_ratings_total": 120,
+        "permanently_closed": false,
+        "plus_code": {
+          "compound_code": "5VJX+8X Qena, Egypt",
+          "global_code": "7GJQ5VJX+8X"
+        },
+        "opening_hours": {
+          "open_now": true
+        }
+      }
+    ],
+    "status": "OK",
+    "html_attributions": []
+  }
+}
+

@@ -1,87 +1,196 @@
 import 'dart:convert';
+import '../network/network_utills.dart';
+import '../extensions/extension_util/int_extensions.dart';
 import 'package:http/http.dart' as http;
 
 class OpenAIService {
-  static const String apiKey =
-      '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';
-
-  static const String baseUrl = 'https://api.openai.com/v1';
-
-  /// Make API call to OpenAI
-  Future<String> _callOpenAI(String prompt, double temperature) async {
+  /// Extract error message from response
+  String _extractErrorMessage(dynamic error, http.Response? response) {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/chat/completions'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $apiKey',
-        },
-        body: json.encode({
-          'model': 'gpt-3.5-turbo',
-          'messages': [
-            {
-              'role': 'user',
-              'content': prompt,
-            }
-          ],
-          'max_tokens': 500,
-          'temperature': temperature,
-        }),
-      );
+      // If error is a string, return it directly
+      if (error is String) {
+        return error;
+      }
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final content = data['choices'][0]['message']['content'] as String;
-        return content.trim();
-      } else {
-        throw Exception(
-            'OpenAI API error: ${response.statusCode} - ${response.body}');
+      // If we have a response, try to parse it
+      if (response != null && response.body.isNotEmpty) {
+        try {
+          final errorData = jsonDecode(response.body) as Map<String, dynamic>;
+
+          // Check for validation errors (422)
+          if (errorData.containsKey('errors') && errorData['errors'] is Map) {
+            final errors = errorData['errors'] as Map<String, dynamic>;
+            // Get first error message
+            if (errors.isNotEmpty) {
+              final firstError = errors.values.first;
+              if (firstError is List && firstError.isNotEmpty) {
+                return firstError.first.toString();
+              } else if (firstError is String) {
+                return firstError;
+              }
+            }
+          }
+
+          // Check for message field
+          if (errorData.containsKey('message')) {
+            return errorData['message'].toString();
+          }
+        } catch (e) {
+          // If parsing fails, continue to default error
+        }
       }
     } catch (e) {
-      throw Exception('Failed to call OpenAI: $e');
+      // Fall through to default error
     }
+
+    // Default error message
+    return error.toString();
   }
 
   /// Get corrected description (no mistakes, same context)
   Future<String> getCorrectedDescription(String description) async {
-    final prompt =
-        'Correct any language mistakes in the following property description while keeping the exact same context and meaning. Only fix grammar, spelling, and language errors:\n\n$description';
+    http.Response? response;
+    try {
+      response = await buildHttpResponse(
+        'property-description/correct',
+        method: HttpMethod.POST,
+        request: {
+          'description': description,
+        },
+      );
 
-    return await _callOpenAI(prompt, 0.3);
+      final data = await handleResponse(response);
+
+      // Handle response structure - adjust based on your backend response format
+      if (data is Map<String, dynamic>) {
+        // If backend returns { "description": "..." } or { "data": "..." } or just { "result": "..." }
+        return data['description'] ??
+            data['data'] ??
+            data['result'] ??
+            data['content'] ??
+            data.toString();
+      } else if (data is String) {
+        return data;
+      } else {
+        throw Exception('Unexpected response format: $data');
+      }
+    } catch (e) {
+      final errorMessage = _extractErrorMessage(e, response);
+      throw Exception(errorMessage);
+    }
   }
 
   /// Get enhanced description (improved and polished)
   Future<String> getEnhancedDescription(String description) async {
-    final prompt =
-        'Enhance and improve the following property description. Make it more engaging, professional, and appealing while maintaining the original meaning. Fix any language mistakes and make it more attractive to potential buyers/renters:\n\n$description';
+    http.Response? response;
+    try {
+      response = await buildHttpResponse(
+        'property-description/enhance',
+        method: HttpMethod.POST,
+        request: {
+          'description': description,
+        },
+      );
 
-    return await _callOpenAI(prompt, 0.7);
+      final data = await handleResponse(response);
+
+      // Handle response structure - adjust based on your backend response format
+      if (data is Map<String, dynamic>) {
+        return data['description'] ??
+            data['data'] ??
+            data['result'] ??
+            data['content'] ??
+            data.toString();
+      } else if (data is String) {
+        return data;
+      } else {
+        throw Exception('Unexpected response format: $data');
+      }
+    } catch (e) {
+      final errorMessage = _extractErrorMessage(e, response);
+      throw Exception(errorMessage);
+    }
   }
 
   /// Get description with opinion (professional opinion/suggestions)
   Future<String> getDescriptionWithOpinion(String description) async {
-    final prompt =
-        'Rewrite the following property description with a professional real estate agent\'s opinion. Add persuasive elements, highlight key features more effectively, and make it more compelling. Include professional insights while fixing any language mistakes:\n\n$description';
+    http.Response? response;
+    try {
+      response = await buildHttpResponse(
+        'property-description/with-opinion',
+        method: HttpMethod.POST,
+        request: {
+          'description': description,
+        },
+      );
 
-    return await _callOpenAI(prompt, 0.8);
+      final data = await handleResponse(response);
+
+      // Handle response structure - adjust based on your backend response format
+      if (data is Map<String, dynamic>) {
+        return data['description'] ??
+            data['data'] ??
+            data['result'] ??
+            data['content'] ??
+            data.toString();
+      } else if (data is String) {
+        return data;
+      } else {
+        throw Exception('Unexpected response format: $data');
+      }
+    } catch (e) {
+      final errorMessage = _extractErrorMessage(e, response);
+      throw Exception(errorMessage);
+    }
   }
 
   /// Get all three options at once
   Future<Map<String, String>> getAllOptions(String description) async {
+    http.Response? response;
     try {
-      final results = await Future.wait([
-        getCorrectedDescription(description),
-        getEnhancedDescription(description),
-        getDescriptionWithOpinion(description),
-      ]);
+      response = await buildHttpResponse(
+        'property-description/all',
+        method: HttpMethod.POST,
+        request: {
+          'description': description,
+        },
+      );
 
-      return {
-        'corrected': results[0],
-        'enhanced': results[1],
-        'withOpinion': results[2],
-      };
+      // Check if response has error status code before handling
+      if (!response.statusCode.isSuccessful()) {
+        final errorMessage = _extractErrorMessage(null, response);
+        throw Exception(errorMessage);
+      }
+
+      final data = await handleResponse(response);
+
+      // Handle response structure - adjust based on your backend response format
+      // Expected format: { "corrected": "...", "enhanced": "...", "withOpinion": "..." }
+      if (data is Map<String, dynamic>) {
+        // Check if data is nested in 'data' key
+        Map<String, dynamic> responseData = data;
+        if (data['data'] is Map<String, dynamic>) {
+          responseData = data['data'] as Map<String, dynamic>;
+        }
+
+        return {
+          'corrected': responseData['corrected'] ??
+              responseData['corrected_description'] ??
+              '',
+          'enhanced': responseData['enhanced'] ??
+              responseData['enhanced_description'] ??
+              '',
+          'withOpinion': responseData['with_opinion'] ??
+              responseData['withOpinion'] ??
+              responseData['opinion'] ??
+              '',
+        };
+      } else {
+        throw Exception('Unexpected response format: $data');
+      }
     } catch (e) {
-      throw Exception('Failed to get descriptions: $e');
+      final errorMessage = _extractErrorMessage(e, response);
+      throw Exception(errorMessage);
     }
   }
 }
