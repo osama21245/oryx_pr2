@@ -31,15 +31,13 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: "3.3.0"
-        bundler-cache: true
         working-directory: android
     
     - name: Install Fastlane dependencies
       run: |
         bundle config set --local frozen false
         bundle install
-        # Update Gemfile.lock if needed
-        bundle update fastlane-plugin-firebase_app_distribution || true
+        bundle config set --local frozen true
       working-directory: android
         
     - name: Build and Distribute App
