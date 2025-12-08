@@ -35,7 +35,11 @@ jobs:
         working-directory: android
     
     - name: Install Fastlane dependencies
-      run: bundle install
+      run: |
+        bundle config set --local frozen false
+        bundle install
+        # Update Gemfile.lock if needed
+        bundle update fastlane-plugin-firebase_app_distribution || true
       working-directory: android
         
     - name: Build and Distribute App
