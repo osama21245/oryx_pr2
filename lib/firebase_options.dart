@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCpFFoFcCqqRUpmZDfeiiDhUa5DDI15_Uw',
-    appId: '1:863986906019:android:f2a8b3968e90f333bb6016',
-    messagingSenderId: '863986906019',
-    projectId: 'oryx-a7b1c',
-    storageBucket: 'oryx-a7b1c.firebasestorage.app',
+    apiKey: 'AIzaSyBhKr_QRdhUA-FznJfOgtUvJQDKwHJnPQk',
+    appId: '1:521631638082:android:387e4b41a645ccfa4103db',
+    messagingSenderId: '521631638082',
+    projectId: 'orex-b59ce',
+    storageBucket: 'orex-b59ce.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC3-IBOsCQrb7gtNAeJv_EoCeO2g8-TlU0',
-    appId: '1:863986906019:ios:a925d3ff81047fcfbb6016',
-    messagingSenderId: '863986906019',
-    projectId: 'oryx-a7b1c',
-    storageBucket: 'oryx-a7b1c.firebasestorage.app',
+    apiKey: 'AIzaSyDAX9nUmlxHDTIMM9ti5lgCnngV61una-o',
+    appId: '1:521631638082:ios:32033631745a975f4103db',
+    messagingSenderId: '521631638082',
+    projectId: 'orex-b59ce',
+    storageBucket: 'orex-b59ce.firebasestorage.app',
+    androidClientId: '521631638082-a8s559oojana2jo6brsjoou2gi9fn809.apps.googleusercontent.com',
     iosBundleId: 'com.oryxinvestmentsegypt.oryx',
   );
 

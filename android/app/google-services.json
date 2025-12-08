@@ -1,13 +1,41 @@
 {
   "project_info": {
-    "project_number": "863986906019",
-    "project_id": "oryx-a7b1c",
-    "storage_bucket": "oryx-a7b1c.firebasestorage.app"
+    "project_number": "521631638082",
+    "project_id": "orex-b59ce",
+    "storage_bucket": "orex-b59ce.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:863986906019:android:f2a8b3968e90f333bb6016",
+        "mobilesdk_app_id": "1:521631638082:android:101d1b5159284fd64103db",
+        "android_client_info": {
+          "package_name": "com.oryxinvestmentsegypt.orex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521631638082-a8s559oojana2jo6brsjoou2gi9fn809.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oryxinvestmentsegypt.orex",
+            "certificate_hash": "307cc89e9391b504a6b30e054d3a3957c0e71c24"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhKr_QRdhUA-FznJfOgtUvJQDKwHJnPQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521631638082:android:387e4b41a645ccfa4103db",
         "android_client_info": {
           "package_name": "com.oryxinvestmentsegypt.oryx"
         }
@@ -15,7 +43,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCpFFoFcCqqRUpmZDfeiiDhUa5DDI15_Uw"
+          "current_key": "AIzaSyBhKr_QRdhUA-FznJfOgtUvJQDKwHJnPQk"
         }
       ],
       "services": {
