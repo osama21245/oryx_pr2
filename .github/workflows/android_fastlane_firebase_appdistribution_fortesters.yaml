@@ -40,12 +40,22 @@ jobs:
         bundle config set --local frozen true
       working-directory: android
     
-    - name: Load Fastlane plugins
+    - name: Verify plugin installation
       run: |
-        # Disable frozen mode temporarily to allow plugin initialization
+        # Verify the plugin gem is installed
+        bundle list | grep firebase_app_distribution || (echo "Plugin gem not found!" && exit 1)
+        echo "Plugin gem is installed"
+      working-directory: android
+    
+    - name: Initialize Fastlane plugins
+      run: |
+        # Disable frozen mode for plugin initialization
         bundle config set --local frozen false
-        # Trigger Fastlane to load plugins (this will install plugin dependencies if needed)
-        bundle exec fastlane --help > /dev/null 2>&1 || true
+        # Ensure plugin is available by running fastlane with verbose output
+        # This will show if plugins are being loaded
+        bundle exec fastlane --version
+        # Try to list actions to see if plugin is loaded
+        bundle exec fastlane actions 2>&1 | head -20
         # Re-enable frozen mode
         bundle config set --local frozen true
       working-directory: android
@@ -54,5 +64,7 @@ jobs:
       env:
         FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
       run: |
+        # Disable frozen mode for the actual run (plugins might need to update Gemfile.lock)
+        bundle config set --local frozen false
         bundle exec fastlane android distributeForTesters
       working-directory: android
