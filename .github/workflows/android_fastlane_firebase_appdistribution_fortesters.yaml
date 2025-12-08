@@ -39,6 +39,14 @@ jobs:
         bundle install
         bundle config set --local frozen true
       working-directory: android
+    
+    - name: Install Fastlane plugins
+      run: |
+        # Ensure plugin is installed and available
+        bundle exec fastlane add_plugin firebase_app_distribution 2>/dev/null || true
+        # Verify plugin is available
+        bundle exec fastlane --version
+      working-directory: android
         
     - name: Build and Distribute App
       env:
