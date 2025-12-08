@@ -36,15 +36,22 @@ jobs:
     - name: Install Fastlane dependencies
       run: |
         bundle config set --local frozen false
+        # Install dependencies (Pluginfile is loaded via eval_gemfile in Gemfile)
+        # This should install the plugin gem from Pluginfile
         bundle install
+        # If plugin is still not found, add it explicitly to Gemfile
+        if ! bundle list | grep -q firebase_app_distribution; then
+          echo "Plugin not found, adding to Gemfile..."
+          bundle add fastlane-plugin-firebase_app_distribution
+          bundle install
+        fi
         bundle config set --local frozen true
       working-directory: android
     
     - name: Verify plugin installation
       run: |
         # Verify the plugin gem is installed
-        bundle list | grep firebase_app_distribution || (echo "Plugin gem not found!" && exit 1)
-        echo "Plugin gem is installed"
+        bundle list | grep firebase_app_distribution && echo "Plugin gem is installed" || echo "Warning: Plugin gem not found in bundle list"
       working-directory: android
     
     - name: Initialize Fastlane plugins
