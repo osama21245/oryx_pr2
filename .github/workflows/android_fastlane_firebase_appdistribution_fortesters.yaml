@@ -40,12 +40,14 @@ jobs:
         bundle config set --local frozen true
       working-directory: android
     
-    - name: Install Fastlane plugins
+    - name: Load Fastlane plugins
       run: |
-        # Ensure plugin is installed and available
-        bundle exec fastlane add_plugin firebase_app_distribution 2>/dev/null || true
-        # Verify plugin is available
-        bundle exec fastlane --version
+        # Disable frozen mode temporarily to allow plugin initialization
+        bundle config set --local frozen false
+        # Trigger Fastlane to load plugins (this will install plugin dependencies if needed)
+        bundle exec fastlane --help > /dev/null 2>&1 || true
+        # Re-enable frozen mode
+        bundle config set --local frozen true
       working-directory: android
         
     - name: Build and Distribute App
