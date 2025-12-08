@@ -9,6 +9,19 @@ platform :android do
     sh "flutter build apk --release"
     firebase_app_distribution(
       app: "1:521631638082:android:387e4b41a645ccfa4103db",
+      groups: "testing",
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      release_notes: "Release notes",
+      apk_path: "../build/app/outputs/flutter-apk/app-release.apk",
+      android_artifact_type: "APK",
+    )
+  end
+
+  lane :distributeForDevelopers do
+    sh "flutter clean"
+    sh "flutter build apk --release"
+    firebase_app_distribution(
+      app: "1:521631638082:android:387e4b41a645ccfa4103db",
       groups: "dev",
       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
       release_notes: "Release notes",
