@@ -7,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../components/advertisement_property_component.dart';
+import '../components/meta_banner.dart';
 import '../components/news_components.dart';
 import '../components/other_property_component.dart';
 import '../components/property_components.dart';

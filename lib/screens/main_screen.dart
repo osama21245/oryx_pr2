@@ -9,6 +9,7 @@ import 'package:orex/screens/filter_screen.dart';
 import 'package:orex/screens/search_screen.dart';
 import 'package:orex/utils/app_textfiled.dart';
 import 'package:orex/utils/images.dart';
+import '../components/meta_banner.dart';
 import '../extensions/colors.dart';
 import '../extensions/decorations.dart';
 import '../extensions/shared_pref.dart';

@@ -1,7 +1,8 @@
 {
-    "flutterTools.displayGetxContextMenu": false,
-    "flutterTools.displayMobxContextMenu": true,
-    "flutterTools.displayRiverpodContextMenu": false,
-    "flutterTools.displayModularContextMenu": true,
-    "cmake.sourceDirectory": "D:/Application/orex/linux/flutter"
+  "flutterTools.displayGetxContextMenu": false,
+  "flutterTools.displayMobxContextMenu": true,
+  "flutterTools.displayRiverpodContextMenu": false,
+  "flutterTools.displayModularContextMenu": true,
+  "cmake.sourceDirectory": "/Users/a1/Flutter Projects/oryx_pr2/linux/runner",
+  "dart.flutterSdkPath": ".fvm/versions/3.29.3"
 }
