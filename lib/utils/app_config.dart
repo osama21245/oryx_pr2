@@ -31,7 +31,7 @@ const mBaseUrl = '$mBackendURL/api/';
 //endregion
 
 //region onesignal
-const mOneSignalID = 'b2dcff93-86ec-4a14-8449-2af38ed76a77';
+const mOneSignalID = '6e79efe1-1b61-42fc-a5df-3fcc9ccaf083';
 //endregion
 
 //region country

@@ -12,7 +12,7 @@
         android:icon="@mipmap/launcher_icon">
         <meta-data
             android:name="onesignal_app_id"
-            android:value="b2dcff93-86ec-4a14-8449-2af38ed76a77" />
+            android:value="6e79efe1-1b61-42fc-a5df-3fcc9ccaf083" />
         <meta-data
             android:name="onesignal_google_project_number"
             android:value="REMOTE" />
