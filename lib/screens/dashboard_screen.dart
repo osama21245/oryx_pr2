@@ -224,17 +224,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
             ),
             // Invest with Oryx Floating Button - only show on home screen (MainScreen, not CategoryScreen)
-            if (currentIndex == 0 && isSplashActive)
-              Positioned(
-                bottom: 80,
-                right: 16,
-                child: _buildInvestWithOryxButton(),
-              ),
+            // if (currentIndex == 0 && isSplashActive)
+            //   Positioned(
+            //     bottom: 80,
+            //     right: 16,
+            //     child: _buildInvestWithOryxButton(),
+            //   ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          mini: true,
           heroTag: language.addProperties,
-          child: Icon(Icons.add, size: 44, color: Colors.white),
+          child: Icon(Icons.add, size: 37, color: Colors.white),
           onPressed: () {
             if (!appStore.isLoggedIn) {
               toast('Please login to access this section');

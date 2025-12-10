@@ -28,6 +28,7 @@ import '../utils/images.dart';
 import 'limit_screen.dart';
 import 'property_detail_screen.dart';
 import 'subscribe_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyPropertiesScreen extends StatefulWidget {
   const MyPropertiesScreen({super.key});
@@ -69,15 +70,27 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
     await getMyProperty();
   }
 
+  Future<void> launchWhatsApp() async {
+    const phone = "+201096968482";
+    final encoded = Uri.encodeComponent('ارغب في ترويج عقاري');
+    final url = Uri.parse("https://wa.me/$phone?text=$encoded");
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
+  }
+
   getMyProperty() async {
-    appStore.setLoading(true);
+    if (currentPage == 1) appStore.setLoading(true);
+
     await getMyPropertiesApi(currentPage: currentPage).then((value) {
       appStore.setLoading(false);
-      isLastPage = value.data!.length < currentPage;
+
       if (currentPage == 1) {
         mMyPropertiesData.clear();
       }
-      mMyPropertiesData = value.data!;
+      mMyPropertiesData.addAll(value.data!);
+
       mPropertyDataRent.clear();
       mPropertyDataSell.clear();
       mPropertyDataWanted.clear();
@@ -94,7 +107,13 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
           mPropertyDataPg.add(e);
         }
       }
-      isLastPage = true;
+
+      if (value.pagination != null && value.pagination!.totalPages != null) {
+        isLastPage = currentPage >= value.pagination!.totalPages!;
+      } else {
+        isLastPage = value.data!.isEmpty;
+      }
+
       setState(() {});
     }).catchError((e) {
       isLastPage = true;
@@ -386,61 +405,63 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
                               textAlign: TextAlign.end)
                           .center(),
                     ).onTap(() {
-                      paymentId = data.id;
-                      paymentPrice = data.price;
-                      setState(() {
-                        if (userStore.subscription == "1") {
-                          if (userStore.isSubscribe != 0) {
-                            if (data.advertisementProperty == null &&
-                                userStore.subscriptionDetail!.subscriptionPlan!
-                                        .packageData!.advertisement
-                                        .validate() ==
-                                    0) {
-                              if (userStore.advertisement == 0) {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return LimitExceedDialog(
-                                        onTap: () {
-                                          finish(context);
-                                          LimitScreen(
-                                                  limit:
-                                                      "advertisement_property")
-                                              .launch(context);
-                                        },
-                                      );
-                                    });
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return BoostDialog(onAccept: () {
-                                        setState(() {
-                                          setAdvertisement(data.id,
-                                              data.advertisementProperty);
-                                          finish(context);
-                                        });
-                                      });
-                                    });
-                              }
-                            }
-                          } else {
-                            SubscribeScreen().launch(context);
-                          }
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return BoostDialog(onAccept: () {
-                                  setState(() {
-                                    setAdvertisement(
-                                        data.id, data.advertisementProperty);
-                                    finish(context);
-                                  });
-                                });
-                              });
-                        }
-                      });
+                      //TODO:Launch whatsapp
+                      //   paymentId = data.id;
+                      //   paymentPrice = data.price;
+                      //   setState(() {
+                      //     if (userStore.subscription == "1") {
+                      //       if (userStore.isSubscribe != 0) {
+                      //         if (data.advertisementProperty == null &&
+                      //             userStore.subscriptionDetail!.subscriptionPlan!
+                      //                     .packageData!.advertisement
+                      //                     .validate() ==
+                      //                 0) {
+                      //           if (userStore.advertisement == 0) {
+                      //             showDialog(
+                      //                 context: context,
+                      //                 builder: (context) {
+                      //                   return LimitExceedDialog(
+                      //                     onTap: () {
+                      //                       finish(context);
+                      //                       LimitScreen(
+                      //                               limit:
+                      //                                   "advertisement_property")
+                      //                           .launch(context);
+                      //                     },
+                      //                   );
+                      //                 });
+                      //           } else {
+                      //             showDialog(
+                      //                 context: context,
+                      //                 builder: (context) {
+                      //                   return BoostDialog(onAccept: () {
+                      //                     setState(() {
+                      //                       setAdvertisement(data.id,
+                      //                           data.advertisementProperty);
+                      //                       finish(context);
+                      //                     });
+                      //                   });
+                      //                 });
+                      //           }
+                      //         }
+                      //       } else {
+                      //         SubscribeScreen().launch(context);
+                      //       }
+                      //     } else {
+                      //       showDialog(
+                      //           context: context,
+                      //           builder: (context) {
+                      //             return BoostDialog(onAccept: () {
+                      //               setState(() {
+                      //                 setAdvertisement(
+                      //                     data.id, data.advertisementProperty);
+                      //                 finish(context);
+                      //               });
+                      //             });
+                      //           });
+                      //     }
+                      //   });
+                      launchWhatsApp();
                     })
                   ],
                 ),

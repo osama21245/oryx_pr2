@@ -26,6 +26,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-9323121663077629~8712376337</string>
 	<!-- <key>NSUserTrackingUsageDescription</key>
 	<string>This identifier is used to deliver relevant ads.</string> -->
 	<key>NSMicrophoneUsageDescription</key>

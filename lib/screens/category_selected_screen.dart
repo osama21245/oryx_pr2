@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import '../components/oryx_ai.dart';
 import '../extensions/extension_util/widget_extensions.dart';
 import '../models/dashBoard_response.dart';
 import '../components/advertisement_property_component.dart';
@@ -180,7 +181,7 @@ class _CategorySelectedScreenState extends State<CategorySelectedScreen> {
             Loader().center().visible(appStore.isLoading)
           ],
         ),
-        floatingActionButton: _buildOryxAIFloatingButton(),
+        floatingActionButton: OryxAIFloatingButton(),
       );
     });
   }

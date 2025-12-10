@@ -22,7 +22,7 @@ class _MetaBannerState extends State<MetaBanner> {
     debugPrint('This is the banner ad load function<><><><><');
     _bannerAd = BannerAd(
       size: AdSize.banner,
-      adUnitId: 'ca-app-pub-9323121663077629/1208348881', // your real ad ID
+      adUnitId: 'ca-app-pub-9323121663077629/1208348881',
       listener: BannerAdListener(
         onAdLoaded: (ad) {
           setState(() {
