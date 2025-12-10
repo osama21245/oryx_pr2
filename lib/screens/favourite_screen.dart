@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orex/components/oryx_ai.dart';
 import '../extensions/extension_util/widget_extensions.dart';
 import '../models/dashBoard_response.dart';
 import '../components/advertisement_property_component.dart';
@@ -129,7 +130,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           Loader().center().visible(appStore.isLoading)
         ],
       ),
-      floatingActionButton: _buildOryxAIFloatingButton(),
+      floatingActionButton:OryxAIFloatingButton(),
     );
   }
 

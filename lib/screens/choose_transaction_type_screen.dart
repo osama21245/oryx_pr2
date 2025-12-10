@@ -12,6 +12,7 @@ import 'package:orex/screens/dashboard_screen.dart';
 import 'package:orex/screens/home_screen.dart';
 import 'package:orex/screens/search_screen.dart';
 import '../components/meta_banner.dart';
+import '../components/oryx_ai.dart';
 import '../main.dart';
 import '../extensions/system_utils.dart';
 import '../network/RestApis.dart';
@@ -335,7 +336,7 @@ class _ChooseTransactionTypeScreenState
                   ],
                 ),
               ),
-        floatingActionButton: _buildOryxAIFloatingButton(),
+        floatingActionButton:OryxAIFloatingButton(),
       );
     });
   }

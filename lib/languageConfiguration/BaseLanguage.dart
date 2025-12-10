@@ -480,7 +480,7 @@ class BaseLanguage {
   String get sellProperty => getContentValueFromKey(303);
 
   String get wantedProperty =>
-      getContentValueFromKey(400); // مطلوب - Wanted Property
+      getContentValueFromKey(359); // مطلوب - Wanted Property
 
   String get pgColivingProperty => getContentValueFromKey(304);
 
