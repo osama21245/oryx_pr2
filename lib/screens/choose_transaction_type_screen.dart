@@ -11,6 +11,8 @@ import 'package:orex/extensions/extension_util/widget_extensions.dart';
 import 'package:orex/screens/dashboard_screen.dart';
 import 'package:orex/screens/home_screen.dart';
 import 'package:orex/screens/search_screen.dart';
+import '../components/meta_banner.dart';
+import '../components/oryx_ai.dart';
 import '../main.dart';
 import '../extensions/system_utils.dart';
 import '../network/RestApis.dart';
@@ -325,18 +327,8 @@ class _ChooseTransactionTypeScreenState
                                   Theme.of(context).disabledColor.withAlpha(25),
                               borderRadius: BorderRadius.circular(23),
                             ),
-                            child: Text(
-                              language.advertisement,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24,
-                                fontFamily: 'Cairo',
-                                color: appStore.isDarkModeOn
-                                    ? textOnDarkMode
-                                    : textOnLightMode,
-                              ),
-                            ),
+                            child: MetaBanner(),
+                            //TODO: check here,
                           ),
                         ],
                       ),
@@ -344,7 +336,7 @@ class _ChooseTransactionTypeScreenState
                   ],
                 ),
               ),
-        floatingActionButton: _buildOryxAIFloatingButton(),
+        floatingActionButton:OryxAIFloatingButton(),
       );
     });
   }

@@ -22,10 +22,14 @@
         <!-- OneSignal Configuration -->
         <meta-data
             android:name="onesignal_app_id"
-            android:value="b2dcff93-86ec-4a14-8449-2af38ed76a77" />
+            android:value="6e79efe1-1b61-42fc-a5df-3fcc9ccaf083" />
+            
         <meta-data
             android:name="onesignal_google_project_number"
             android:value="REMOTE" />
+            <meta-data
+    android:name="com.google.android.gms.ads.APPLICATION_ID"
+    android:value="ca-app-pub-9323121663077629~8712376337"/>
         <service android:name="com.onesignal.GcmIntentService" />
         <activity
             android:name=".MainActivity"

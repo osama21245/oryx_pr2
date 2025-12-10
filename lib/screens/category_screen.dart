@@ -5,6 +5,7 @@ import 'package:orex/screens/filter_category.dart';
 import 'package:orex/screens/home_screen.dart';
 import 'package:orex/utils/images.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import '../components/oryx_ai.dart';
 import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
 import '../extensions/extension_util/widget_extensions.dart';
@@ -140,14 +141,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       .visible(!appStore.isLoading),
         ],
       ),
-      floatingActionButton: _buildOryxAIFloatingButton(),
+      floatingActionButton: OryxAIFloatingButton(),
     );
   }
 
   Widget _buildOryxAIFloatingButton() {
     return Container(
-      margin: EdgeInsets.only(bottom: 16, right: 16),
-      child: FloatingActionButton.extended(
+      margin: const EdgeInsets.only(bottom: 16, right: 16),
+      child: FloatingActionButton(
         onPressed: () {
           SearchScreen(
             isBack: true,
@@ -156,22 +157,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
         },
         backgroundColor: primaryColor,
         elevation: 8,
-        icon: Container(
+        child: Container(
           width: 32,
           height: 32,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.2),
             borderRadius: BorderRadius.circular(8),
           ),
-          padding: EdgeInsets.all(6),
+          padding: const EdgeInsets.all(6),
           child: Image.asset(
             app_logo,
             fit: BoxFit.contain,
           ),
-        ),
-        label: Text(
-          appStore.selectedLanguage == 'ar' ? 'Oryx AI' : 'Oryx AI',
-          style: boldTextStyle(color: Colors.white, size: 16),
         ),
       ),
     );

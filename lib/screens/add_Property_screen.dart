@@ -704,13 +704,15 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     // Sell (1) or Wanted (3) - no price_duration required
                                     else {
                                       print('dddddddddddddddddddddddddd');
-                                      if (mainImagePath != null &&
+                                      if ((widget.propertyFor == 3 ||
+                                              mainImagePath != null) &&
                                           selectedBhkIndex != null) {
                                         // Submit directly instead of going to third screen
                                         saveProperty();
                                         selectedOptions.clear();
                                       } else {
-                                        if (mainImagePath == null) {
+                                        if (widget.propertyFor != 3 &&
+                                            mainImagePath == null) {
                                           toast(
                                               language.pleaseSelectMainPicture);
                                         }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:orex/components/oryx_ai.dart';
 import 'package:orex/models/dashBoard_response.dart';
 import '../components/full_screen_image_viewer.dart';
 import '../extensions/colors.dart';
@@ -264,7 +265,9 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => FullScreenImageViewer(imageUrl: imageUrl),
+                                      builder: (context) =>
+                                          FullScreenImageViewer(
+                                              imageUrl: imageUrl),
                                     ),
                                   );
                                 },
@@ -676,7 +679,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
               ),
             )
           : SizedBox(),
-      floatingActionButton: _buildOryxAIFloatingButton(),
+      floatingActionButton: OryxAIFloatingButton(),
     );
   }
 
