@@ -261,9 +261,9 @@ class _ChooseTransactionTypeScreenState
                       padding: 0,
                       isGif: true,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height:0),
                     Padding(
-                      padding: const EdgeInsets.all(24.0),
+                      padding: const EdgeInsets.all(14.0),
                       child: Column(
                         children: [
                           GestureDetector(
