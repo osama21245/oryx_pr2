@@ -40,7 +40,8 @@ class TransactionTypeCard extends StatelessWidget {
           borderRadius: effectiveBorderRadius),
       child: Padding(
         padding: EdgeInsets.all(10),
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Align(
             //   alignment: AlignmentDirectional.topEnd,
@@ -52,16 +53,18 @@ class TransactionTypeCard extends StatelessWidget {
             //   ),
             // ),
             isGif
-                ? ClipRRect(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    borderRadius: effectiveBorderRadius,
-                    child: Image.network(
-                      imagePath,
-                      width: width ?? size.width * 0.9,
-                      height: size.height * 0.3,
-                      fit: BoxFit.fill,
+                ? Expanded(
+                  child: ClipRRect(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      borderRadius: effectiveBorderRadius,
+                      child: Image.network(
+                        imagePath,
+                        width: width ?? size.width * 0.9,
+                        height: size.height * 0.3,
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                  )
+                )
                 : Image.asset(
                     imagePath,
                     width: size.width * 0.3,
@@ -71,7 +74,7 @@ class TransactionTypeCard extends StatelessWidget {
                 ? Text(
                     type!,
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                         fontWeight: FontWeight.w700,
                         color: isSelected
                             ? Theme.of(context).primaryColor

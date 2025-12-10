@@ -147,7 +147,12 @@ void main() async {
   // Added By SK
   initJsonFile();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.portraitDown
+  ]);
   runApp(MyApp());
 }
 

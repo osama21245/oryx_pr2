@@ -229,11 +229,14 @@ class _ChooseTransactionTypeScreenState
     return Observer(builder: (context) {
       return Scaffold(
         appBar: AppBar(
-          leading: Image.asset(
-            ic_logo,
-            height: 40,
-            width: 40,
-          ).paddingOnly(left: 16, top: 8, bottom: 8),
+          leading: GestureDetector(
+            onTap: () => context.pop(),
+            child: Image.asset(
+              ic_logo,
+              height: 40,
+              width: 40,
+            ).paddingOnly(left: 16, top: 8, bottom: 8),
+          ),
           title: Text(language.transactionType),
           centerTitle: true,
         ),
@@ -258,7 +261,7 @@ class _ChooseTransactionTypeScreenState
                       padding: 0,
                       isGif: true,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 12),
                     Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Column(
@@ -280,7 +283,7 @@ class _ChooseTransactionTypeScreenState
                               type: language.sell,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 12),
                           GestureDetector(
                             onTap: () {
                               iWantToRent();
@@ -298,7 +301,7 @@ class _ChooseTransactionTypeScreenState
                               type: language.rent,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 12),
                           GestureDetector(
                             onTap: () {
                               iWantToWanted();
@@ -316,23 +319,21 @@ class _ChooseTransactionTypeScreenState
                               type: language.wantedProperty,
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 130,
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            decoration: BoxDecoration(
-                              color:
-                                  Theme.of(context).disabledColor.withAlpha(25),
-                              borderRadius: BorderRadius.circular(23),
-                            ),
-                            child: MetaBanner(),
-                            //TODO: check here,
-                          ),
                         ],
                       ),
-                    )
+                    ),Container(
+                      alignment: Alignment.center,
+                      height: 130,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color:
+                        Theme.of(context).disabledColor.withAlpha(25),
+                        borderRadius: BorderRadius.circular(23),
+                      ),
+                      child: MetaBanner(),
+                      //TODO: check here,
+                    ),
                   ],
                 ),
               ),
