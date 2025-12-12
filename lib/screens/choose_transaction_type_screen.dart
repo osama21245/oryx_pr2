@@ -23,6 +23,7 @@ import '../extensions/extension_util/int_extensions.dart';
 class ChooseTransactionTypeDropdown extends StatefulWidget {
   // final int? initialValue;
   final ValueChanged<int?>? onChanged;
+
   const ChooseTransactionTypeDropdown({super.key, this.onChanged});
 
   @override
@@ -110,6 +111,7 @@ class _TransactionType {
   final int id;
   final String label;
   final String imagePath;
+
   const _TransactionType(
       {required this.id, required this.label, required this.imagePath});
 }
@@ -130,6 +132,7 @@ class _ChooseTransactionTypeScreenState
   int? selectedTransactionTypeId;
   bool isSale = false, isRent = false, isWanted = false;
   late String gifUrl;
+
   iWantToSale() {
     setState(() {
       isRent = false;
@@ -178,6 +181,7 @@ class _ChooseTransactionTypeScreenState
       log('Error fetching GIF: $e');
     }
   }
+
   // Future<void> fetchTransactionTypes() async {
   //   appStore.setLoading(true);
   //   await getTransactionTypesApi().then((value) {
@@ -259,9 +263,10 @@ class _ChooseTransactionTypeScreenState
                       isSelected: false,
                       imagePath: gifUrl,
                       padding: 0,
+                      decorationImagePath: splash,
                       isGif: true,
                     ),
-                    const SizedBox(height:0),
+                    const SizedBox(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
                       child: Column(
@@ -321,14 +326,19 @@ class _ChooseTransactionTypeScreenState
                           ),
                         ],
                       ),
-                    ),Container(
+                    ),
+                    Container(
                       alignment: Alignment.center,
                       height: 130,
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       decoration: BoxDecoration(
-                        color:
-                        Theme.of(context).disabledColor.withAlpha(25),
+                        image: DecorationImage(
+                          fit: BoxFit.fill  ,
+                            image: AssetImage(
+                          splash,
+                        )),
+                        color: Theme.of(context).disabledColor.withAlpha(25),
                         borderRadius: BorderRadius.circular(23),
                       ),
                       child: MetaBanner(),
@@ -337,7 +347,7 @@ class _ChooseTransactionTypeScreenState
                   ],
                 ),
               ),
-        floatingActionButton:OryxAIFloatingButton(),
+        floatingActionButton: OryxAIFloatingButton(),
       );
     });
   }
