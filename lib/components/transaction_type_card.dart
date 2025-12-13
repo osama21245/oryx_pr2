@@ -5,10 +5,12 @@ import 'package:orex/main.dart';
 class TransactionTypeCard extends StatelessWidget {
   final String imagePath;
   final String? type;
+  final String? decorationImagePath;
   bool isSelected;
   bool isGif;
   double? width, height, padding;
   BorderRadiusGeometry? borderRadius;
+
   TransactionTypeCard({
     super.key,
     required this.isSelected,
@@ -19,6 +21,7 @@ class TransactionTypeCard extends StatelessWidget {
     this.width,
     this.padding = 0,
     this.isGif = false,
+    this.decorationImagePath,
   });
 
   @override
@@ -30,6 +33,9 @@ class TransactionTypeCard extends StatelessWidget {
       height: height,
       padding: EdgeInsets.symmetric(vertical: padding!),
       decoration: BoxDecoration(
+          image: decorationImagePath != null
+              ? DecorationImage(fit: BoxFit.cover,image: AssetImage(decorationImagePath ?? ""))
+              : null,
           border: Border.all(
             color: isSelected
                 ? Theme.of(context).primaryColor
@@ -40,7 +46,8 @@ class TransactionTypeCard extends StatelessWidget {
           borderRadius: effectiveBorderRadius),
       child: Padding(
         padding: EdgeInsets.all(10),
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Align(
             //   alignment: AlignmentDirectional.topEnd,
@@ -52,14 +59,16 @@ class TransactionTypeCard extends StatelessWidget {
             //   ),
             // ),
             isGif
-                ? ClipRRect(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    borderRadius: effectiveBorderRadius,
-                    child: Image.network(
-                      imagePath,
-                      width: width ?? size.width * 0.9,
-                      height: size.height * 0.3,
-                      fit: BoxFit.fill,
+                ? Expanded(
+                    child: ClipRRect(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      borderRadius: effectiveBorderRadius,
+                      child: Image.network(
+                        imagePath,
+                        width: width ?? size.width * 0.9,
+                        height: size.height * 0.3,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   )
                 : Image.asset(
@@ -71,7 +80,7 @@ class TransactionTypeCard extends StatelessWidget {
                 ? Text(
                     type!,
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                         fontWeight: FontWeight.w700,
                         color: isSelected
                             ? Theme.of(context).primaryColor

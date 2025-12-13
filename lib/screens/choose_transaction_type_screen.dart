@@ -23,6 +23,7 @@ import '../extensions/extension_util/int_extensions.dart';
 class ChooseTransactionTypeDropdown extends StatefulWidget {
   // final int? initialValue;
   final ValueChanged<int?>? onChanged;
+
   const ChooseTransactionTypeDropdown({super.key, this.onChanged});
 
   @override
@@ -110,6 +111,7 @@ class _TransactionType {
   final int id;
   final String label;
   final String imagePath;
+
   const _TransactionType(
       {required this.id, required this.label, required this.imagePath});
 }
@@ -130,6 +132,7 @@ class _ChooseTransactionTypeScreenState
   int? selectedTransactionTypeId;
   bool isSale = false, isRent = false, isWanted = false;
   late String gifUrl;
+
   iWantToSale() {
     setState(() {
       isRent = false;
@@ -178,6 +181,7 @@ class _ChooseTransactionTypeScreenState
       log('Error fetching GIF: $e');
     }
   }
+
   // Future<void> fetchTransactionTypes() async {
   //   appStore.setLoading(true);
   //   await getTransactionTypesApi().then((value) {
@@ -229,11 +233,14 @@ class _ChooseTransactionTypeScreenState
     return Observer(builder: (context) {
       return Scaffold(
         appBar: AppBar(
-          leading: Image.asset(
-            ic_logo,
-            height: 40,
-            width: 40,
-          ).paddingOnly(left: 16, top: 8, bottom: 8),
+          leading: GestureDetector(
+            onTap: () => context.pop(),
+            child: Image.asset(
+              ic_logo,
+              height: 40,
+              width: 40,
+            ).paddingOnly(left: 16, top: 8, bottom: 8),
+          ),
           title: Text(language.transactionType),
           centerTitle: true,
         ),
@@ -256,11 +263,12 @@ class _ChooseTransactionTypeScreenState
                       isSelected: false,
                       imagePath: gifUrl,
                       padding: 0,
+                      decorationImagePath: splash,
                       isGif: true,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 0),
                     Padding(
-                      padding: const EdgeInsets.all(24.0),
+                      padding: const EdgeInsets.all(14.0),
                       child: Column(
                         children: [
                           GestureDetector(
@@ -280,7 +288,7 @@ class _ChooseTransactionTypeScreenState
                               type: language.sell,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 12),
                           GestureDetector(
                             onTap: () {
                               iWantToRent();
@@ -298,7 +306,7 @@ class _ChooseTransactionTypeScreenState
                               type: language.rent,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 12),
                           GestureDetector(
                             onTap: () {
                               iWantToWanted();
@@ -316,27 +324,30 @@ class _ChooseTransactionTypeScreenState
                               type: language.wantedProperty,
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 130,
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            decoration: BoxDecoration(
-                              color:
-                                  Theme.of(context).disabledColor.withAlpha(25),
-                              borderRadius: BorderRadius.circular(23),
-                            ),
-                            child: MetaBanner(),
-                            //TODO: check here,
-                          ),
                         ],
                       ),
-                    )
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 130,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill  ,
+                            image: AssetImage(
+                          splash,
+                        )),
+                        color: Theme.of(context).disabledColor.withAlpha(25),
+                        borderRadius: BorderRadius.circular(23),
+                      ),
+                      child: MetaBanner(),
+                      //TODO: check here,
+                    ),
                   ],
                 ),
               ),
-        floatingActionButton:OryxAIFloatingButton(),
+        floatingActionButton: OryxAIFloatingButton(),
       );
     });
   }

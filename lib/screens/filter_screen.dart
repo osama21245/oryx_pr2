@@ -222,8 +222,9 @@ class _FilterScreenState extends State<FilterScreen>
                       propertyList[index].title.validate(),
                       style: primaryTextStyle(
                           color: propertyList[index].select!
-                              ? Colors.white
-                              : grayColor),
+                              ? textOnLightMode
+                              : textOnDarkMode
+                      ),
                     ).center(),
                   ).onTap(() {
                     setState(() {
@@ -290,13 +291,15 @@ class _FilterScreenState extends State<FilterScreen>
                             ? primaryColor
                             : appStore.isDarkModeOn
                                 ? cardDarkColor
-                                : primaryExtraLight),
+                                : primaryExtraLight
+                    ),
                     child: Text(
                       propertyForList[index].title.validate(),
                       style: primaryTextStyle(
                           color: propertyForList[index].select!
-                              ? Colors.white
-                              : grayColor),
+                              ? textOnLightMode
+                              : textOnDarkMode
+                      ),
                     ).center(),
                   ).onTap(() {
                     setState(() {
@@ -408,14 +411,17 @@ class _FilterScreenState extends State<FilterScreen>
                   data!.propertyCity!.isNotEmpty
                       ? userStore.cityName.isEmpty
                           ? Text(data!.propertyCity![0].name.toString(),
-                              style: primaryTextStyle(color: primaryColor))
+                              style: primaryTextStyle(color: appStore.isDarkModeOn  ? textOnDarkMode
+                                  :textOnLightMode ))
                           : Text(userStore.cityName,
-                                  style: primaryTextStyle(color: primaryColor),
+                                  style: primaryTextStyle(color: appStore.isDarkModeOn  ? textOnDarkMode
+                                      :textOnLightMode ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis)
                               .expand()
                       : Text(language.selectCity,
-                          style: primaryTextStyle(color: primaryColor)),
+                          style: primaryTextStyle(color: appStore.isDarkModeOn  ? textOnDarkMode
+                              :textOnLightMode )),
                 ],
               ),
               dropdownColor: context.cardColor,
@@ -425,7 +431,8 @@ class _FilterScreenState extends State<FilterScreen>
                       ? userStore.cityName
                       : e.name.validate(),
                   child: Text(e.name.validate(),
-                      style: primaryTextStyle(color: primaryColor),
+                      style: primaryTextStyle(color: appStore.isDarkModeOn  ? textOnDarkMode
+                          :textOnLightMode ),
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       textAlign: TextAlign.end),

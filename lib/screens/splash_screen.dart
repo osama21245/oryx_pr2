@@ -125,13 +125,11 @@ class SplashScreenState extends State<SplashScreen>
       ),
       child: Scaffold(
         backgroundColor: primaryColor,
-        body: SizedBox(
-          child: Image.asset(
-            splash,
-            fit: BoxFit.cover,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
+        body: Image.asset(
+          splash,
+          fit: BoxFit.cover,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
         ),
       ),
     );
