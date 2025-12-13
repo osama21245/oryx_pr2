@@ -130,7 +130,9 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                             "*": Style(
                               direction: TextDirection.rtl, // since it's Arabic
                               fontSize: FontSize(16),
-                              color: Colors.black,
+                              color: appStore.isDarkModeOn
+                                  ? textOnDarkMode
+                                  : textOnLightMode,
                             ),
                           },
                         ),
