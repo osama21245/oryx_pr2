@@ -51,12 +51,22 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> getData() async {
     appStore.setLoading(true);
-    await getDashBoardData({
-      "latitude": userStore.latitude,
-      "longitude": userStore.longitude,
-      "city": userStore.cityName,
-      "player_id": getStringAsync(PLAYER_ID)
-    }).then((value) {
+
+    Map request = {
+      "player_id": getStringAsync(PLAYER_ID),
+    };
+
+    if (userStore.latitude.isNotEmpty) {
+      request["latitude"] = userStore.latitude;
+    }
+    if (userStore.longitude.isNotEmpty) {
+      request["longitude"] = userStore.longitude;
+    }
+    if (userStore.cityName.isNotEmpty) {
+      request["city"] = userStore.cityName;
+    }
+
+    await getDashBoardData(request).then((value) {
       data = value;
 
       userStore.setMinPrice(data!.filterConfiguration!.minPrice.toString());
