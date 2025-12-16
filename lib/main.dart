@@ -65,8 +65,9 @@ void main() async {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     });
     await FirebaseAppCheck.instance.activate(
-      androidProvider: AndroidProvider.debug,
-      appleProvider: AppleProvider.debug,
+      androidProvider:
+          kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
+      appleProvider: kDebugMode ? AppleProvider.debug : AppleProvider.appAttest,
     );
   } catch (e) {
     print(e);
@@ -147,7 +148,12 @@ void main() async {
   // Added By SK
   initJsonFile();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.portraitDown
+  ]);
   runApp(MyApp());
 }
 
