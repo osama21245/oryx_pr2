@@ -11,7 +11,7 @@ platform :android do
       app: "1:521631638082:android:387e4b41a645ccfa4103db",
       groups: "testing",
       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-      release_notes: "Fix google adds for ios crash",
+      release_notes: "Fix Guest login for apple",
       apk_path: "../build/app/outputs/flutter-apk/app-release.apk",
       android_artifact_type: "APK",
     )
@@ -24,7 +24,7 @@ platform :android do
       app: "1:521631638082:android:387e4b41a645ccfa4103db",
       groups: "dev",
       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-      release_notes: "Release notes",
+      release_notes: "Fix Guest login for apple",
       apk_path: "../build/app/outputs/flutter-apk/app-release.apk",
       android_artifact_type: "APK",
     )
