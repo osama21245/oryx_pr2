@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orex/components/slider_components.dart';
 import 'package:orex/models/dashBoard_response.dart';
+import 'package:orex/screens/dashboard_screen.dart';
 import 'package:orex/screens/filter_category.dart';
 import 'package:orex/screens/home_screen.dart';
 import 'package:orex/utils/images.dart';
@@ -104,7 +105,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () => context.pop(),
+          onTap: (){
+            DashboardScreen().launch(context, isNewTask: false);
+          },
           child: Image.asset(
             ic_logo,
             height: 40,

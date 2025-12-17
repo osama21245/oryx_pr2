@@ -262,6 +262,7 @@ class _ChooseTransactionTypeScreenState
                       borderRadius: BorderRadius.all(Radius.circular(6)),
                       isSelected: false,
                       imagePath: gifUrl,
+                      gifHeight: 280,
                       padding: 0,
                       decorationImagePath: splash,
                       isGif: true,
