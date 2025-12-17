@@ -30,6 +30,7 @@ import '../utils/app_common.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../utils/images.dart';
+import '../utils/static_translations.dart';
 import 'home_screen.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -414,10 +415,16 @@ class _FilterScreenState extends State<FilterScreen>
                 children: [
                   data!.propertyCity!.isNotEmpty
                       ? userStore.cityName.isEmpty
-                          ? Text(data!.propertyCity![0].name.toString(),
+                          ? Text(  translateCityName(
+                    data!.propertyCity![0].name.toString(),
+                    appStore.selectedLanguage,
+                  ),
                               style: primaryTextStyle(color: appStore.isDarkModeOn  ? textOnDarkMode
                                   :textOnLightMode ))
-                          : Text(userStore.cityName,
+                          : Text(translateCityName(
+                    userStore.cityName.toString(),
+                    appStore.selectedLanguage,
+                  ),
                                   style: primaryTextStyle(color: appStore.isDarkModeOn  ? textOnDarkMode
                                       :textOnLightMode ),
                                   maxLines: 1,
@@ -434,7 +441,10 @@ class _FilterScreenState extends State<FilterScreen>
                   value: data!.propertyCity!.contains(userStore.cityName)
                       ? userStore.cityName
                       : e.name.validate(),
-                  child: Text(e.name.validate(),
+                  child: Text(translateCityName(
+                    e.name ?? '',
+                    appStore.selectedLanguage,
+                  ).capitalizeFirstLetter(),
                       style: primaryTextStyle(color: appStore.isDarkModeOn  ? textOnDarkMode
                           :textOnLightMode ),
                       overflow: TextOverflow.ellipsis,
