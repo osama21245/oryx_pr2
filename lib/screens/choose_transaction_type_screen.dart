@@ -257,19 +257,43 @@ class _ChooseTransactionTypeScreenState
                   children: [
                     if (selectedTransactionTypeId != null)
                       const SizedBox(height: 20),
-                    TransactionTypeCard(
-                      width: MediaQuery.of(context).size.width,
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      isSelected: false,
-                      imagePath: gifUrl,
-                      gifHeight: 280,
-                      padding: 0,
-                      decorationImagePath: splash,
-                      isGif: true,
-                    ),
-                    const SizedBox(height: 0),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(20.0),
+                    //   child: TransactionTypeCard(
+                    //     width: MediaQuery.of(context).size.width,
+                    //     borderRadius: BorderRadius.all(Radius.circular(6)),
+                    //     isSelected: false,
+                    //     imagePath: gifUrl,
+                    //     gifHeight: 200,
+                    //     padding: 0,
+                    //     decorationImagePath: splash,
+                    //     isGif: true,
+                    //   ),
+                    // ),
                     Padding(
-                      padding: const EdgeInsets.all(14.0),
+                      padding: const EdgeInsets.only(bottom: 0,top: 20,right: 20,left: 20),
+                      child: ClipRRect(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        borderRadius: BorderRadius.circular(18),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.fill  ,
+                                image: AssetImage(
+                                  splash,
+                                )),
+                          ),
+                          child: Image.network(
+                            gifUrl,
+                            width: MediaQuery.of(context).size.width,
+                            height: 220,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
                       child: Column(
                         children: [
                           GestureDetector(
@@ -328,22 +352,25 @@ class _ChooseTransactionTypeScreenState
                         ],
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      height: 130,
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill  ,
-                            image: AssetImage(
-                          splash,
-                        )),
-                        color: Theme.of(context).disabledColor.withAlpha(25),
-                        borderRadius: BorderRadius.circular(23),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20,top: 0,right: 20,left: 20),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 130,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.fill  ,
+                              image: AssetImage(
+                            splash,
+                          )),
+                          color: Theme.of(context).disabledColor.withAlpha(25),
+                          borderRadius: BorderRadius.circular(23),
+                        ),
+                        child: MetaBanner(),
+                        //TODO: check here,
                       ),
-                      child: MetaBanner(),
-                      //TODO: check here,
                     ),
                   ],
                 ),
