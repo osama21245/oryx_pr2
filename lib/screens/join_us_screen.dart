@@ -106,15 +106,15 @@ class _JoinUsScreenState extends State<JoinUsScreen> {
                 LoginScreen().launch(context, isNewTask: false);
               },
             ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
-            AppButton(
-              text: language.continueAsGuest,
-              width: context.width(),
-              color: Color(0xffE9E9E9),
-              textColor: primaryColor,
-              onTap: () {
-                _performGuestLogin();
-              },
-            ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
+            // AppButton(
+            //   text: language.continueAsGuest,
+            //   width: context.width(),
+            //   color: Color(0xffE9E9E9),
+            //   textColor: primaryColor,
+            //   onTap: () {
+            //     _performGuestLogin();
+            //   },
+            // ).paddingOnly(right: 16, bottom: 16, left: 16, top: 0),
           ],
         ),
       ),

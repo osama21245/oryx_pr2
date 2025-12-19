@@ -363,7 +363,7 @@ class _ChooseTransactionTypeScreenState
                           image: DecorationImage(
                             fit: BoxFit.fill  ,
                               image: AssetImage(
-                            splash,
+                            city_view,
                           )),
                           color: Theme.of(context).disabledColor.withAlpha(25),
                           borderRadius: BorderRadius.circular(23),

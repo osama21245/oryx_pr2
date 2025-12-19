@@ -56,6 +56,7 @@ const ic_call_outlined = "assets/ic_call_outline.png";
 const ic_login = "assets/ic_login.png";
 const ic_verify = "assets/ic_verify.png";
 const splash = "assets/splash.png";
+const city_view = "assets/city.jpeg";
 const ic_sell = "assets/ic_sell.png";
 const ic_walk1 = "assets/ic_walk1.png";
 const ic_walk2 = "assets/ic_walk2.png";
