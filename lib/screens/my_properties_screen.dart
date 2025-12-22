@@ -71,7 +71,7 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> {
   }
 
   Future<void> launchWhatsApp() async {
-    const phone = "+201096968482";
+    const phone = "+201036849727";
     final encoded = Uri.encodeComponent('ارغب في ترويج عقاري');
     final url = Uri.parse("https://wa.me/$phone?text=$encoded");
 

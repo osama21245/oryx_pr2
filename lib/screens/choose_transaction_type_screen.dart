@@ -233,14 +233,13 @@ class _ChooseTransactionTypeScreenState
     return Observer(builder: (context) {
       return Scaffold(
         appBar: AppBar(
-          leading: GestureDetector(
-            onTap: () => context.pop(),
-            child: Image.asset(
+          actions: [
+            Image.asset(
               ic_logo,
               height: 40,
               width: 40,
-            ).paddingOnly(left: 16, top: 8, bottom: 8),
-          ),
+            ).paddingOnly(left: 16, top: 8, bottom: 8)
+          ],
           title: Text(language.transactionType),
           centerTitle: true,
         ),
@@ -298,7 +297,7 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: true);
+                              ).launch(context, isNewTask: false);
                             },
                             child: TransactionTypeCard(
                               isSelected: isRent,
@@ -334,10 +333,10 @@ class _ChooseTransactionTypeScreenState
                       padding: EdgeInsets.symmetric(vertical: 16),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.fill  ,
+                            fit: BoxFit.fill,
                             image: AssetImage(
-                          splash,
-                        )),
+                              splash,
+                            )),
                         color: Theme.of(context).disabledColor.withAlpha(25),
                         borderRadius: BorderRadius.circular(23),
                       ),

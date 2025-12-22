@@ -102,11 +102,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
     print('ddddddaaaaaaaaaaaa ${data!.slider!.length}');
     return Scaffold(
       appBar: AppBar(
-        leading: Image.asset(
-          ic_logo,
-          height: 40,
-          width: 40,
-        ).paddingOnly(left: 16, top: 8, bottom: 8),
+        actions: [
+          Image.asset(
+            ic_logo,
+            height: 40,
+            width: 40,
+          ).paddingOnly(left: 16, top: 8, bottom: 8)
+        ],
         title: Text(language.category),
         centerTitle: true,
       ),
