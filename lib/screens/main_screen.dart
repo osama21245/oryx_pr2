@@ -9,6 +9,8 @@ import 'package:orex/screens/filter_screen.dart';
 import 'package:orex/screens/search_screen.dart';
 import 'package:orex/utils/app_textfiled.dart';
 import 'package:orex/utils/images.dart';
+import 'package:orex/components/transaction_type_card.dart';
+import 'package:orex/models/gif_model.dart';
 import '../components/meta_banner.dart';
 import '../extensions/colors.dart';
 import '../extensions/decorations.dart';
@@ -30,11 +32,24 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   TextEditingController mSearchCont = TextEditingController();
 
+  String gifUrl = '';
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
+    fetchGif();
+  }
+
+  Future<void> fetchGif() async {
+    try {
+      GifResponse gifResponse = await getGIFApi();
+      gifUrl = gifResponse.url ?? '';
+      setState(() {});
+    } catch (e) {
+      print('Error fetching GIF: $e');
+    }
   }
 
   // add by Axon
@@ -126,6 +141,20 @@ class _MainScreenState extends State<MainScreen> {
             //?? add by Axon
             // Search widget above grid
             searchWidget(),
+            20.height,
+            if (gifUrl
+                .isNotEmpty) // Only show if GIF URL is available, or use empty check inside? The original uses `TransactionTypeCard` which handles display.
+              // The original code in `choose_transaction_type_screen.dart` unconditionally shows it but fetches the gif.
+              // Let's match the user request: "this slider ... i want this component to be in the home page"
+              TransactionTypeCard(
+                width: MediaQuery.of(context).size.width,
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+                isSelected: false,
+                imagePath: gifUrl,
+                padding: 0,
+                decorationImagePath: splash,
+                isGif: true,
+              ).paddingSymmetric(horizontal: 16),
             20.height,
             _buildFirstDropdown(),
             _buildSecondDropdown(),
