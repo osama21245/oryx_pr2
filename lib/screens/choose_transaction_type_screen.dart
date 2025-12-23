@@ -257,43 +257,18 @@ class _ChooseTransactionTypeScreenState
                   children: [
                     if (selectedTransactionTypeId != null)
                       const SizedBox(height: 20),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(20.0),
-                    //   child: TransactionTypeCard(
-                    //     width: MediaQuery.of(context).size.width,
-                    //     borderRadius: BorderRadius.all(Radius.circular(6)),
-                    //     isSelected: false,
-                    //     imagePath: gifUrl,
-                    //     gifHeight: 200,
-                    //     padding: 0,
-                    //     decorationImagePath: splash,
-                    //     isGif: true,
-                    //   ),
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 0,top: 20,right: 20,left: 20),
-                      child: ClipRRect(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        borderRadius: BorderRadius.circular(18),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.fill  ,
-                                image: AssetImage(
-                                  splash,
-                                )),
-                          ),
-                          child: Image.network(
-                            gifUrl,
-                            width: MediaQuery.of(context).size.width,
-                            height: 220,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
+                    TransactionTypeCard(
+                      width: MediaQuery.of(context).size.width,
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      isSelected: false,
+                      imagePath: gifUrl,
+                      padding: 0,
+                      decorationImagePath: splash,
+                      isGif: true,
                     ),
+                    const SizedBox(height: 0),
                     Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(14.0),
                       child: Column(
                         children: [
                           GestureDetector(

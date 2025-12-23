@@ -25,9 +25,9 @@ class _JoinUsScreenState extends State<JoinUsScreen> {
     // Use WidgetsBinding to ensure context is available
     // Only run guest login on iOS platform
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Platform.isIOS) {
-        _performGuestLogin();
-      }
+      // if (Platform.isIOS) {
+      _performGuestLogin();
+      // }
     });
   }
 
@@ -37,6 +37,7 @@ class _JoinUsScreenState extends State<JoinUsScreen> {
       await guestLoginApi().then((response) {
         if (response.data != null && response.data!.apiToken != null) {
           // Guest login successful, navigate to dashboard
+          debugPrint(response.data!.apiToken);
           if (mounted) {
             DashboardScreen(
               isSplash: true,
