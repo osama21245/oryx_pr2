@@ -1,0 +1,19 @@
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/stringio-3.2.0/ext/stringio
+/opt/homebrew/opt/ruby/bin/ruby extconf.rb
+checking for rb_io_mode_t in ruby/io.h... no
+creating Makefile
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/stringio-3.2.0/ext/stringio
+make -j9 DESTDIR\= sitearchdir\=./.gem.20251222-44240-lv0dih sitelibdir\=./.gem.20251222-44240-lv0dih clean
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/stringio-3.2.0/ext/stringio
+make -j9 DESTDIR\= sitearchdir\=./.gem.20251222-44240-lv0dih sitelibdir\=./.gem.20251222-44240-lv0dih
+compiling stringio.c
+linking shared-object stringio.bundle
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/stringio-3.2.0/ext/stringio
+make -j9 DESTDIR\= sitearchdir\=./.gem.20251222-44240-lv0dih sitelibdir\=./.gem.20251222-44240-lv0dih install
+/usr/bin/install -c -m 0755 stringio.bundle ./.gem.20251222-44240-lv0dih
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/stringio-3.2.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20251222-44240-lv0dih sitelibdir\=./.gem.20251222-44240-lv0dih clean

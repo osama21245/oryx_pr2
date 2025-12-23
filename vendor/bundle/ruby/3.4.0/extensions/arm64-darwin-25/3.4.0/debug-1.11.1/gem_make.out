@@ -1,0 +1,19 @@
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/debug-1.11.1/ext/debug
+/opt/homebrew/opt/ruby/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/debug-1.11.1/ext/debug
+make -j9 DESTDIR\= sitearchdir\=./.gem.20251222-44240-dbx3f6 sitelibdir\=./.gem.20251222-44240-dbx3f6 clean
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/debug-1.11.1/ext/debug
+make -j9 DESTDIR\= sitearchdir\=./.gem.20251222-44240-dbx3f6 sitelibdir\=./.gem.20251222-44240-dbx3f6
+compiling debug.c
+compiling iseq_collector.c
+linking shared-object debug/debug.bundle
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/debug-1.11.1/ext/debug
+make -j9 DESTDIR\= sitearchdir\=./.gem.20251222-44240-dbx3f6 sitelibdir\=./.gem.20251222-44240-dbx3f6 install
+/usr/bin/install -c -m 0755 debug.bundle ./.gem.20251222-44240-dbx3f6/debug
+
+current directory: /Users/a1/Flutter Projects/oryx_pr2/vendor/bundle/ruby/3.4.0/gems/debug-1.11.1/ext/debug
+make DESTDIR\= sitearchdir\=./.gem.20251222-44240-dbx3f6 sitelibdir\=./.gem.20251222-44240-dbx3f6 clean
