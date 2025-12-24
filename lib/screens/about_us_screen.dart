@@ -75,7 +75,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                               .paddingRight(16)
                               .visible(
                                   getStringAsync(INSTAGRAM_URL).isNotEmpty),
-                          mSocialOption(ic_twitter)
+                          mSocialOption(ic_tiktok)
                               .onTap(() {
                                 launchUrls(getStringAsync(TWITTER_URL));
                               })

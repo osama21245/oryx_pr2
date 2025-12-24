@@ -66,6 +66,7 @@ const ic_facebook = "assets/ic_facebook.png";
 const ic_instagram = "assets/ic_instagram.png";
 const ic_linkedin = "assets/ic_linkedin.png";
 const ic_twitter = "assets/ic_twitter.png";
+const ic_tiktok = "assets/ic_tiktok.png";
 const no_internet = "assets/no_internet.png";
 
 const ic_boost_img = "assets/ic_boost_img.png";
