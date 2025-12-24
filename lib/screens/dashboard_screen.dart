@@ -233,7 +233,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          mini: true,
+          // mini: true,
           heroTag: language.addProperties,
           child: Icon(Icons.add, size: 37, color: Colors.white),
           onPressed: () {
