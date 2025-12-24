@@ -233,13 +233,14 @@ class _ChooseTransactionTypeScreenState
     return Observer(builder: (context) {
       return Scaffold(
         appBar: AppBar(
-          actions: [
-            Image.asset(
+          leading: GestureDetector(
+            onTap: () => context.pop(),
+            child: Image.asset(
               ic_logo,
               height: 40,
               width: 40,
-            ).paddingOnly(left: 16, top: 8, bottom: 8)
-          ],
+            ).paddingOnly(left: 16, top: 8, bottom: 8),
+          ),
           title: Text(language.transactionType),
           centerTitle: true,
         ),
@@ -255,15 +256,20 @@ class _ChooseTransactionTypeScreenState
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (selectedTransactionTypeId != null)
-                      const SizedBox(height: 20),
-                    TransactionTypeCard(
-                      width: MediaQuery.of(context).size.width,
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      isSelected: false,
-                      imagePath: gifUrl,
-                      padding: 0,
-                      decorationImagePath: splash,
-                      isGif: true,
+                      const SizedBox(height: 10),
+                    Padding(
+                      padding:const EdgeInsets.only(bottom: 0,top: 0,right: 9,left: 9),
+                      child: TransactionTypeCard(
+                        gifHeight: 220,
+                        width: MediaQuery.of(context).size.width,
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        isSelected: false,
+                        imagePath: gifUrl,
+                        padding: 0,
+                        // decorationImagePath: splash,
+                        inTheme: false,
+                        isGif: true,
+                      ),
                     ),
                     const SizedBox(height: 0),
                     Padding(
@@ -297,7 +303,7 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: false);
+                              ).launch(context, isNewTask: true);
                             },
                             child: TransactionTypeCard(
                               isSelected: isRent,
@@ -326,22 +332,25 @@ class _ChooseTransactionTypeScreenState
                         ],
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      height: 130,
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage(
-                              splash,
-                            )),
-                        color: Theme.of(context).disabledColor.withAlpha(25),
-                        borderRadius: BorderRadius.circular(23),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20,top: 0,right: 20,left: 20),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 130,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.fill  ,
+                              image: AssetImage(
+                            city_view,
+                          )),
+                          color: Theme.of(context).disabledColor.withAlpha(25),
+                          borderRadius: BorderRadius.circular(23),
+                        ),
+                        child: MetaBanner(),
+                        //TODO: check here,
                       ),
-                      child: MetaBanner(),
-                      //TODO: check here,
                     ),
                   ],
                 ),
