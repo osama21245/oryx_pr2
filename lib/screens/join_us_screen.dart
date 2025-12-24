@@ -20,16 +20,16 @@ class JoinUsScreen extends StatefulWidget {
 
 class _JoinUsScreenState extends State<JoinUsScreen> {
   @override
-  void initState() {
-    super.initState();
-    // Use WidgetsBinding to ensure context is available
-    // Only run guest login on iOS platform
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // if (Platform.isIOS) {
-      _performGuestLogin();
-      // }
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  //   // Use WidgetsBinding to ensure context is available
+  //   // Only run guest login on iOS platform
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     // if (Platform.isIOS) {
+  //     _performGuestLogin();
+  //     // }
+  //   });
+  // }
 
   Future<void> _performGuestLogin() async {
     try {

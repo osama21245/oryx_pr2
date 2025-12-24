@@ -279,42 +279,44 @@ class _FilterScreenState extends State<FilterScreen>
             20.height,
             Text(language.postedSince, style: boldTextStyle()),
             10.height,
-            VerticleList(
-                padding: EdgeInsets.zero,
-                itemCount: propertyForList.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: (context.width() - 63) / 3,
-                    // width: context.width() * 0.28,
-                    margin: EdgeInsets.only(right: 8),
-                    padding: EdgeInsets.all(12),
-                    decoration: boxDecorationWithRoundedCorners(
-                        borderRadius: radius(8),
-                        backgroundColor: propertyForList[index].select!
-                            ? primaryColor
-                            : appStore.isDarkModeOn
-                                ? cardDarkColor
-                                : primaryExtraLight
-                    ),
-                    child: Text(
-                      propertyForList[index].title.validate(),
-                      style: primaryTextStyle(
-                          color: propertyForList[index].select!
-                              ? Colors.black
+            Center(
+              child: VerticleList(
+                  padding: EdgeInsets.zero,
+                  itemCount: propertyForList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: (context.width() - 63) / 1,
+                      // width: context.width() * 0.28,
+                      margin: EdgeInsets.only(right: 8),
+                      padding: EdgeInsets.all(12),
+                      decoration: boxDecorationWithRoundedCorners(
+                          borderRadius: radius(8),
+                          backgroundColor: propertyForList[index].select!
+                              ? primaryColor
                               : appStore.isDarkModeOn
-                              ? textOnDarkMode
-                              : textOnLightMode
+                                  ? cardDarkColor
+                                  : primaryExtraLight
                       ),
-                    ).center(),
-                  ).onTap(() {
-                    setState(() {
-                      for (int i = 0; i < propertyForList.length; i++) {
-                        propertyForList[i].select = i == index;
-                        propertySince = propertyForList[index].title;
-                      }
+                      child: Text(
+                        propertyForList[index].title.validate(),
+                        style: primaryTextStyle(
+                            color: propertyForList[index].select!
+                                ? Colors.black
+                                : appStore.isDarkModeOn
+                                ? textOnDarkMode
+                                : textOnLightMode
+                        ),
+                      ).center(),
+                    ).onTap(() {
+                      setState(() {
+                        for (int i = 0; i < propertyForList.length; i++) {
+                          propertyForList[i].select = i == index;
+                          propertySince = propertyForList[index].title;
+                        }
+                      });
                     });
-                  });
-                }),
+                  }),
+            ),
             20.height,
             Text(language.location, style: boldTextStyle()),
             10.height,

@@ -144,8 +144,7 @@ class _MainScreenState extends State<MainScreen> {
             // Search widget above grid
             searchWidget(),
             20.height,
-            if (gifUrl
-                .isNotEmpty) // Only show if GIF URL is available, or use empty check inside? The original uses `TransactionTypeCard` which handles display.
+            if (gifUrl.isNotEmpty) // Only show if GIF URL is available, or use empty check inside? The original uses `TransactionTypeCard` which handles display.
               // The original code in `choose_transaction_type_screen.dart` unconditionally shows it but fetches the gif.
               // Let's match the user request: "this slider ... i want this component to be in the home page"
               TransactionTypeCard(
@@ -173,6 +172,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buldGrid() {
     if (data?.propertyCity?.isNotEmpty ?? false) {
       return GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             // crossAxisSpacing: 10.0,

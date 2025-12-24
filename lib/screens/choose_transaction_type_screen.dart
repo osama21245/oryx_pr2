@@ -256,15 +256,20 @@ class _ChooseTransactionTypeScreenState
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (selectedTransactionTypeId != null)
-                      const SizedBox(height: 20),
-                    TransactionTypeCard(
-                      width: MediaQuery.of(context).size.width,
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      isSelected: false,
-                      imagePath: gifUrl,
-                      padding: 0,
-                      decorationImagePath: splash,
-                      isGif: true,
+                      const SizedBox(height: 10),
+                    Padding(
+                      padding:const EdgeInsets.only(bottom: 0,top: 0,right: 9,left: 9),
+                      child: TransactionTypeCard(
+                        gifHeight: 220,
+                        width: MediaQuery.of(context).size.width,
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                        isSelected: false,
+                        imagePath: gifUrl,
+                        padding: 0,
+                        // decorationImagePath: splash,
+                        inTheme: false,
+                        isGif: true,
+                      ),
                     ),
                     const SizedBox(height: 0),
                     Padding(

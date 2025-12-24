@@ -8,6 +8,7 @@ class TransactionTypeCard extends StatelessWidget {
   final String? decorationImagePath;
   bool isSelected;
   bool isGif;
+  bool inTheme;
   double? width, height, padding,gifHeight;
   BorderRadiusGeometry? borderRadius;
 
@@ -22,6 +23,7 @@ class TransactionTypeCard extends StatelessWidget {
     this.gifHeight,
     this.padding = 0,
     this.isGif = false,
+    this.inTheme = true,
     this.decorationImagePath,
   });
 
@@ -43,7 +45,7 @@ class TransactionTypeCard extends StatelessWidget {
                 : Colors.transparent,
             width: 4,
           ),
-          color: Theme.of(context).disabledColor.withOpacity(0.1),
+          color: inTheme ? Theme.of(context).disabledColor.withOpacity(0.1) : null,
           borderRadius: effectiveBorderRadius),
       child: Padding(
         padding: EdgeInsets.all(10),
