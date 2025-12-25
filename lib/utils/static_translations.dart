@@ -60,6 +60,12 @@ const Map<String, Map<String, String>> cityTranslations = {
     "ru": "New Qena",
   },
   };
+const Map<String, Map<String, String>> keyword = {
+  "اختياري": {
+    "en": "Optional",
+    "ru": "необязательный",
+  },
+  };
 String translateCategoryName(String arabicName, String langCode) {
   if (langCode == 'ar') return arabicName;
 
@@ -69,6 +75,11 @@ String translateCityName(String arabicName, String langCode) {
   if (langCode == 'ar') return arabicName;
 
   return cityTranslations[arabicName]?[langCode] ?? arabicName;
+}
+String translateKeywords(String arabicName, String langCode) {
+  if (langCode == 'ar') return arabicName;
+
+  return keyword[arabicName]?[langCode] ?? arabicName;
 }
 String getCategoryName(String name) {
   return translateCategoryName(
