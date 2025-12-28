@@ -196,6 +196,7 @@ class _ChooseTransactionTypeScreenState
 
   @override
   Widget build(BuildContext context) {
+    List<MSlider>? filteredSliders = data?.slider;
     // Filter sliders based on selected transaction type
     // List<MSlider>? filteredSliders;
     // if (selectedTransactionTypeId != null &&
@@ -256,15 +257,7 @@ class _ChooseTransactionTypeScreenState
                   children: [
                     if (selectedTransactionTypeId != null)
                       const SizedBox(height: 20),
-                    TransactionTypeCard(
-                      width: MediaQuery.of(context).size.width,
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      isSelected: false,
-                      imagePath: gifUrl,
-                      padding: 0,
-                      decorationImagePath: splash,
-                      isGif: true,
-                    ),
+                    SlidesComponents(data: filteredSliders),
                     const SizedBox(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
