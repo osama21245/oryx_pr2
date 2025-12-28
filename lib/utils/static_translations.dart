@@ -11,7 +11,7 @@ const Map<String, Map<String, String>> categoryTranslations = {
   },
   "بـرج": {
     "en": "Tower",
-    "ru": "Tower",
+    "ru": "Башня",
   },
   "زراعي": {
     "en": "Agricultural",
