@@ -119,7 +119,7 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
         }
         preporty = response;
       }
-    } catch (e,trace) {
+    } catch (e, trace) {
       print("Error: $e $trace");
     } finally {
       appStore.setLoading(false);
@@ -403,7 +403,24 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
 
   Widget filterItem(PropertyResponseModel? model) {
     print('model!.toJson(): ${model?.toJson()}');
+
+    // Find selected property object if ID is set
+    Property? selectedOption;
+    if (selectedProperty != null && model?.data != null) {
+      try {
+        selectedOption = model!.data!.firstWhere(
+          (element) => element.id.toString() == selectedProperty,
+        );
+      } catch (e) {
+        // If not found (e.g. data refreshed and ID no longer exists), clear selection
+        selectedProperty = null;
+      }
+    }
+
+    bool isEmpty = model?.data == null || model!.data!.isEmpty;
+
     return DropdownButtonFormField<Property>(
+      value: selectedOption,
       icon: Icon(Icons.keyboard_arrow_down_rounded, color: black),
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -412,7 +429,9 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
         ),
         filled: true,
         fillColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
-        hintText: 'اختر الوحدة',
+        hintText: isEmpty
+            ? 'لا توجد وحدات'
+            : 'اختر الوحدة', // Show "No units" if empty
         // border: OutlineInputBorder(
         //   borderRadius: BorderRadius.circular(8),
         // ),
