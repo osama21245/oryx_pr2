@@ -446,6 +446,7 @@ class MSlider {
   String? name;
   List<AreaPrice>? areaPrices;
   int? propertyFor;
+  String? pdfFile;
 
   MSlider({
     this.id,
@@ -461,6 +462,7 @@ class MSlider {
     this.name,
     this.areaPrices,
     this.propertyFor,
+    this.pdfFile,
   });
 
   MSlider.fromJson(Map<String, dynamic> json) {
@@ -476,6 +478,7 @@ class MSlider {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     name = json['name'];
+    pdfFile = json['pdf_file'];
     if (json['area_prices'] != null) {
       areaPrices = List<AreaPrice>.from(
         json['area_prices'].map((x) => AreaPrice.fromJson(x)),
@@ -497,6 +500,7 @@ class MSlider {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['name'] = name;
+    data['pdf_file'] = pdfFile;
     if (areaPrices != null) {
       data['area_prices'] = areaPrices!.map((x) => x.toJson()).toList();
     }

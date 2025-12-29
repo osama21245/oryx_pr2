@@ -18,6 +18,8 @@ import '../extensions/system_utils.dart';
 import '../network/RestApis.dart';
 import '../utils/colors.dart';
 import '../extensions/text_styles.dart';
+import '../extensions/shared_pref.dart';
+import '../utils/constants.dart';
 import '../extensions/extension_util/int_extensions.dart';
 
 class ChooseTransactionTypeDropdown extends StatefulWidget {
@@ -166,6 +168,31 @@ class _ChooseTransactionTypeScreenState
 
   void init() async {
     await fetchGif();
+    if (data == null) {
+      await fetchDashboardData();
+    }
+  }
+
+  Future<void> fetchDashboardData() async {
+    try {
+      appStore.setLoading(true);
+      await getDashBoardData({
+        "latitude": userStore.latitude,
+        "longitude": userStore.longitude,
+        "city": userStore.cityName,
+        "player_id": getStringAsync(PLAYER_ID)
+      }).then((value) {
+        data = value;
+        setState(() {});
+      }).catchError((e) {
+        log('Error fetching dashboard data: $e');
+      }).whenComplete(() {
+        appStore.setLoading(false);
+      });
+    } catch (e) {
+      appStore.setLoading(false);
+      log('Error in fetchDashboardData: $e');
+    }
   }
 
   Future<void> fetchGif() async {
@@ -257,7 +284,8 @@ class _ChooseTransactionTypeScreenState
                   children: [
                     if (selectedTransactionTypeId != null)
                       const SizedBox(height: 20),
-                    SlidesComponents(data: filteredSliders),
+                    if (filteredSliders != null && filteredSliders.isNotEmpty)
+                      SlidesComponents(data: filteredSliders),
                     const SizedBox(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
