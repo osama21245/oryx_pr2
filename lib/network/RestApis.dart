@@ -555,3 +555,18 @@ Future<void> logout(BuildContext context, {bool isFromLogin = false}) async {
     appStore.setLoading(true);
   }
 }
+
+//Sliders by City
+Future<List<MSlider>> getSlidersByCity(String city) async {
+  final response = await handleResponse(
+    await buildHttpResponse('slider-by-city?city=$city',
+        method: HttpMethod.GET),
+  );
+  if (response is Map<String, dynamic> && response.containsKey('data')) {
+    var data = response['data'];
+    if (data is List) {
+      return data.map((item) => MSlider.fromJson(item)).toList();
+    }
+  }
+  throw Exception("Unexpected response format");
+}

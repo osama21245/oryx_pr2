@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orex/components/slider_components.dart';
 import 'package:orex/models/dashBoard_response.dart';
-import 'package:orex/screens/dashboard_screen.dart';
 import 'package:orex/screens/filter_category.dart';
 import 'package:orex/screens/home_screen.dart';
 import 'package:orex/utils/images.dart';
@@ -19,7 +18,6 @@ import '../models/category_list_model.dart';
 import '../network/RestApis.dart';
 import '../utils/app_common.dart';
 import '../utils/colors.dart';
-import '../utils/static_translations.dart';
 import 'no_data_screen.dart';
 import 'search_screen.dart';
 
@@ -104,16 +102,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
     print('ddddddaaaaaaaaaaaa ${data!.slider!.length}');
     return Scaffold(
       appBar: AppBar(
-        leading: GestureDetector(
-          onTap: (){
-            DashboardScreen().launch(context, isNewTask: false);
-          },
-          child: Image.asset(
+        actions: [
+          Image.asset(
             ic_logo,
             height: 40,
             width: 40,
-          ).paddingOnly(left: 16, top: 8, bottom: 8),
-        ),
+          ).paddingOnly(left: 16, top: 8, bottom: 8)
+        ],
         title: Text(language.category),
         centerTitle: true,
       ),
@@ -186,10 +181,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       onTap: () {
         FilterCategory(
           categoryId: category.id,
-          categoryName: translateCategoryName(
-            category.name.toString(),
-            appStore.selectedLanguage,
-          ).capitalizeFirstLetter(),
+          categoryName: category.name.toString(),
           transactionType: widget.transactionType,
         ).launch(context);
         // CategorySelectedScreen(
@@ -218,10 +210,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             Expanded(
               flex: 6,
               child: Text(
-                translateCategoryName(
-                  category.name.toString(),
-                  appStore.selectedLanguage,
-                ).capitalizeFirstLetter(),
+                category.name.toString().capitalizeFirstLetter(),
                 style: primaryTextStyle(
                     size: 16,
                     color: appStore.isDarkModeOn
