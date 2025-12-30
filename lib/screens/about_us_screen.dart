@@ -36,8 +36,8 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
           SizedBox(
             height: 210,
           ),
-          SingleChildScrollView(
-            // height: 130,
+          SizedBox(
+            height: 130,
             child: Column(
               children: [
                 FutureBuilder<PackageInfo>(
@@ -75,9 +75,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                               .paddingRight(16)
                               .visible(
                                   getStringAsync(INSTAGRAM_URL).isNotEmpty),
-                          mSocialOption(ic_tiktok)
+                          mSocialOption(ic_twitter)
                               .onTap(() {
-                                launchUrls("https://www.tiktok.com/@oryx.app?_r=1&_t=ZS-92T4BIu4AT7");
+                                launchUrls(getStringAsync(TWITTER_URL));
                               })
                               .paddingRight(16)
                               .visible(getStringAsync(TWITTER_URL).isNotEmpty),
@@ -87,10 +87,6 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                               })
                               .paddingRight(16)
                               .visible(getStringAsync(LINKED_URL).isNotEmpty),
-                          mSocialOption(ic_youtube)
-                              .onTap(() {
-                            launchUrls("https://youtube.com/@oryx-eg?si=pznTyo63vdXGbrf3");
-                          })
                         ],
                       ),
                     ],

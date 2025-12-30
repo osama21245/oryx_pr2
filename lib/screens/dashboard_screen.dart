@@ -204,9 +204,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDeveloper = appStore.isLoggedIn && userStore.userType == 'developer';
-    Color iconsColor = isDeveloper ?primaryColor  :Colors.grey ;
-    List<Widget> currentTabs = getTabs();
     return WillPopScope(
       onWillPop: () async {
         return true;
@@ -218,12 +215,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: AnimatedContainer(
                   color: context.cardColor,
                   duration: const Duration(seconds: 1),
-                  child:currentTabs[currentIndex < currentTabs.length ? currentIndex : 0]
-                  // getTabs()[appStore.isLoggedIn
-                  //     ? currentIndex
-                  //     : currentIndex == 3
-                  //         ? 1
-                  //         : 0]
+                  child: getTabs()[appStore.isLoggedIn
+                      ? currentIndex
+                      : currentIndex == 3
+                          ? 1
+                          : 0]
                   // IndexedStack(index: currentIndex, children: tabs
                   ),
             ),
@@ -237,7 +233,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          // mini: true,
+          mini: true,
           heroTag: language.addProperties,
           child: Icon(Icons.add, size: 37, color: Colors.white),
           onPressed: () {
@@ -337,12 +333,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // if (userStore.userType == 'developer')
             BottomBarItem(
               icon: Image.asset(ic_category,
-                  height: 24, width: 24, color: iconsColor),
+                  height: 24, width: 24, color: primaryColor),
               selectedIcon: Image.asset(ic_category_fill,
-                  height: 24, width: 24, color: iconsColor),
+                  height: 24, width: 24, color: primaryColor),
               title: Text(
                 language.developer,
-                style: TextStyle(color: iconsColor),
+                style: TextStyle(color: primaryColor),
               ),
             ),
             BottomBarItem(

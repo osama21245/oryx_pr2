@@ -91,21 +91,21 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
               setState(() {});
             },
           ),
-          // Positioned(
-          //   top: context.statusBarHeight,
-          //   right: 4,
-          //   child: TextButton(
-          //       style: ButtonStyle(
-          //           overlayColor:
-          //               WidgetStateProperty.all(Colors.transparent)),
-          //       onPressed: () {
-          //         setValue(IS_FIRST_TIME, true);
-          //         JoinUsScreen().launch(context, isNewTask: true);
-          //         // LoginScreen().launch(context, isNewTask: false);
-          //       },
-          //       child: Text(language.skip,
-          //           style: boldTextStyle(color: primaryColor))),
-          // ).visible(mCurrentIndex != 2),
+          Positioned(
+            top: context.statusBarHeight,
+            right: 4,
+            child: TextButton(
+                style: ButtonStyle(
+                    overlayColor:
+                        WidgetStateProperty.all(Colors.transparent)),
+                onPressed: () {
+                  setValue(IS_FIRST_TIME, true);
+                  JoinUsScreen().launch(context, isNewTask: true);
+                  // LoginScreen().launch(context, isNewTask: false);
+                },
+                child: Text(language.skip,
+                    style: boldTextStyle(color: primaryColor))),
+          ).visible(mCurrentIndex != 2),
           Positioned(
             right: 24,
             left: 24,
