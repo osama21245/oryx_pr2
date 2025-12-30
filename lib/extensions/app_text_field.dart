@@ -329,7 +329,7 @@ class _AppTextFieldState extends State<AppTextField> {
       obscuringCharacter: widget.obscuringCharacter.validate(value: '•'),
       initialValue: widget.initialValue,
       keyboardAppearance: widget.keyboardAppearance,
-      // contextMenuBuilder: widget.contextMenuBuilder,
+      contextMenuBuilder: widget.contextMenuBuilder,
     );
   }
 }

@@ -21,6 +21,7 @@ import '../extensions/text_styles.dart';
 import '../extensions/shared_pref.dart';
 import '../utils/constants.dart';
 import '../extensions/extension_util/int_extensions.dart';
+import '../extensions/extension_util/string_extensions.dart';
 
 class ChooseTransactionTypeDropdown extends StatefulWidget {
   // final int? initialValue;
@@ -134,6 +135,7 @@ class _ChooseTransactionTypeScreenState
   int? selectedTransactionTypeId;
   bool isSale = false, isRent = false, isWanted = false;
   late String gifUrl;
+  List<MSlider>? citySliders;
 
   iWantToSale() {
     setState(() {
@@ -168,6 +170,7 @@ class _ChooseTransactionTypeScreenState
 
   void init() async {
     await fetchGif();
+    await fetchCitySliders();
     if (data == null) {
       await fetchDashboardData();
     }
@@ -206,6 +209,24 @@ class _ChooseTransactionTypeScreenState
     } catch (e) {
       appStore.setLoading(false);
       log('Error fetching GIF: $e');
+    }
+  }
+
+  Future<void> fetchCitySliders() async {
+    try {
+      appStore.setLoading(true);
+      if (userStore.cityName.validate().isNotEmpty) {
+        await getSlidersByCity(userStore.cityName.validate()).then((value) {
+          citySliders = value;
+          setState(() {});
+        }).catchError((e) {
+          log('Error fetching city sliders: $e');
+        });
+      }
+      appStore.setLoading(false);
+    } catch (e) {
+      appStore.setLoading(false);
+      log('Error in fetchCitySliders: $e');
     }
   }
 
@@ -261,14 +282,13 @@ class _ChooseTransactionTypeScreenState
     return Observer(builder: (context) {
       return Scaffold(
         appBar: AppBar(
-          leading: GestureDetector(
-            onTap: () => context.pop(),
-            child: Image.asset(
+          actions: [
+            Image.asset(
               ic_logo,
               height: 40,
               width: 40,
-            ).paddingOnly(left: 16, top: 8, bottom: 8),
-          ),
+            ).paddingOnly(left: 16, top: 8, bottom: 8)
+          ],
           title: Text(language.transactionType),
           centerTitle: true,
         ),
@@ -285,8 +305,12 @@ class _ChooseTransactionTypeScreenState
                   children: [
                     if (selectedTransactionTypeId != null)
                       const SizedBox(height: 20),
-                    if (filteredSliders != null && filteredSliders.isNotEmpty)
-                      SlidesComponents(data: filteredSliders),
+                    if (citySliders != null && citySliders!.isNotEmpty)
+                      SlidesComponents(
+                          data:
+                              citySliders), // else if (filteredSliders != null &&
+                    //     filteredSliders.isNotEmpty)
+                    //   SlidesComponents(data: filteredSliders),
                     const SizedBox(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
@@ -319,7 +343,8 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: true,enableSound: true);
+                              ).launch(context, isNewTask: false);
+
                             },
                             child: TransactionTypeCard(
                               isSelected: isRent,
@@ -348,25 +373,22 @@ class _ChooseTransactionTypeScreenState
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20,top: 0,right: 20,left: 20),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 130,
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.fill  ,
-                              image: AssetImage(
-                            city_view,
-                          )),
-                          color: Theme.of(context).disabledColor.withAlpha(25),
-                          borderRadius: BorderRadius.circular(23),
-                        ),
-                        child: MetaBanner(),
-                        //TODO: check here,
+                    Container(
+                      alignment: Alignment.center,
+                      height: 130,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage(
+                              splash,
+                            )),
+                        color: Theme.of(context).disabledColor.withAlpha(25),
+                        borderRadius: BorderRadius.circular(23),
                       ),
+                      child: MetaBanner(),
+                      //TODO: check here,
                     ),
                   ],
                 ),
