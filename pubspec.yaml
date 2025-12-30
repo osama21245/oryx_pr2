@@ -78,6 +78,7 @@ dependencies:
   webview_flutter: ^4.13.0
   firebase_app_check: ^0.3.2+6
   google_mobile_ads: ^6.0.0
+  audioplayers: ^6.5.1
   file_picker: ^10.3.8
   # easy_audience_network: ^0.0.7
 dependency_overrides:
@@ -118,6 +119,7 @@ flutter:
     - assets/
     - assets/flags/
     - assets/staticjson/
+    - assets/sounds/
     - shorebird.yaml
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -141,11 +141,10 @@ class _MainScreenState extends State<MainScreen> {
             //?? add by Axon
             // Search widget above grid
             searchWidget(),
-            20.height,
+            _buildFirstDropdown(),
+            // 20.height,
             if (gifUrl
                 .isNotEmpty) // Only show if GIF URL is available, or use empty check inside? The original uses `TransactionTypeCard` which handles display.
-
-              _buildFirstDropdown(),
             // The original code in `choose_transaction_type_screen.dart` unconditionally shows it but fetches the gif.
             // Let's match the user request: "this slider ... i want this component to be in the home page"
             TransactionTypeCard(
@@ -154,10 +153,11 @@ class _MainScreenState extends State<MainScreen> {
               isSelected: false,
               imagePath: gifUrl,
               padding: 0,
-              decorationImagePath: splash,
+              inTheme: false,
+              // decorationImagePath: splash,
               isGif: true,
-            ).paddingSymmetric(horizontal: 16),
-            20.height,
+            ).paddingSymmetric(horizontal: 0),
+            // 20.height,
             _buildSecondDropdown(),
             _buildCategoryDropdown(),
             // old code

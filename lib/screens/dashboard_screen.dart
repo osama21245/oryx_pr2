@@ -5,6 +5,7 @@ import 'package:orex/extensions/common.dart';
 import 'package:orex/screens/developer_sliders_screen.dart';
 import 'package:orex/screens/login_screen.dart';
 import 'package:orex/screens/main_screen.dart';
+import 'package:orex/utils/sound_manger.dart';
 // import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
 import '../components/add_property_dialouge.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -237,6 +238,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           heroTag: language.addProperties,
           child: Icon(Icons.add, size: 37, color: Colors.white),
           onPressed: () {
+            SoundManager.playClickSound();
             if (!appStore.isLoggedIn) {
               toast('Please login to access this section');
               LoginScreen().launch(context, isNewTask: false);
