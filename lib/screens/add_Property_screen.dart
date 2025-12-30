@@ -439,7 +439,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   final res = EPropertyBaseResponse.fromJson(result);
                   toast(res.message.toString());
                   SuccessPropertyScreen(propertyId: res.propertyId)
-                      .launch(context);
+                      .launch(context,enableSound: true);
                 } else {
                   toast('❌ الدفع فشل: ${result['message']}');
                   finish(context, true);
