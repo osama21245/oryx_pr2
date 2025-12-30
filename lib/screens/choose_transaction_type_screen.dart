@@ -301,7 +301,7 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: false,enableSound: true);
+                              ).launch(context, isNewTask: false,enableSound: false);
                             },
                             child: TransactionTypeCard(
                               isSelected: isSale,
@@ -319,7 +319,7 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: true,enableSound: true);
+                              ).launch(context, isNewTask: true,enableSound: false);
                             },
                             child: TransactionTypeCard(
                               isSelected: isRent,
@@ -337,7 +337,7 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: false,enableSound: true);
+                              ).launch(context, isNewTask: false,enableSound: false);
                             },
                             child: TransactionTypeCard(
                               isSelected: isWanted,

@@ -7,6 +7,7 @@ import 'package:orex/screens/filter_category.dart';
 import 'package:orex/models/category_list_model.dart';
 import 'package:orex/network/RestApis.dart';
 import 'package:orex/screens/filter_screen.dart';
+import 'package:orex/screens/notification_screen.dart';
 import 'package:orex/screens/search_screen.dart';
 import 'package:orex/utils/app_textfiled.dart';
 import 'package:orex/utils/images.dart';
@@ -132,6 +133,16 @@ class _MainScreenState extends State<MainScreen> {
           width:
               40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */
         ).paddingOnly(left: 16, top: 8, bottom: 8),
+        actions: [
+          Image.asset(
+            ic_notification,
+            height: 27,
+            width: 27,
+            color: Colors.white,
+          ).paddingOnly(left: 16, top: 8, bottom: 8).onTap((){
+            NotificationScreen().launch(context);
+          })
+        ],
         title: Text(language.selectCity),
         centerTitle: true,
       ),
@@ -143,7 +154,6 @@ class _MainScreenState extends State<MainScreen> {
             //?? add by Axon
             // Search widget above grid
             searchWidget(),
-            _buildFirstDropdown(),
             // 20.height,
             if (gifUrl
                 .isNotEmpty) // Only show if GIF URL is available, or use empty check inside? The original uses `TransactionTypeCard` which handles display.
@@ -159,6 +169,7 @@ class _MainScreenState extends State<MainScreen> {
               // decorationImagePath: splash,
               isGif: true,
             ).paddingSymmetric(horizontal: 0),
+            _buildFirstDropdown(),
             // 20.height,
             _buildSecondDropdown(),
             _buildCategoryDropdown(),
@@ -388,7 +399,7 @@ class _MainScreenState extends State<MainScreen> {
       }
 
       return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 16.0,right: 16.0,),
         child: DropdownButtonFormField<String>(
           value: selectedCityId,
           decoration: InputDecoration(
