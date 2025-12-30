@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import '../../utils/sound_manger.dart' show SoundManager;
 import '../colors.dart';
 import '../common.dart';
 import '../../utils/constants.dart';
@@ -248,10 +249,17 @@ extension WidgetExtension on Widget? {
     Color? splashColor=Colors.transparent,
     Color? hoverColor=Colors.transparent,
     Color? highlightColor=Colors.transparent,
+        bool enableSound =false ,
   }) {
     return InkWell(
-      onTap: function as void Function()?,
-      borderRadius: borderRadius ??
+      onTap: function == null
+          ? null
+          : () {
+        if (enableSound) {
+          SoundManager.playClickSound();
+        }
+        function();
+      },      borderRadius: borderRadius ??
           (defaultInkWellRadius != null ? radius(defaultInkWellRadius) : null),
       splashColor: splashColor ?? defaultInkWellSplashColor,
       hoverColor: hoverColor ?? defaultInkWellHoverColor,
@@ -264,7 +272,11 @@ extension WidgetExtension on Widget? {
   Future<T?> launch<T>(BuildContext context,
       {bool isNewTask = false,
       PageRouteAnimation? pageRouteAnimation,
+        bool enableSound = false,
       Duration? duration}) async {
+    if (enableSound) {
+      SoundManager.playClickSound();
+    }
     if (isNewTask) {
       return await Navigator.of(context).pushAndRemoveUntil(
         buildPageRoute(

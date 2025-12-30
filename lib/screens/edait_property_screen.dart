@@ -40,6 +40,7 @@ import 'package:orex/utils/app_common.dart';
 import 'package:orex/utils/colors.dart';
 import 'package:orex/utils/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 
 class EdaitPropertyScreen extends StatefulWidget {
@@ -75,6 +76,9 @@ class _EdaitPropertyScreenState extends State<EdaitPropertyScreen> {
   XFile? imageMain;
   Uint8List? mainImage;
   String? mainImageName;
+
+  String? pdfPath;
+  String? pdfName;
 
   String? selectedProperty;
   String? mUserType;
@@ -126,6 +130,11 @@ class _EdaitPropertyScreenState extends State<EdaitPropertyScreen> {
 
     mainImagePath = widget.mSlider?.sliderImage;
     selectedProperty = widget.mSlider?.propertyId.toString();
+
+    if (widget.mSlider?.pdfFile != null) {
+      pdfPath = widget.mSlider!.pdfFile;
+      pdfName = widget.mSlider!.pdfFile!.split('/').last;
+    }
   }
 
   getProperty(categoryId) async {
@@ -257,6 +266,12 @@ class _EdaitPropertyScreenState extends State<EdaitPropertyScreen> {
       multiPartRequest.files
           .add(await http.MultipartFile.fromPath('image', mainImagePath!));
     }
+
+    if (pdfPath != null && !pdfPath!.startsWith('http')) {
+      multiPartRequest.files
+          .add(await http.MultipartFile.fromPath('pdf_file', pdfPath!));
+    }
+
     print('multiPartRequest: ${multiPartRequest.fields}');
     multiPartRequest.headers.addAll(buildHeaderTokens());
     sendMultiPartRequest(
@@ -656,6 +671,64 @@ class _EdaitPropertyScreenState extends State<EdaitPropertyScreen> {
                 ),
               ),
             20.height,
+            RequiredValidationText(
+                required: false, titleText: "Add PDF (Optional)"),
+            10.height,
+            if (pdfPath != null)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: boxDecorationWithRoundedCorners(
+                    borderRadius: BorderRadius.circular(8),
+                    backgroundColor: appStore.isDarkModeOn
+                        ? cardDarkColor
+                        : primaryExtraLight),
+                child: Row(
+                  children: [
+                    Icon(Icons.picture_as_pdf, color: Colors.red, size: 24),
+                    10.width,
+                    Text(pdfName.validate(), style: secondaryTextStyle())
+                        .expand(),
+                    Icon(Icons.close, color: Colors.red, size: 20).onTap(() {
+                      pdfPath = null;
+                      pdfName = null;
+                      setState(() {});
+                    }),
+                  ],
+                ),
+              ),
+            if (pdfPath.isEmptyOrNull)
+              GestureDetector(
+                onTap: () {
+                  pickPdf();
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: DottedBorder(
+                    options: RectDottedBorderOptions(
+                      dashPattern: [6, 3],
+                      color: Colors.grey,
+                    ),
+                    child: Container(
+                      height: 50,
+                      decoration: boxDecorationWithRoundedCorners(
+                          borderRadius: BorderRadius.circular(8),
+                          backgroundColor: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryExtraLight),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.upload_file, color: grayColor, size: 24),
+                          10.width,
+                          Text("Upload PDF", style: secondaryTextStyle()),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+            20.height,
             // RequiredValidationText(
             //     required: false, titleText: language.addOtherPicture),
             // 10.height,
@@ -770,5 +843,18 @@ class _EdaitPropertyScreenState extends State<EdaitPropertyScreen> {
     mainImageName = imageMain!.name;
 
     setState(() {});
+  }
+
+  Future<void> pickPdf() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      pdfPath = result.files.single.path;
+      pdfName = result.files.single.name;
+      setState(() {});
+    }
   }
 }

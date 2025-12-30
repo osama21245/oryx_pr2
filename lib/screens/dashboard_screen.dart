@@ -5,6 +5,7 @@ import 'package:orex/extensions/common.dart';
 import 'package:orex/screens/developer_sliders_screen.dart';
 import 'package:orex/screens/login_screen.dart';
 import 'package:orex/screens/main_screen.dart';
+import 'package:orex/utils/sound_manger.dart';
 // import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
 import '../components/add_property_dialouge.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -204,6 +205,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDeveloper = appStore.isLoggedIn && userStore.userType == 'developer';
+    Color iconsColor = isDeveloper ?primaryColor  :Colors.grey ;
+    List<Widget> currentTabs = getTabs();
     return WillPopScope(
       onWillPop: () async {
         return true;
@@ -215,11 +219,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: AnimatedContainer(
                   color: context.cardColor,
                   duration: const Duration(seconds: 1),
-                  child: getTabs()[appStore.isLoggedIn
-                      ? currentIndex
-                      : currentIndex == 3
-                          ? 1
-                          : 0]
+                  child:currentTabs[currentIndex < currentTabs.length ? currentIndex : 0]
+                  // getTabs()[appStore.isLoggedIn
+                  //     ? currentIndex
+                  //     : currentIndex == 3
+                  //         ? 1
+                  //         : 0]
                   // IndexedStack(index: currentIndex, children: tabs
                   ),
             ),
@@ -237,6 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           heroTag: language.addProperties,
           child: Icon(Icons.add, size: 37, color: Colors.white),
           onPressed: () {
+            SoundManager.playClickSound();
             if (!appStore.isLoggedIn) {
               toast('Please login to access this section');
               LoginScreen().launch(context, isNewTask: false);
@@ -333,12 +339,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // if (userStore.userType == 'developer')
             BottomBarItem(
               icon: Image.asset(ic_category,
-                  height: 24, width: 24, color: primaryColor),
+                  height: 24, width: 24, color: iconsColor),
               selectedIcon: Image.asset(ic_category_fill,
-                  height: 24, width: 24, color: primaryColor),
+                  height: 24, width: 24, color: iconsColor),
               title: Text(
                 language.developer,
-                style: TextStyle(color: primaryColor),
+                style: TextStyle(color: iconsColor),
               ),
             ),
             BottomBarItem(
