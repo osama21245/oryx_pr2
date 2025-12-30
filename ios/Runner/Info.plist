@@ -61,8 +61,10 @@
 	<key>NSCameraUsageDescription</key>
     <string>This app requires access to your camera so you can capture photos to update user profile picture.</string>
 
-    <key>NSPhotoLibraryUsageDescription</key>
+	<key>NSPhotoLibraryUsageDescription</key>
     <string>This app requires access to your photo library so you can select photos to update user profile image.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to your approximate location to help you find properties near you. We use approximate location (city/area level) to respect your privacy.</string>
 
 </dict>
 </plist>
