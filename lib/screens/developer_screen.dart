@@ -39,6 +39,7 @@ import 'package:orex/utils/app_common.dart';
 import 'package:orex/utils/colors.dart';
 import 'package:orex/utils/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:file_picker/file_picker.dart';
 
 import 'package:intl/intl.dart';
 
@@ -74,6 +75,9 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
   XFile? imageMain;
   Uint8List? mainImage;
   String? mainImageName;
+
+  String? pdfPath;
+  String? pdfName;
 
   String? selectedProperty;
   String? mUserType;
@@ -119,7 +123,7 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
         }
         preporty = response;
       }
-    } catch (e,trace) {
+    } catch (e, trace) {
       print("Error: $e $trace");
     } finally {
       appStore.setLoading(false);
@@ -176,6 +180,11 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
     if (mainImagePath != null && !mainImagePath!.contains('https')) {
       multiPartRequest.files
           .add(await http.MultipartFile.fromPath('image', mainImagePath!));
+    }
+
+    if (pdfPath != null) {
+      multiPartRequest.files
+          .add(await http.MultipartFile.fromPath('pdf_file', pdfPath!));
     }
 
     multiPartRequest.headers.addAll(buildHeaderTokens());
@@ -403,7 +412,24 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
 
   Widget filterItem(PropertyResponseModel? model) {
     print('model!.toJson(): ${model?.toJson()}');
+
+    // Find selected property object if ID is set
+    Property? selectedOption;
+    if (selectedProperty != null && model?.data != null) {
+      try {
+        selectedOption = model!.data!.firstWhere(
+          (element) => element.id.toString() == selectedProperty,
+        );
+      } catch (e) {
+        // If not found (e.g. data refreshed and ID no longer exists), clear selection
+        selectedProperty = null;
+      }
+    }
+
+    bool isEmpty = model?.data == null || model!.data!.isEmpty;
+
     return DropdownButtonFormField<Property>(
+      value: selectedOption,
       icon: Icon(Icons.keyboard_arrow_down_rounded, color: black),
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -412,7 +438,9 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
         ),
         filled: true,
         fillColor: appStore.isDarkModeOn ? cardDarkColor : primaryExtraLight,
-        hintText: 'اختر الوحدة',
+        hintText: isEmpty
+            ? 'لا توجد وحدات'
+            : 'اختر الوحدة', // Show "No units" if empty
         // border: OutlineInputBorder(
         //   borderRadius: BorderRadius.circular(8),
         // ),
@@ -581,6 +609,64 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
                 ),
               ),
             20.height,
+            RequiredValidationText(
+                required: false, titleText: "Add PDF (Optional)"),
+            10.height,
+            if (pdfPath != null)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: boxDecorationWithRoundedCorners(
+                    borderRadius: BorderRadius.circular(8),
+                    backgroundColor: appStore.isDarkModeOn
+                        ? cardDarkColor
+                        : primaryExtraLight),
+                child: Row(
+                  children: [
+                    Icon(Icons.picture_as_pdf, color: Colors.red, size: 24),
+                    10.width,
+                    Text(pdfName.validate(), style: secondaryTextStyle())
+                        .expand(),
+                    Icon(Icons.close, color: Colors.red, size: 20).onTap(() {
+                      pdfPath = null;
+                      pdfName = null;
+                      setState(() {});
+                    }),
+                  ],
+                ),
+              ),
+            if (pdfPath.isEmptyOrNull)
+              GestureDetector(
+                onTap: () {
+                  pickPdf();
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: DottedBorder(
+                    options: RectDottedBorderOptions(
+                      dashPattern: [6, 3],
+                      color: Colors.grey,
+                    ),
+                    child: Container(
+                      height: 50,
+                      decoration: boxDecorationWithRoundedCorners(
+                          borderRadius: BorderRadius.circular(8),
+                          backgroundColor: appStore.isDarkModeOn
+                              ? cardDarkColor
+                              : primaryExtraLight),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.upload_file, color: grayColor, size: 24),
+                          10.width,
+                          Text("Upload PDF", style: secondaryTextStyle()),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+            20.height,
             // RequiredValidationText(
             //     required: false, titleText: language.addOtherPicture),
             // 10.height,
@@ -695,5 +781,18 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
     mainImageName = imageMain!.name;
 
     setState(() {});
+  }
+
+  Future<void> pickPdf() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      pdfPath = result.files.single.path;
+      pdfName = result.files.single.name;
+      setState(() {});
+    }
   }
 }

@@ -26,6 +26,7 @@ import '../main.dart';
 import '../models/user_response.dart';
 import '../network/RestApis.dart';
 import '../screens/login_screen.dart';
+import '../screens/property_detail_screen.dart';
 import 'app_config.dart';
 import 'colors.dart';
 import 'constants.dart';
@@ -191,9 +192,7 @@ void showInterstitialAds() {
 }
 
 void loadInterstitialAds() {
-  if (userStore.isSubscribe == 0) {
-    // createInterstitialAd();
-  }
+  if (userStore.isSubscribe == 0) {}
 }
 
 void oneSignalData() async {
@@ -211,8 +210,42 @@ void oneSignalData() async {
   OneSignal.initialize(mOneSignalID);
 
   saveOneSignalPlayerId();
+  OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+    print('========= FOREGROUND NOTIFICATION RECEIVED =========');
+    print('Title: ${event.notification.title}');
+    print('Body: ${event.notification.body}');
+    print('Additional Data: ${jsonEncode(event.notification.additionalData)}');
+    print('====================================================');
+
+    // Prevent default behavior if needed, or let it show
+    event.preventDefault();
+    event.notification.display();
+  });
+
   OneSignal.Notifications.addClickListener((notification) async {
-    var notId = notification.notification.additionalData!["id"];
+    print('========= NOTIFICATION CLICKED =========');
+    print('Title: ${notification.notification.title}');
+    print('Body: ${notification.notification.body}');
+    print(
+        'Additional Data: ${jsonEncode(notification.notification.additionalData)}');
+    print('Action ID: ${notification.result.actionId}');
+    print('========================================');
+
+    var additionalData = notification.notification.additionalData;
+    var propertyId = additionalData?["property_id"];
+
+    if (propertyId != null) {
+      print('Request: {id: $propertyId} to open the property details screen');
+      if (!appStore.isLoggedIn) {
+        LoginScreen().launch(getContext);
+      } else {
+        PropertyDetailScreen(propertyId: int.parse(propertyId.toString()))
+            .launch(getContext);
+      }
+      return;
+    }
+
+    var notId = additionalData?["id"];
     if (notId != null) {
       if (!appStore.isLoggedIn) {
         LoginScreen().launch(getContext);
@@ -227,15 +260,21 @@ void oneSignalData() async {
 }
 
 Future<void> saveOneSignalPlayerId() async {
-  print("BEFORE saveOneSignalPlayerId Function ===========${OneSignal.User.pushSubscription.optedIn}");
-  print("BEFORE saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.id}");
-  print("BEFORE saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.token}");
+  print(
+      "BEFORE saveOneSignalPlayerId Function ===========${OneSignal.User.pushSubscription.optedIn}");
+  print(
+      "BEFORE saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.id}");
+  print(
+      "BEFORE saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.token}");
   OneSignal.User.pushSubscription.addObserver((state) async {
     // OneSignal.User.pushSubscription.optIn();
 
-    print("AFTER saveOneSignalPlayerId Function ===========${OneSignal.User.pushSubscription.optedIn}");
-    print("AFTER saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.id}");
-    print("AFTER saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.token}");
+    print(
+        "AFTER saveOneSignalPlayerId Function ===========${OneSignal.User.pushSubscription.optedIn}");
+    print(
+        "AFTER saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.id}");
+    print(
+        "AFTER saveOneSignalPlayerId Function =========${OneSignal.User.pushSubscription.token}");
     await setValue(PLAYER_ID, OneSignal.User.pushSubscription.id);
     print("PLAYER ID IS ++>${getStringAsync(PLAYER_ID).validate()}");
     // updatePlayerId();
@@ -283,7 +322,9 @@ String formatDateString(String dateString) {
 
 String formatNumberString(num priceValue) {
   // Use the Egyptian locale (ar_EG) for grouping separators
-  final formatter = NumberFormat('#,###', );
+  final formatter = NumberFormat(
+    '#,###',
+  );
   return formatter.format(priceValue);
 }
 
@@ -374,7 +415,8 @@ class DateDifferenceWidget extends StatelessWidget {
   final DateTime startDate;
   final DateTime endDate;
 
-  const DateDifferenceWidget({super.key, required this.startDate, required this.endDate});
+  const DateDifferenceWidget(
+      {super.key, required this.startDate, required this.endDate});
 
   @override
   Widget build(BuildContext context) {
