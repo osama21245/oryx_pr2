@@ -18,6 +18,8 @@ import '../extensions/system_utils.dart';
 import '../network/RestApis.dart';
 import '../utils/colors.dart';
 import '../extensions/text_styles.dart';
+import '../extensions/shared_pref.dart';
+import '../utils/constants.dart';
 import '../extensions/extension_util/int_extensions.dart';
 
 class ChooseTransactionTypeDropdown extends StatefulWidget {
@@ -166,6 +168,31 @@ class _ChooseTransactionTypeScreenState
 
   void init() async {
     await fetchGif();
+    if (data == null) {
+      await fetchDashboardData();
+    }
+  }
+
+  Future<void> fetchDashboardData() async {
+    try {
+      appStore.setLoading(true);
+      await getDashBoardData({
+        "latitude": userStore.latitude,
+        "longitude": userStore.longitude,
+        "city": userStore.cityName,
+        "player_id": getStringAsync(PLAYER_ID)
+      }).then((value) {
+        data = value;
+        setState(() {});
+      }).catchError((e) {
+        log('Error fetching dashboard data: $e');
+      }).whenComplete(() {
+        appStore.setLoading(false);
+      });
+    } catch (e) {
+      appStore.setLoading(false);
+      log('Error in fetchDashboardData: $e');
+    }
   }
 
   Future<void> fetchGif() async {
@@ -196,6 +223,7 @@ class _ChooseTransactionTypeScreenState
 
   @override
   Widget build(BuildContext context) {
+    List<MSlider>? filteredSliders = data?.slider;
     // Filter sliders based on selected transaction type
     // List<MSlider>? filteredSliders;
     // if (selectedTransactionTypeId != null &&
@@ -256,21 +284,9 @@ class _ChooseTransactionTypeScreenState
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (selectedTransactionTypeId != null)
-                      const SizedBox(height: 10),
-                    Padding(
-                      padding:const EdgeInsets.only(bottom: 0,top: 0,right: 9,left: 9),
-                      child: TransactionTypeCard(
-                        gifHeight: 220,
-                        width: MediaQuery.of(context).size.width,
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        isSelected: false,
-                        imagePath: gifUrl,
-                        padding: 0,
-                        // decorationImagePath: splash,
-                        inTheme: false,
-                        isGif: true,
-                      ),
-                    ),
+                      const SizedBox(height: 20),
+                    if (filteredSliders != null && filteredSliders.isNotEmpty)
+                      SlidesComponents(data: filteredSliders),
                     const SizedBox(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
