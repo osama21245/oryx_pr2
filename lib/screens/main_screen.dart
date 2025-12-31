@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:orex/extensions/extension_util/int_extensions.dart';
 import 'package:orex/extensions/extension_util/string_extensions.dart';
@@ -19,6 +21,7 @@ import '../extensions/decorations.dart';
 import '../extensions/shared_pref.dart';
 import '../extensions/text_styles.dart';
 import '../main.dart';
+import '../models/notification_model.dart';
 import '../utils/app_common.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
@@ -43,6 +46,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     getData();
     fetchGif();
+    getMarksRead("");
   }
 
   Future<void> fetchGif() async {
@@ -122,9 +126,23 @@ class _MainScreenState extends State<MainScreen> {
       print("Category Error: ${e.toString()}");
     });
   }
-
+  NotificationResponse? notificationData;
+  getMarksRead(String? realAll) async {
+    Map? req;
+    req = {"type": realAll};
+    appStore.setLoading(true);
+    await notificationListApi(req).then((value) {
+      notificationData = value;
+      appStore.setLoading(false);
+      setState(() {});
+    }).catchError((e) {
+      appStore.setLoading(false);
+      log(e.toString());
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    var notificationLength =notificationData?.notificationData?.length ?? 0;
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset(
@@ -134,14 +152,42 @@ class _MainScreenState extends State<MainScreen> {
               40, /* color: appStore.isDarkModeOn ? Colors.white : primaryColor, fit: BoxFit.fill */
         ).paddingOnly(left: 16, top: 8, bottom: 8),
         actions: [
-          Image.asset(
-            ic_notification,
-            height: 27,
-            width: 27,
-            color: Colors.white,
-          ).paddingOnly(left: 16, top: 8, bottom: 8).onTap((){
-            NotificationScreen().launch(context);
-          })
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Stack(
+              children: [
+                Image.asset(
+                  ic_notification,
+                  height: 30,
+                  width: 30,
+                  color: Colors.white,
+                ).paddingOnly(left: 16, top: 8, bottom: 8),
+                if (notificationLength > 0)
+                  Positioned(
+                    top: 5,
+                    right: 5,
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 1),
+                      ),
+                      child: Text(
+                        "$notificationLength",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ).onTap((){
+              NotificationScreen().launch(context);
+            }),
+          )
         ],
         title: Text(language.selectCity),
         centerTitle: true,
