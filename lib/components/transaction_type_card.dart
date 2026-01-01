@@ -63,34 +63,34 @@ class TransactionTypeCard extends StatelessWidget {
             // ),
             isGif
                 ? Expanded(
-                    child: ClipRRect(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      borderRadius: effectiveBorderRadius,
-                      child: Image.network(
-                        imagePath,
-                        width: width ?? size.width * 0.9,
-                        height: gifHeight ??size.height * 0.3,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  )
+              child: ClipRRect(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                borderRadius: effectiveBorderRadius,
+                child: Image.network(
+                  imagePath,
+                  width: width ?? size.width * 0.9,
+                  height: gifHeight ??size.height * 0.3,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            )
                 : Image.asset(
-                    imagePath,
-                    width: size.width * 0.3,
-                    height: size.height * 0.09,
-                  ),
+              imagePath,
+              width: size.width * 0.3,
+              height: size.height * 0.09,
+            ),
             type != null
                 ? Text(
-                    type!,
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w700,
-                        color: isSelected
-                            ? Theme.of(context).primaryColor
-                            : appStore.isDarkModeOn
-                                ? textOnDarkMode
-                                : textOnLightMode),
-                  )
+              type!,
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                  color: isSelected
+                      ? Theme.of(context).primaryColor
+                      : appStore.isDarkModeOn
+                      ? textOnDarkMode
+                      : textOnLightMode),
+            )
                 : SizedBox.shrink(),
           ],
         ),
