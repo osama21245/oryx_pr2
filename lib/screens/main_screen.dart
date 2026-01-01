@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:orex/extensions/extension_util/int_extensions.dart';
+import 'package:orex/extensions/extension_util/string_extensions.dart';
 import 'package:orex/extensions/extension_util/widget_extensions.dart';
 import 'package:orex/screens/choose_transaction_type_screen.dart';
 import 'package:orex/screens/filter_category.dart';
@@ -24,6 +25,7 @@ import '../models/notification_model.dart';
 import '../utils/app_common.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
+import '../utils/static_translations.dart';
 import 'home_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -229,6 +231,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buldGrid() {
     if (data?.propertyCity?.isNotEmpty ?? false) {
       return GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             // crossAxisSpacing: 10.0,
@@ -251,7 +254,11 @@ class _MainScreenState extends State<MainScreen> {
                 data!.propertyCity![index].images.toString(),
                 fit: BoxFit.cover,
               ).cornerRadiusWithClipRRect(24)),
-              Text(data!.propertyCity![index].name.toString(),
+              Text(overflow: TextOverflow.ellipsis,
+                      translateCityName(
+                        data!.propertyCity![index].name.toString(),
+                        appStore.selectedLanguage,
+                      ),
                       style: primaryTextStyle(
                           color: appStore.isDarkModeOn
                               ? textColorDark
@@ -425,6 +432,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
   //endregion
 
   Widget _buildFirstDropdown() {
@@ -462,7 +470,10 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                         SizedBox(width: 12),
                         Text(
-                          city.name ?? '',
+                          translateCityName(
+                            city.name ?? '',
+                            appStore.selectedLanguage,
+                          ).capitalizeFirstLetter(),
                           style: TextStyle(
                             color: appStore.isDarkModeOn
                                 ? textOnDarkMode
@@ -552,7 +563,10 @@ class _MainScreenState extends State<MainScreen> {
                       SizedBox(width: 12),
                       Flexible(
                         child: Text(
-                          category.name.toString(),
+                          translateCategoryName(
+                            category.name ?? '',
+                            appStore.selectedLanguage,
+                          ).capitalizeFirstLetter(),
                           style: primaryTextStyle(
                             size: 16,
                             color: appStore.isDarkModeOn
