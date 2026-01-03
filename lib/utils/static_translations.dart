@@ -69,6 +69,10 @@ const Map<String, Map<String, String>> keyword = {
     "en": "Application Support",
     "ru": "Поддержка приложений",
   },
+  "ابلاغ": {
+    "en": "Report",
+    "ru": "Отчет",
+  },
   };
 String translateCategoryName(String arabicName, String langCode) {
   if (langCode == 'ar') return arabicName;

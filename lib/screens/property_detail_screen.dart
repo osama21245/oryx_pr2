@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:orex/components/checkbox_Component.dart';
 import 'package:orex/components/oryx_ai.dart';
 import 'package:orex/models/dashBoard_response.dart';
+import 'package:orex/utils/app_textfiled.dart';
+import 'package:orex/utils/static_translations.dart';
 import '../components/full_screen_image_viewer.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/bool_extensions.dart';
@@ -455,8 +458,39 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(mDetail!.data!.name.toString(),
-                            style: boldTextStyle(size: 18)),
+                        Row(
+                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(mDetail!.data!.name.toString(),
+                                style: boldTextStyle(size: 18)),
+                            Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: primaryColor.withOpacity(0.1),
+                                  ),
+                                  child: Icon(
+                                    Icons.flag_outlined,
+                                    color: primaryColor,
+                                    size: 20,
+                                  ),
+                                ).onTap((){
+                                  showBottomSheet(onTap: (){});
+                                }),
+                                5.height,
+                                Text(translateKeywords("ابلاغ", appStore.selectedLanguage),
+                                    style: secondaryTextStyle(
+                                        size: 12,
+                                        color:primaryColor,
+                                        weight: FontWeight.w400),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis),
+                              ],
+                            ).paddingSymmetric(horizontal: 0),
+                          ],
+                        ),
                         widget.comeFromSlider == true
                             ? Text(
                                 "${widget.areaPrice!.type}${widget.areaPrice!.area}",
@@ -1265,6 +1299,83 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
             ],
           )
         : SizedBox();
+  }
+  void showBottomSheet({required void Function() onTap}) {
+    List<String> selectedOptions = [];
+    List<String> allOptions = ["غير متعلقة بالعقارات", "صور خاطئة","أخرى",];
+    showModalBottomSheet(
+      isScrollControlled: true,
+      enableDrag: false,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setStateSheet) {
+            return DraggableScrollableSheet(
+              expand: false,
+              initialChildSize: 0.6,
+              maxChildSize: 0.95,
+              minChildSize: 0.4,
+              builder: (context, scrollController) {
+              return Container(
+                padding: const EdgeInsets.all(14),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(translateKeywords("ابلاغ", appStore.selectedLanguage), style: boldTextStyle(size: 18)),
+                    Divider(),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: allOptions.length,
+                        itemBuilder: (context, index) {
+                          final option = allOptions[index];
+                          final isSelected = selectedOptions.contains(option);
+                          return CheckboxListTile(
+                            controlAffinity: appStore.selectedLanguage=="ar" ? ListTileControlAffinity.leading :ListTileControlAffinity.trailing,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(option),
+                            value: isSelected,
+                            activeColor: primaryColor,
+                            onChanged: (bool? value) {
+                              setStateSheet(() {
+                                if (value == true) {
+                                  selectedOptions.add(option);
+                                } else {
+                                  selectedOptions.remove(option);
+                                }
+                              });
+                              print(selectedOptions);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    Text("اشرح المشكلة", style: boldTextStyle(size: 18)),
+                    AppTextField(textFieldType:TextFieldType.OTHER,decoration: defaultInputDecoration(context,
+                        label: "اشرح المشكلة"),),
+                    20.height,
+                    AppButton(
+                      text:language.submit,
+                      width: context.width(),
+                      color: primaryColor,
+                      textColor: Colors.white,
+                      onTap: onTap
+                    )
+                  ],
+                ),
+              );
+            },);
+          },
+        );
+      },
+    );
   }
 
 //endregion
