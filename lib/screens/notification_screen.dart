@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orex/screens/property_detail_screen.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
@@ -64,7 +65,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
       log(e.toString());
     });
   }
+  void _navigateToTargetScreen(BuildContext context, NotificationModel? notificationData) {
+    if (notificationData == null) return;
 
+    if (notificationData.propertyId != null && notificationData.propertyId.toString().isNotEmpty) {
+
+      int? pId = int.tryParse(notificationData.propertyId.toString());
+
+      if (pId != null) {
+        PropertyDetailScreen(propertyId: pId).launch(context);
+      } else {
+        NotificationDetailsScreen(mNotificationResponse: notificationData).launch(context);
+      }
+    } else {
+      NotificationDetailsScreen(mNotificationResponse: notificationData).launch(context);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +148,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ).paddingSymmetric(horizontal: 16, vertical: 8),
                       ).onTap(() {
                         getNotificationDetails(mNotification.id.toString());
-                        NotificationDetailsScreen(mNotificationResponse: mNotification.data!).launch(context);
+                        _navigateToTargetScreen(context, mNotification.data);
+                        // NotificationDetailsScreen(mNotificationResponse: mNotification.data!).launch(context);
                       });
                     },
                   )

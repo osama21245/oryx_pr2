@@ -3,6 +3,7 @@ const app_logo = 'assets/logo_app.png';
 const ic_placeholder = "assets/splash.png";
 const ic_filter = 'assets/ic_Filter.png';
 const ic_home = "assets/ic_home.png";
+const city_view = "assets/city.jpeg";
 const ic_home_fill = "assets/ic_home_fill.png";
 const ic_profile = "assets/ic_profile.png";
 const ic_profile_fill = "assets/ic_profile_fill.png";
@@ -65,6 +66,8 @@ const ic_facebook = "assets/ic_facebook.png";
 const ic_instagram = "assets/ic_instagram.png";
 const ic_linkedin = "assets/ic_linkedin.png";
 const ic_twitter = "assets/ic_twitter.png";
+const ic_youtube = "assets/ic_youtube.png";
+const ic_tiktok = "assets/ic_tiktok.png";
 const no_internet = "assets/no_internet.png";
 
 const ic_boost_img = "assets/ic_boost_img.png";

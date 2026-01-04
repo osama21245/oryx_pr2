@@ -61,8 +61,10 @@ class NotificationModel {
   String? subject;
   String? message;
   String? image;
+  dynamic propertyId;
 
-  NotificationModel({this.id, this.pushNotificationId, this.type, this.subject, this.message, this.image});
+
+  NotificationModel({this.id, this.pushNotificationId, this.type, this.subject, this.message, this.image,this.propertyId,});
 
   NotificationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -71,6 +73,7 @@ class NotificationModel {
     subject = json['subject'];
     message = json['message'];
     image = json['image'];
+    propertyId = json['property_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +84,7 @@ class NotificationModel {
     data['subject'] = subject;
     data['message'] = message;
     data['image'] = image;
+    data['property_id'] = propertyId;
     return data;
   }
 }
