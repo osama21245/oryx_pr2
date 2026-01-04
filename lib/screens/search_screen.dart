@@ -99,7 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
     init();
     _initializeSpeech();
-    
+
     // Auto-open voice dialog if requested
     if (widget.openVoiceDialog == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -133,18 +133,56 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _getCurrentLocation() async {
     try {
       appStore.setLoading(true);
+
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        appStore.setLoading(false);
+        toast('Please enable location services');
+        return;
+      }
+
+      // Request location permissions using Geolocator (works better on iOS)
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          appStore.setLoading(false);
+          toast('Location permission is required to use this feature');
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        appStore.setLoading(false);
+        toast(
+            'Location permission is permanently denied. Please enable it in settings.');
+        await Geolocator.openAppSettings();
+        return;
+      }
+
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy:
+            LocationAccuracy.medium, // Approximate location (city/area level)
       );
+
       setState(() {
         latitude = position.latitude;
         longitude = position.longitude;
-
-        if (latitude != null && longitude != null) {
-          searchPropertyApi();
-        }
+        mSearchValue = '';
+        mSearchCont.clear();
       });
-    } catch (e) {}
+
+      if (latitude != null && longitude != null) {
+        await searchPropertyApi();
+      } else {
+        appStore.setLoading(false);
+      }
+    } catch (e) {
+      appStore.setLoading(false);
+      log('Error getting current location: $e');
+      toast('Failed to get current location');
+    }
   }
 
   void searchAndUpdateList(String value) {
@@ -604,11 +642,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ],
                         ),
-                      ).onTap(() {
-                        mSearchValue = '';
-                        _getCurrentLocation();
+                      ).onTap(() async {
                         widget.isFilter = false;
-                        setState(() {});
+                        await _getCurrentLocation();
                       }),
                       18.height,
                       // Enhanced AI Message Display
