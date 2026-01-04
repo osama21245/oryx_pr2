@@ -142,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    var notificationLength =notificationData?.notificationData?.length ?? 0;
+    var notificationLength =notificationData?.allUnreadCount ?? 0;
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset(

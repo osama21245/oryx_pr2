@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
@@ -287,7 +288,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   //endregion
 
   // region Add Properties Api
+  bool _isSavingProperty = false;
   Future saveProperty() async {
+    if (_isSavingProperty) return;
+    _isSavingProperty = true;
     try {
       hideKeyboard(context);
       appStore.setLoading(true);
@@ -389,6 +393,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       }
 
       // if (!isAmenityIsEmpty) {
+      final completer = Completer<void>();
       multiPartRequest.headers.addAll(buildHeaderTokens());
       sendMultiPartRequest(
         multiPartRequest,
@@ -455,22 +460,28 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
           } catch (e) {
             print('Error processing payment: $e');
             toast('⚠️ خطأ أثناء معالجة الرد من السيرفر');
+          }finally{
+            completer.complete();
           }
 
           isAmenityIsEmpty = false;
         },
         onError: (error) {
+          completer.complete();
           print("Error is $error");
           toast(error.toString());
         },
+
       ).catchError((e) {
         print("Error issssss $e");
         toast(e.toString());
       }).whenComplete(() => appStore.setLoading(false));
+      await completer.future;
     } catch (e) {
       print("Error in saveProperty: $e");
       toast("حدث خطأ أثناء حفظ العقار");
     } finally {
+      _isSavingProperty = false;
       appStore.setLoading(false);
       setState(() {});
     }
@@ -733,6 +744,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                 print('errooooooooo$error');
                               }
                             },
+                child: _isSavingProperty
+                    ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+                    : null,
                     ),
             ),
           ),
