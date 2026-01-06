@@ -698,10 +698,11 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                           toast(language
                                               .pleaseSelectPriceDuration);
                                         }
-                                        if (mainImagePath.isEmptyOrNull) {
-                                          toast(
-                                              language.pleaseSelectMainPicture);
-                                        }
+                                        /// old for required image
+                                        // if (mainImagePath.isEmptyOrNull) {
+                                        //   toast(
+                                        //       language.pleaseSelectMainPicture);
+                                        // }
                                         if (selectedImages.isEmpty) {
                                           toast(language
                                               .pleaseSelectOtherPicture);
@@ -715,18 +716,25 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                                     // Sell (1) or Wanted (3) - no price_duration required
                                     else {
                                       print('dddddddddddddddddddddddddd');
-                                      if ((widget.propertyFor == 3 ||
-                                              mainImagePath != null) &&
-                                          selectedBhkIndex != null) {
+
+                                      /// old for required image
+                                      // (widget.propertyFor == 3 ||
+                                      //     mainImagePath != null) &&
+
+
+                                      if (selectedBhkIndex != null) {
                                         // Submit directly instead of going to third screen
                                         saveProperty();
                                         selectedOptions.clear();
                                       } else {
-                                        if (widget.propertyFor != 3 &&
-                                            mainImagePath == null) {
-                                          toast(
-                                              language.pleaseSelectMainPicture);
-                                        }
+                                        /// old for required image
+                                        // if (widget.propertyFor != 3 &&
+                                        //     mainImagePath == null) {
+                                        //   toast(
+                                        //       language.pleaseSelectMainPicture);
+                                        // }
+
+
                                         // if (selectedImages.isEmpty)
                                         //   toast(
                                         //       language.pleaseSelectOtherPicture);

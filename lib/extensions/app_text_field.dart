@@ -293,12 +293,12 @@ class _AppTextFieldState extends State<AppTextField> {
       keyboardType: applyTextInputType(),
       decoration: widget.decoration != null
           ? (widget.decoration!.copyWith(
-              suffixIcon: suffixIcon(),
-            ))
+        suffixIcon: suffixIcon(),
+      ))
           : InputDecoration(
-              labelText: "Animatable hint",
-              counterText: "",
-            ),
+        labelText: "Animatable hint",
+        counterText: "",
+      ),
       focusNode: widget.focus,
       style: widget.textStyle ?? primaryTextStyle(),
       textAlign: widget.textAlign ?? TextAlign.start,
@@ -329,7 +329,7 @@ class _AppTextFieldState extends State<AppTextField> {
       obscuringCharacter: widget.obscuringCharacter.validate(value: '•'),
       initialValue: widget.initialValue,
       keyboardAppearance: widget.keyboardAppearance,
-      contextMenuBuilder: widget.contextMenuBuilder,
+      // contextMenuBuilder: widget.contextMenuBuilder,
     );
   }
 }
