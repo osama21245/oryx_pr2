@@ -73,6 +73,10 @@ const Map<String, Map<String, String>> keyword = {
     "en": "Report",
     "ru": "Отчет",
   },
+  "للمطور العقاري فقط": {
+    "en": "For real estate developer only",
+    "ru": "Только для застройщиков недвижимости",
+  },
   };
 String translateCategoryName(String arabicName, String langCode) {
   if (langCode == 'ar') return arabicName;
