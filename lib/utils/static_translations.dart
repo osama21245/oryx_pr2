@@ -77,6 +77,14 @@ const Map<String, Map<String, String>> keyword = {
     "en": "For real estate developer only",
     "ru": "Только для застройщиков недвижимости",
   },
+  "من فضلك ادخل محافظتك": {
+    "en": "Please enter your governorate",
+    "ru": "Пожалуйста, укажите вашу провинцию",
+  },
+  "اختر المحافظة": {
+    "en": "Select the governorate",
+    "ru": "Выберите провинцию",
+  },
   };
 String translateCategoryName(String arabicName, String langCode) {
   if (langCode == 'ar') return arabicName;
@@ -95,6 +103,48 @@ String translateKeywords(String arabicName, String langCode) {
 }
 String getCategoryName(String name) {
   return translateCategoryName(
+    name,
+    appStore.selectedLanguage,
+  );
+}
+
+const Map<String, Map<String, String>> governorateTranslations = {
+  'القاهرة': {'en': 'Cairo', 'ru': 'Каир'},
+  'الجيزة': {'en': 'Giza', 'ru': 'Гиза'},
+  'الإسكندرية': {'en': 'Alexandria', 'ru': 'Александрия'},
+  'الدقهلية': {'en': 'Dakahlia', 'ru': 'Дакахлия'},
+  'الشرقية': {'en': 'Sharqia', 'ru': 'Шаркия'},
+  'القليوبية': {'en': 'Qalyubia', 'ru': 'Кальюбия'},
+  'كفر الشيخ': {'en': 'Kafr El Sheikh', 'ru': 'Кафр-эш-Шейх'},
+  'الغربية': {'en': 'Gharbia', 'ru': 'Гарбия'},
+  'المنوفية': {'en': 'Monufia', 'ru': 'Монуфия'},
+  'البحيرة': {'en': 'Beheira', 'ru': 'Бухейра'},
+  'بورسعيد': {'en': 'Port Said', 'ru': 'Порт-Саид'},
+  'الإسماعيلية': {'en': 'Ismailia', 'ru': 'Исмаилия'},
+  'السويس': {'en': 'Suez', 'ru': 'Суэц'},
+  'دمياط': {'en': 'Damietta', 'ru': 'Думьят'},
+  'الفيوم': {'en': 'Faiyum', 'ru': 'Файюм'},
+  'بني سويف': {'en': 'Beni Suef', 'ru': 'Бени-Суейф'},
+  'المنيا': {'en': 'Minya', 'ru': 'Минья'},
+  'أسيوط': {'en': 'Asyut', 'ru': 'Асьют'},
+  'سوهاج': {'en': 'Sohag', 'ru': 'Сохаг'},
+  'قنا': {'en': 'Qena', 'ru': 'Кена'},
+  'الأقصر': {'en': 'Luxor', 'ru': 'Луксор'},
+  'أسوان': {'en': 'Aswan', 'ru': 'Асуан'},
+  'البحر الأحمر': {'en': 'Red Sea', 'ru': 'Красное море'},
+  'الوادي الجديد': {'en': 'New Valley', 'ru': 'Новая Долина'},
+  'مطروح': {'en': 'Matrouh', 'ru': 'Матрух'},
+  'شمال سيناء': {'en': 'North Sinai', 'ru': 'Северный Синай'},
+  'جنوب سيناء': {'en': 'South Sinai', 'ru': 'Южный Синай'},
+};
+
+String translateGovernorateName(String arabicName, String langCode) {
+  if (langCode == 'ar') return arabicName;
+  return governorateTranslations[arabicName]?[langCode] ?? arabicName;
+}
+
+String getGovernorateName(String name) {
+  return translateGovernorateName(
     name,
     appStore.selectedLanguage,
   );

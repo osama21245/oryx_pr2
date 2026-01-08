@@ -20,6 +20,7 @@ import '../screens/dashboard_screen.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../utils/images.dart';
+import '../utils/static_translations.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -64,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       gGovernorate: selectedGovernorate,
                     )));
       } else if (selectedGovernorate == null || selectedGovernorate!.isEmpty) {
-        toast("من فضلك ادخل محافظتك");
+        toast(translateKeywords("من فضلك ادخل محافظتك",appStore.selectedLanguage));
       }
     }
   }
@@ -155,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     20.height,
 
-                    Text("اختر المحافظة:", style: primaryTextStyle()),
+                    Text(translateKeywords("اختر المحافظة",appStore.selectedLanguage), style: primaryTextStyle()),
                     10.height,
 
                     DropdownButtonHideUnderline(
@@ -170,13 +171,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fillColor: appStore.isDarkModeOn
                               ? cardDarkColor
                               : primaryExtraLight,
-                          hintText: 'اختر المحافظة',
+                          hintText: translateKeywords("اختر المحافظة",appStore.selectedLanguage),
                         ),
                         items: governorates.map((String option) {
                           return DropdownMenuItem(
                             value: option,
-                            child: Text(option,
-                                style: TextStyle(fontSize: 14)), // small text
+                            child: Text(
+                                getGovernorateName(option),
+                                style: TextStyle(fontSize: 14)
+                            ),
                           );
                         }).toList(),
                         onChanged: (value) {
