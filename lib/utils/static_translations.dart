@@ -85,6 +85,14 @@ const Map<String, Map<String, String>> keyword = {
     "en": "Select the governorate",
     "ru": "Выберите провинцию",
   },
+  "مشاركه التطبيق": {
+    "en": "Share Application",
+    "ru": "поделиться приложением",
+  },
+  "اختر كود الدولة": {
+    "en": "Choose the country code",
+    "ru": "Выберите код страны",
+  },
   };
 String translateCategoryName(String arabicName, String langCode) {
   if (langCode == 'ar') return arabicName;

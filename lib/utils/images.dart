@@ -33,6 +33,7 @@ const ic_subscriptions = "assets/ic_subscriptions.png";
 const ic_articles = "assets/ic_articles.png";
 const ic_settings = "assets/ic_settings.png";
 const ic_about = "assets/ic_about.png";
+const ic_share = "assets/ic_share.png";
 const ic_mail = "assets/ic_mail.png";
 const ic_property = "assets/ic_property.png";
 const ic_map_point = "assets/ic_map_point.png";
