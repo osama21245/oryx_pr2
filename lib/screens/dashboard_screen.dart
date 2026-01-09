@@ -6,6 +6,7 @@ import 'package:orex/screens/developer_sliders_screen.dart';
 import 'package:orex/screens/login_screen.dart';
 import 'package:orex/screens/main_screen.dart';
 import 'package:orex/utils/sound_manger.dart';
+import 'package:orex/utils/static_translations.dart';
 // import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
 import '../components/add_property_dialouge.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -301,7 +302,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             var type = userStore.userType;
             log("type : $type");
             if (type != 'developer' && index == 2) {
-              toast('must your role is developer by admins');
+              toast(translateKeywords("للمطور العقاري فقط", appStore.selectedLanguage));
               return;
             }
             currentIndex = index;

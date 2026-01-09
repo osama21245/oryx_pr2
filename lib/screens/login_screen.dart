@@ -7,6 +7,7 @@ import 'package:orex/network/RestApis.dart';
 import 'package:orex/screens/otp_screen.dart';
 import 'package:orex/screens/signup_screen.dart';
 import 'package:orex/utils/otp_utils.dart';
+import 'package:orex/utils/static_translations.dart';
 import '../../../extensions/app_text_field.dart';
 import '../extensions/app_button.dart';
 import '../extensions/common.dart';
@@ -206,6 +207,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   size: 18,
                                   color: primaryColor,
                                   weight: FontWeight.w600))),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(translateKeywords("اختر كود الدولة", appStore.selectedLanguage),
+                              style: TextStyle(color: grayColor))),
                       20.height,
                       Form(
                         key: loginFormKey,
