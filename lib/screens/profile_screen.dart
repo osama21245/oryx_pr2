@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:orex/utils/static_translations.dart';
+import 'package:share_plus/share_plus.dart';
 import '../components/app_bar_components.dart';
 import '../extensions/colors.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -613,6 +615,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
           14.height,
           mSettingOption(language.aboutApp, ic_about, () {
             HelpCenterScreen().launch(context);
+          }),
+          14.height,
+          mSettingOption(translateKeywords("مشاركه التطبيق", appStore.selectedLanguage), ic_share, () {
+            SharePlus.instance.share(
+                ShareParams(text: """أخيرا تطبيق أوريكس Oryx يساعدك في , بيع وشراء وتأجير  العقارات بنفسك مجانا 🥰  
+بالثلاثة أقسام 
+1️⃣بيع 
+2️⃣إيجار 
+3️⃣مطلوب 
+
+💬 وكمان ميزة إشعارات الوصول المستهدفة للمستخدمين لترويج عقارك بسرعة.
+
+Google Play – تحميل التطبيق:
+(https://shorturl.at/eGZ1T)
+
+ios Apple App Store
+(https://shorturl.at/dNwbA)
+
+فيسبوك:
+(https://shorturl.at/bfZoB)
+
+إنستجرام:
+(https://shorturl.at/1ysTM)
+
+LinkedIn:
+(https://shorturl.at/culmB)
+
+يوتيوب: 
+(https://shorturl.at/fvI2H)
+
+📌 الموقع الإلكتروني:
+(https://oryx-eg.com)
+
+يرجى البحث في متجر التطبيقات عن إسم التطبيق 
+أوريكس Oryx 
+أو حفظ الرقم لتتمكن من الضغط على لينكات التحميل مباشرة.
+
+أخيرا تطبيق محترم بدل الدوخة في الجروبات""",)
+            );
           }),
           14.height,
           mSettingOption(language.deleteAccount, ic_delete_ac, () {
