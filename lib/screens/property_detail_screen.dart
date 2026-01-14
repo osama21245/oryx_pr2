@@ -252,11 +252,23 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                           )
                         else if (mDetail?.data?.propertyGallary?.isEmpty ??
                             true)
-                          Image.network(
-                            mDetail?.data?.propertyImage ?? "",
-                            height: context.height() * 0.34,
-                            width: context.width(),
-                            fit: BoxFit.cover,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      FullScreenImageViewer(
+                                          imageUrl: mDetail?.data?.propertyImage??""),
+                                ),
+                              );
+                            },
+                            child: Image.network(
+                              mDetail?.data?.propertyImage ?? "",
+                              height: context.height() * 0.34,
+                              width: context.width(),
+                              fit: BoxFit.cover,
+                            ),
                           )
                         else
                           CarouselSlider(
@@ -460,9 +472,14 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       children: [
                         Row(
                           mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(mDetail!.data!.name.toString(),
-                                style: boldTextStyle(size: 18)),
+                            SizedBox(
+                              height: 70,
+                              width: 300,
+                              child: Text(mDetail!.data!.name.toString(),
+                                  style: boldTextStyle(size: 18,),),
+                            ),
                             Column(
                               children: [
                                 Container(
