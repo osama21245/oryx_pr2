@@ -37,6 +37,7 @@ import '../extensions/text_styles.dart';
 import '../main.dart';
 import '../models/property_details_model.dart';
 import '../network/RestApis.dart';
+import '../network/network_utills.dart';
 import '../utils/app_common.dart';
 import '../utils/app_config.dart';
 import '../utils/colors.dart';
@@ -459,7 +460,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(mDetail!.data!.name.toString(),
                                 style: boldTextStyle(size: 18)),
@@ -476,14 +477,16 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                                     color: primaryColor,
                                     size: 20,
                                   ),
-                                ).onTap((){
-                                  showBottomSheet(onTap: (){});
+                                ).onTap(() {
+                                  showBottomSheet(onTap: () {});
                                 }),
                                 5.height,
-                                Text(translateKeywords("ابلاغ", appStore.selectedLanguage),
+                                Text(
+                                    translateKeywords(
+                                        "ابلاغ", appStore.selectedLanguage),
                                     style: secondaryTextStyle(
                                         size: 12,
-                                        color:primaryColor,
+                                        color: primaryColor,
                                         weight: FontWeight.w400),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis),
@@ -1300,9 +1303,23 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
           )
         : SizedBox();
   }
+
   void showBottomSheet({required void Function() onTap}) {
     List<String> selectedOptions = [];
-    List<String> allOptions = ["غير متعلقة بالعقارات", "صور خاطئة","أخرى",];
+    List<String> allOptions = [
+      "غير متعلقة بالعقارات",
+      "صور خاطئة",
+      "أخرى",
+    ];
+    TextEditingController descriptionController = TextEditingController();
+
+    // Map Arabic options to English API values
+    Map<String, String> optionToApiValue = {
+      "غير متعلقة بالعقارات": "not_related",
+      "صور خاطئة": "fake_images",
+      "أخرى": "other",
+    };
+
     showModalBottomSheet(
       isScrollControlled: true,
       enableDrag: false,
@@ -1316,62 +1333,109 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
               maxChildSize: 0.95,
               minChildSize: 0.4,
               builder: (context, scrollController) {
-              return Container(
-                padding: const EdgeInsets.all(14),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(translateKeywords("ابلاغ", appStore.selectedLanguage), style: boldTextStyle(size: 18)),
-                    Divider(),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: allOptions.length,
-                        itemBuilder: (context, index) {
-                          final option = allOptions[index];
-                          final isSelected = selectedOptions.contains(option);
-                          return CheckboxListTile(
-                            controlAffinity: appStore.selectedLanguage=="ar" ? ListTileControlAffinity.leading :ListTileControlAffinity.trailing,
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(option),
-                            value: isSelected,
-                            activeColor: primaryColor,
-                            onChanged: (bool? value) {
-                              setStateSheet(() {
-                                if (value == true) {
-                                  selectedOptions.add(option);
-                                } else {
-                                  selectedOptions.remove(option);
-                                }
-                              });
-                              print(selectedOptions);
-                            },
-                          );
-                        },
-                      ),
+                return Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
                     ),
-                    Text("اشرح المشكلة", style: boldTextStyle(size: 18)),
-                    AppTextField(textFieldType:TextFieldType.OTHER,decoration: defaultInputDecoration(context,
-                        label: "اشرح المشكلة"),),
-                    20.height,
-                    AppButton(
-                      text:language.submit,
-                      width: context.width(),
-                      color: primaryColor,
-                      textColor: Colors.white,
-                      onTap: onTap
-                    )
-                  ],
-                ),
-              );
-            },);
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          translateKeywords("ابلاغ", appStore.selectedLanguage),
+                          style: boldTextStyle(size: 18)),
+                      Divider(),
+                      Expanded(
+                        child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: allOptions.length,
+                          itemBuilder: (context, index) {
+                            final option = allOptions[index];
+                            final isSelected = selectedOptions.contains(option);
+                            return CheckboxListTile(
+                              controlAffinity: appStore.selectedLanguage == "ar"
+                                  ? ListTileControlAffinity.leading
+                                  : ListTileControlAffinity.trailing,
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(option),
+                              value: isSelected,
+                              activeColor: primaryColor,
+                              onChanged: (bool? value) {
+                                setStateSheet(() {
+                                  if (value == true) {
+                                    selectedOptions.add(option);
+                                  } else {
+                                    selectedOptions.remove(option);
+                                  }
+                                });
+                                print(selectedOptions);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      Text("اشرح المشكلة", style: boldTextStyle(size: 18)),
+                      AppTextField(
+                        textFieldType: TextFieldType.OTHER,
+                        controller: descriptionController,
+                        decoration: defaultInputDecoration(context,
+                            label: "اشرح المشكلة"),
+                      ),
+                      20.height,
+                      AppButton(
+                        text: language.submit,
+                        width: context.width(),
+                        color: primaryColor,
+                        textColor: Colors.white,
+                        onTap: () async {
+                          if (selectedOptions.isEmpty) {
+                            toast("Please select at least one reason");
+                            return;
+                          }
+
+                          // Convert selected Arabic options to API values
+                          List<String> apiReasons = selectedOptions
+                              .map((option) =>
+                                  optionToApiValue[option] ?? option)
+                              .toList();
+
+                          Map<String, dynamic> requestBody = {
+                            "reasons": apiReasons,
+                            "description": descriptionController.text,
+                            "property_id": widget.propertyId,
+                          };
+
+                          appStore.setLoading(true);
+
+                          try {
+                            await buildHttpResponse(
+                              'https://oryxinvestmentsegypt.com/api/report',
+                              request: requestBody,
+                              method: HttpMethod.POST,
+                            );
+
+                            appStore.setLoading(false);
+                            Navigator.pop(context);
+                            toast(translateKeywords(
+                                "تم الإبلاغ بنجاح", appStore.selectedLanguage));
+                            onTap();
+                          } catch (e) {
+                            appStore.setLoading(false);
+                            log("Report error: $e");
+                            toast(translateKeywords("حدث خطأ، حاول مرة أخرى",
+                                appStore.selectedLanguage));
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                );
+              },
+            );
           },
         );
       },
