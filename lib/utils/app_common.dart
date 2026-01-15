@@ -199,6 +199,7 @@ void oneSignalData() async {
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.Debug.setAlertLevel(OSLogLevel.none);
   OneSignal.consentRequired(false);
+  OneSignal.initialize(mOneSignalID);
 
   final permission = await OneSignal.Notifications.permissionNative();
   print("Permission $permission");
@@ -207,7 +208,6 @@ void oneSignalData() async {
   OneSignal.Notifications.requestPermission(true).then((value) {
     print("Accepted permission: $value");
   });
-  OneSignal.initialize(mOneSignalID);
 
   saveOneSignalPlayerId();
   OneSignal.Notifications.addForegroundWillDisplayListener((event) {

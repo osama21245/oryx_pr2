@@ -26,6 +26,14 @@
         <meta-data
             android:name="onesignal_app_id"
             android:value="6e79efe1-1b61-42fc-a5df-3fcc9ccaf083" />
+        
+        <!-- OneSignal Notification Icons -->
+        <meta-data 
+            android:name="com.onesignal.NotificationDefaultIcon"
+            android:resource="@mipmap/launcher_icon"/>
+        <meta-data 
+            android:name="com.onesignal.NotificationDefaultLargeIcon"
+            android:resource="@mipmap/launcher_icon"/>
             
         <meta-data
             android:name="onesignal_google_project_number"

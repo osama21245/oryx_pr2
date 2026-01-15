@@ -438,6 +438,7 @@ class MSlider {
   String? categoryName;
   int? propertyId;
   String? propertyName;
+  String? propertyCity;
   String? description;
   int? status;
   String? sliderImage;
@@ -454,6 +455,7 @@ class MSlider {
     this.categoryName,
     this.propertyId,
     this.propertyName,
+    this.propertyCity,
     this.description,
     this.status,
     this.sliderImage,
@@ -472,6 +474,7 @@ class MSlider {
     categoryName = json['category_name'];
     propertyId = json['property_id'];
     propertyName = json['property_name'];
+    propertyCity = json['property_city'];
     description = json['description'];
     status = json['status'];
     sliderImage = json['slider_image'];
@@ -494,6 +497,7 @@ class MSlider {
     data['category_name'] = categoryName;
     data['property_id'] = propertyId;
     data['property_name'] = propertyName;
+    data['property_city'] = propertyCity;
     data['description'] = description;
     data['status'] = status;
     data['slider_image'] = sliderImage;
@@ -622,7 +626,9 @@ class Property {
     categoryId = json['category_id'];
     category = json['category'];
     categoryImage = json['category_image'];
-    price = json['price'];
+    price = json['price'] is num
+        ? (json['price'] as num).toInt()
+        : int.tryParse(json['price'].toString());
     priceFormat = json['price_format'];
     address = json['address'];
     status = json['status'];
@@ -738,7 +744,9 @@ class OwnerProperty {
     categoryId = json['category_id'];
     category = json['category'];
     categoryImage = json['category_image'];
-    price = json['price'];
+    price = price = json['price'] is num
+        ? (json['price'] as num).toInt()
+        : int.tryParse(json['price'].toString());
     priceFormat = json['price_format'];
     address = json['address'];
     status = json['status'];
@@ -815,7 +823,9 @@ class AdvertisementProperty {
     categoryId = json['category_id'];
     category = json['category'];
     categoryImage = json['category_image'];
-    price = json['price'];
+    price = json['price'] is num
+        ? (json['price'] as num).toInt()
+        : int.tryParse(json['price'].toString());
     priceFormat = json['price_format'];
     address = json['address'];
     status = json['status'];
@@ -892,7 +902,9 @@ class NearbyProperty {
     categoryId = json['category_id'];
     category = json['category'];
     categoryImage = json['category_image'];
-    price = json['price'];
+    price = json['price'] is num
+        ? (json['price'] as num).toInt()
+        : int.tryParse(json['price'].toString());
     priceFormat = json['price_format'];
     address = json['address'];
     status = json['status'];
@@ -969,7 +981,9 @@ class FullyFurnishedProperty {
     categoryId = json['category_id'];
     category = json['category'];
     categoryImage = json['category_image'];
-    price = json['price'];
+    price = json['price'] is num
+        ? (json['price'] as num).toInt()
+        : int.tryParse(json['price'].toString());
     priceFormat = json['price_format'];
     address = json['address'];
     status = json['status'];

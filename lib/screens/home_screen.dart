@@ -110,28 +110,37 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initLocationStream() async {
     positionStream?.cancel();
 
-    positionStream =
-        Geolocator.getPositionStream().listen((Position event) async {
-      List<Placemark> placeMarks = await placemarkFromCoordinates(
-        event.latitude,
-        event.longitude,
-      );
-      if (placeMarks.isNotEmpty && cityReceived == false) {
-        // userStore.setUserLatitude(event.latitude.toString());
-        // userStore.setUserLongitude(event.longitude.toString());
-        // userStore.setUserCity(placeMarks.first.locality!);
-
-        if (userStore.latitude.isNotEmpty &&
-            userStore.longitude.isNotEmpty &&
-            userStore.cityName.isNotEmpty &&
-            cityReceived == false) await getData();
-        cityReceived = true;
-
-        setState(() {});
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        return;
       }
-    }, onError: (error) {
-      setState(() {});
-    });
+
+      positionStream =
+          Geolocator.getPositionStream().listen((Position event) async {
+        try {
+          List<Placemark> placeMarks = await placemarkFromCoordinates(
+            event.latitude,
+            event.longitude,
+          );
+          if (placeMarks.isNotEmpty && cityReceived == false) {
+            if (userStore.latitude.isNotEmpty &&
+                userStore.longitude.isNotEmpty &&
+                userStore.cityName.isNotEmpty &&
+                cityReceived == false) await getData();
+            cityReceived = true;
+
+            setState(() {});
+          }
+        } catch (e) {
+          print(e);
+        }
+      }, onError: (error) {
+        setState(() {});
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   List<String> generateList() {
