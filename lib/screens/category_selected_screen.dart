@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:orex/components/vertical_advertisement_property_component.dart';
 import '../components/oryx_ai.dart';
 import '../extensions/extension_util/widget_extensions.dart';
 import '../models/dashBoard_response.dart';
@@ -125,13 +126,13 @@ class _CategorySelectedScreenState extends State<CategorySelectedScreen> {
                 ? ListView.builder(
                     controller: scrollController,
                     physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 6),
                     shrinkWrap: true,
                     itemCount: mPropertyDataSelected.length,
                     itemBuilder: (context, i) {
                       return widget.categoryId ==
                               mPropertyDataSelected[i].categoryId
-                          ? AdvertisementPropertyComponent(
+                          ? VerticalAdvertisementPropertyComponent(
                               property: mPropertyDataSelected[i],
                               onCall: () {
                                 getPropertyApiCall();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../components/HtmlWidget.dart';
 import '../extensions/extension_util/context_extensions.dart';
 import '../extensions/extension_util/int_extensions.dart';
 import '../extensions/extension_util/string_extensions.dart';
@@ -47,7 +48,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
                     .paddingSymmetric(horizontal: 16),
             20.height,
             Text(widget.mNotificationResponse.subject.validate(), style: boldTextStyle(size: 20)).paddingSymmetric(horizontal: 16),
-            // HtmlWidget(postContent: widget.mNotificationResponse.message.validate()).paddingSymmetric(horizontal: 10)
+            HtmlWidget(postContent: widget.mNotificationResponse.message.validate()).paddingSymmetric(horizontal: 10)
           ]),
         ),
       ),
