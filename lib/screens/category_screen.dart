@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:orex/components/slider_components.dart';
 import 'package:orex/models/dashBoard_response.dart';
@@ -55,6 +57,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Future<void> init() async {
     await getPropertyCategory();
+    await fetchAllSliders();
     await getFilterSliders();
   }
 
@@ -99,13 +102,49 @@ class _CategoryScreenState extends State<CategoryScreen> {
     setState(() {});
   }
 
+  List<MSlider>? allFilteredSliders;
+  Future<void> fetchAllSliders() async {
+    try {
+      appStore.setLoading(true);
+      if (userStore.cityName.validate().isNotEmpty) {
+        await getAllSliders().then((value) {
+          allFilteredSliders = value;
+          setState(() {});
+        }).catchError((e) {
+          log('Error fetching city sliders: $e');
+        });
+        if (widget.transactionType == 0) {
+          allFilteredSliders = allFilteredSliders!.where((slider) {
+            return slider.propertyFor != null &&
+                slider.propertyFor == widget.transactionType &&
+                slider.propertyCity != null &&
+                slider.propertyCity == userStore.cityName.validate();
+          }).toList();
+        } else if (widget.transactionType == 1) {
+          allFilteredSliders = allFilteredSliders!.where((slider) {
+            return slider.propertyFor != null &&
+                slider.propertyFor == widget.transactionType &&
+                slider.propertyCity != null &&
+                slider.propertyCity == userStore.cityName.validate();
+          }).toList();
+        } else {}
+
+        setState(() {});
+      }
+      appStore.setLoading(false);
+    } catch (e) {
+      appStore.setLoading(false);
+      log('Error in fetchCitySliders: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print('ddddddaaaaaaaaaaaa ${data!.slider!.length}');
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             DashboardScreen().launch(context, isNewTask: false);
           },
           child: Image.asset(
@@ -124,13 +163,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   controller: scrollController,
                   child: Column(
                     children: [
-                      if (data!.slider!.isNotEmpty)
-
-                        // Show slider only if a transaction type is selected
-                        if (widget.transactionType != null &&
-                            filteredSliders != null &&
-                            filteredSliders!.isNotEmpty)
-                          SlidesComponents(data: filteredSliders),
+                      if (widget.transactionType != null &&
+                          allFilteredSliders != null &&
+                          allFilteredSliders!.isNotEmpty)
+                        SlidesComponents(data: allFilteredSliders),
                       const SizedBox(height: 16),
                       AnimatedWrap(
                         runSpacing: 16,

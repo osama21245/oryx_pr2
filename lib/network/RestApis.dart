@@ -559,7 +559,7 @@ Future<void> logout(BuildContext context, {bool isFromLogin = false}) async {
 //Sliders by City
 Future<List<MSlider>> getSlidersByCity(String city) async {
   final response = await handleResponse(
-    await buildHttpResponse('slider-by-city?city=$city',
+    await buildHttpResponse('unique-slider-list?city=$city',
         method: HttpMethod.GET),
   );
   if (response is Map<String, dynamic> && response.containsKey('data')) {
@@ -570,3 +570,18 @@ Future<List<MSlider>> getSlidersByCity(String city) async {
   }
   throw Exception("Unexpected response format");
 }
+
+Future<List<MSlider>> getAllSliders() async {
+  final response = await handleResponse(
+    await buildHttpResponse('slider-list',
+        method: HttpMethod.GET),
+  );
+  if (response is Map<String, dynamic> && response.containsKey('data')) {
+    var data = response['data'];
+    if (data is List) {
+      return data.map((item) => MSlider.fromJson(item)).toList();
+    }
+  }
+  throw Exception("Unexpected response format");
+}
+

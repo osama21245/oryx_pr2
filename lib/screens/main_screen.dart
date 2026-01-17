@@ -126,6 +126,7 @@ class _MainScreenState extends State<MainScreen> {
       print("Category Error: ${e.toString()}");
     });
   }
+
   NotificationResponse? notificationData;
   getMarksRead(String? realAll) async {
     Map? req;
@@ -140,9 +141,10 @@ class _MainScreenState extends State<MainScreen> {
       log(e.toString());
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    var notificationLength =notificationData?.allUnreadCount ?? 0;
+    var notificationLength = notificationData?.allUnreadCount ?? 0;
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset(
@@ -184,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
               ],
-            ).onTap((){
+            ).onTap(() {
               NotificationScreen().launch(context);
             }),
           )
@@ -200,23 +202,19 @@ class _MainScreenState extends State<MainScreen> {
             //?? add by Axon
             // Search widget above grid
             searchWidget(),
-            // 20.height,
-            if (gifUrl
-                .isNotEmpty) // Only show if GIF URL is available, or use empty check inside? The original uses `TransactionTypeCard` which handles display.
-            // The original code in `choose_transaction_type_screen.dart` unconditionally shows it but fetches the gif.
-            // Let's match the user request: "this slider ... i want this component to be in the home page"
-            TransactionTypeCard(
-              width: MediaQuery.of(context).size.width,
-              borderRadius: BorderRadius.all(Radius.circular(6)),
-              isSelected: false,
-              imagePath: gifUrl,
-              padding: 0,
-              inTheme: false,
-              // decorationImagePath: splash,
-              isGif: true,
-            ).paddingSymmetric(horizontal: 0),
+            20.height,
+            if (gifUrl.isNotEmpty)
+              TransactionTypeCard(
+                width: MediaQuery.of(context).size.width,
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+                isSelected: false,
+                imagePath: gifUrl,
+                padding: 0,
+                decorationImagePath: splash,
+                isGif: true,
+              ).paddingSymmetric(horizontal: 16),
+            20.height,
             _buildFirstDropdown(),
-            // 20.height,
             _buildSecondDropdown(),
             _buildCategoryDropdown(),
             // old code
@@ -254,7 +252,8 @@ class _MainScreenState extends State<MainScreen> {
                 data!.propertyCity![index].images.toString(),
                 fit: BoxFit.cover,
               ).cornerRadiusWithClipRRect(24)),
-              Text(overflow: TextOverflow.ellipsis,
+              Text(
+                      overflow: TextOverflow.ellipsis,
                       translateCityName(
                         data!.propertyCity![index].name.toString(),
                         appStore.selectedLanguage,
@@ -445,7 +444,10 @@ class _MainScreenState extends State<MainScreen> {
       }
 
       return Padding(
-        padding: const EdgeInsets.only(left: 16.0,right: 16.0,),
+        padding: const EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+        ),
         child: DropdownButtonFormField<String>(
           value: selectedCityId,
           decoration: InputDecoration(

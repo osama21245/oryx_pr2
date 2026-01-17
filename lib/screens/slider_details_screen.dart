@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:orex/components/table.dart';
 import 'package:orex/extensions/colors.dart';
+import 'package:orex/extensions/common.dart';
 import 'package:orex/screens/subscribe_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../components/limit_exceed_dialog.dart';
 import '../extensions/decorations.dart';
 import '../extensions/extension_util/context_extensions.dart';
@@ -32,10 +34,19 @@ class SliderDetailsScreen extends StatefulWidget {
 
   @override
   State<SliderDetailsScreen> createState() => _SliderDetailsScreenState();
-  
 }
 
 class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
+  Future<void> openPdf(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    )) {
+      toast('Could not open PDF');
+    }
+  }
+
   PropertyDetailsModel? mDetail;
   propertyDetailCall() async {
     appStore.setLoading(true);
@@ -49,9 +60,7 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
         getYoutubeThumbnail(mDetail!.data!.videoUrl);
       }
 
-      setState(() {
-
-      });
+      setState(() {});
     }).catchError((e) {
       log(e.toString());
     }).whenComplete(() => appStore.setLoading(false));
@@ -63,6 +72,7 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
     propertyDetailCall();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
@@ -85,8 +95,7 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                     fit: BoxFit.fill)
                 // .cornerRadiusWithClipRRect(12)
                 .paddingSymmetric(horizontal: 16),
-                20.height
-                ,
+            20.height,
             Container(
                 padding: EdgeInsets.all(16),
                 decoration: boxDecorationWithRoundedCorners(
@@ -117,6 +126,42 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                           },
                         ),
                         10.height,
+                        Text('PDF',
+                            style: primaryTextStyle(
+                                color: appStore.isDarkModeOn
+                                    ? textOnDarkMode
+                                    : textOnLightMode)),
+                        10.height,
+                        widget.slider.pdfFile.validate() !=
+                                'https://oryxinvestmentsegypt.com/images/default.png'
+                            ? Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: appStore.isDarkModeOn
+                                      ? darkGrayColor
+                                      : primaryVariant,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.picture_as_pdf),
+                                  onPressed: () {
+                                    openPdf(widget.slider.pdfFile.validate());
+                                  },
+                                ),
+                              )
+                            : Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: appStore.isDarkModeOn
+                                      ? darkGrayColor
+                                      : primaryVariant,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () {},
+                                ),
+                              ),
                         Text(language.description,
                             style: primaryTextStyle(
                                 color: appStore.isDarkModeOn
@@ -124,8 +169,8 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                                     : textOnLightMode)),
                         4.height,
                         Html(
-                          data: widget.slider
-                              .description, // e.g. "<p>موجود مساحات متنوعة للايجار تبدأ من 7متر حتى 200متر</p>"
+                          data: widget.slider.description
+                              .validate(), // e.g. "<p>موجود مساحات متنوعة للايجار تبدأ من 7متر حتى 200متر</p>"
                           style: {
                             "*": Style(
                               direction: TextDirection.rtl, // since it's Arabic
@@ -146,7 +191,7 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
               //   propertyId: widget.slider.propertyId,
               // ).launch(context);
             }).paddingSymmetric(horizontal: 16),
-            10.height,contactWidget(),
+            10.height, contactWidget(),
             // HtmlWidget(postContent: widget.slider.description.validate()).paddingSymmetric(horizontal: 10)
           ]),
         ),
@@ -302,7 +347,7 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
                               borderRadius: BorderRadius.circular(15),
                               border: Border.all(color: dividerColor)),
                           child:
-                          Image.asset(ic_whatsapp, height: 30, width: 30),
+                              Image.asset(ic_whatsapp, height: 30, width: 30),
                         ),
                         onTap: () {
                           print("phone : ${mDetail!.customer!.contactNumber}");
@@ -343,34 +388,34 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
             width: context.width(),
             decoration: boxDecorationWithRoundedCorners(
                 backgroundColor:
-                appStore.isDarkModeOn ? Colors.grey : primaryVariant,
+                    appStore.isDarkModeOn ? Colors.grey : primaryVariant,
                 borderRadius: radiusOnly(bottomLeft: 8, bottomRight: 8)),
             child: Text(language.tapToViewContactInfo,
-                style: primaryTextStyle(
-                    color: mDetail!.data!.checkedPropertyInquiry == 0
-                        ? Colors.black
-                        : grayColor))
+                    style: primaryTextStyle(
+                        color: mDetail!.data!.checkedPropertyInquiry == 0
+                            ? Colors.black
+                            : grayColor))
                 .center(),
           ).onTap(() {
             if (userStore.isSubscribe != 0) {
               if (mDetail!.data!.checkedPropertyInquiry == 0) {
                 if (userStore.subscriptionDetail!.subscriptionPlan!.packageData!
-                    .property
-                    .validate() ==
+                        .property
+                        .validate() ==
                     0) {
                   userStore.contactInfo == 0
                       ? showDialog(
-                    context: context,
-                    builder: (context) {
-                      return LimitExceedDialog(
-                        onTap: () {
-                          finish(context);
-                          LimitScreen(limit: "view_property")
-                              .launch(context);
-                        },
-                      );
-                    },
-                  )
+                          context: context,
+                          builder: (context) {
+                            return LimitExceedDialog(
+                              onTap: () {
+                                finish(context);
+                                LimitScreen(limit: "view_property")
+                                    .launch(context);
+                              },
+                            );
+                          },
+                        )
                       : setInquiryOProperty();
                 } else {
                   setInquiryOProperty();
@@ -386,6 +431,7 @@ class _SliderDetailsScreenState extends State<SliderDetailsScreen> {
       ),
     ).paddingSymmetric(horizontal: 16);
   }
+
   setInquiryOProperty() async {
     appStore.setLoading(true);
     Map req = {

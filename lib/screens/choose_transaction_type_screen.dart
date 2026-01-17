@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orex/components/transaction_type_card.dart';
 import 'package:orex/components/slider_components.dart';
 import 'package:orex/extensions/extension_util/context_extensions.dart';
+import 'package:orex/extensions/extension_util/string_extensions.dart';
 import 'package:orex/models/gif_model.dart';
 import 'package:orex/models/dashBoard_response.dart';
 import 'package:orex/utils/images.dart';
@@ -134,6 +135,7 @@ class _ChooseTransactionTypeScreenState
   int? selectedTransactionTypeId;
   bool isSale = false, isRent = false, isWanted = false;
   late String gifUrl;
+  List<MSlider>? citySliders;
 
   iWantToSale() {
     setState(() {
@@ -168,6 +170,7 @@ class _ChooseTransactionTypeScreenState
 
   void init() async {
     await fetchGif();
+    await fetchCitySliders();
     if (data == null) {
       await fetchDashboardData();
     }
@@ -206,6 +209,24 @@ class _ChooseTransactionTypeScreenState
     } catch (e) {
       appStore.setLoading(false);
       log('Error fetching GIF: $e');
+    }
+  }
+
+  Future<void> fetchCitySliders() async {
+    try {
+      appStore.setLoading(true);
+      if (userStore.cityName.validate().isNotEmpty) {
+        await getSlidersByCity(userStore.cityName.validate()).then((value) {
+          citySliders = value;
+          setState(() {});
+        }).catchError((e) {
+          log('Error fetching city sliders: $e');
+        });
+      }
+      appStore.setLoading(false);
+    } catch (e) {
+      appStore.setLoading(false);
+      log('Error in fetchCitySliders: $e');
     }
   }
 
@@ -285,8 +306,8 @@ class _ChooseTransactionTypeScreenState
                   children: [
                     if (selectedTransactionTypeId != null)
                       const SizedBox(height: 20),
-                    if (filteredSliders != null && filteredSliders.isNotEmpty)
-                      SlidesComponents(data: filteredSliders),
+                    if (citySliders != null && citySliders!.isNotEmpty)
+                      SlidesComponents(data: citySliders),
                     const SizedBox(height: 0),
                     Padding(
                       padding: const EdgeInsets.all(14.0),
@@ -301,7 +322,8 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: false,enableSound: false);
+                              ).launch(context,
+                                  isNewTask: false, enableSound: false);
                             },
                             child: TransactionTypeCard(
                               isSelected: isSale,
@@ -319,7 +341,8 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: true,enableSound: false);
+                              ).launch(context,
+                                  isNewTask: true, enableSound: false);
                             },
                             child: TransactionTypeCard(
                               isSelected: isRent,
@@ -337,7 +360,8 @@ class _ChooseTransactionTypeScreenState
                               DashboardScreen(
                                 transactionType: selectedTransactionTypeId,
                                 isSplash: false,
-                              ).launch(context, isNewTask: false,enableSound: false);
+                              ).launch(context,
+                                  isNewTask: false, enableSound: false);
                             },
                             child: TransactionTypeCard(
                               isSelected: isWanted,
@@ -349,7 +373,8 @@ class _ChooseTransactionTypeScreenState
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 20,top: 0,right: 20,left: 20),
+                      padding: const EdgeInsets.only(
+                          bottom: 20, top: 0, right: 20, left: 20),
                       child: Container(
                         alignment: Alignment.center,
                         height: 130,
@@ -357,10 +382,10 @@ class _ChooseTransactionTypeScreenState
                         padding: EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            fit: BoxFit.fill  ,
+                              fit: BoxFit.fill,
                               image: AssetImage(
-                            city_view,
-                          )),
+                                city_view,
+                              )),
                           color: Theme.of(context).disabledColor.withAlpha(25),
                           borderRadius: BorderRadius.circular(23),
                         ),
